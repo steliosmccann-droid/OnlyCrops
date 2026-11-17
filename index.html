@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="mode-farm" lang="el"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" name="viewport"/><meta content="#a6cd79" name="theme-color"/><title>Only Crops · Game Maker Checkpoint 20.3</title>
+<link rel="stylesheet" href="styles/001-block-001.css">
+<link rel="stylesheet" href="styles/002-block-002.css">
+<script src="scripts/game/001-block-001.js"></script>
+<link rel="stylesheet" href="styles/003-block-003.css">
+<link rel="stylesheet" href="styles/004-block-004.css">
+<link rel="stylesheet" href="styles/005-block-005.css">
+<link rel="stylesheet" href="styles/006-block-006.css">
+<link rel="stylesheet" href="styles/007-block-007.css">
+<link rel="stylesheet" href="styles/008-block-008.css">
+<link rel="stylesheet" href="styles/009-block-009.css">
+<link rel="stylesheet" href="styles/010-block-010.css"><script src="scripts/game/002-block-002.js"></script><link rel="stylesheet" href="styles/011-fv-v61-animal-styles.css">
+<link rel="stylesheet" href="styles/012-fv-v62-style.css">
+<link rel="stylesheet" href="styles/013-fv63-creative-settings-style.css">
+<link rel="stylesheet" href="styles/014-block-014.css">
+<link rel="stylesheet" href="styles/015-fv66-mastery-connection.css">
+<link rel="stylesheet" href="styles/016-block-016.css"><script src="scripts/assets/003-fv71-assets.js"></script><link rel="stylesheet" href="styles/017-fv71-ui-graphics.css">
+<link rel="stylesheet" href="styles/018-fv73-farmer-welcome-style.css"><meta content="V75 Tree Interaction" name="fv-build"/><link rel="stylesheet" href="styles/019-fv76-classic-toolbar-images.css">
+<link rel="stylesheet" href="styles/020-fv77-2-layout-fix.css">
+<link rel="stylesheet" href="styles/021-fv81-unrestricted-ui-style.css">
+<link rel="stylesheet" href="styles/022-fv84-native-picker-fix.css"><script src="scripts/game/004-fv84-file-picker-guard.js"></script>
+<link rel="stylesheet" href="styles/023-fv90-approved-hud.css">
+<link rel="stylesheet" href="styles/024-fv91-hud-fix.css">
+<link rel="stylesheet" href="styles/025-fv92-nostalgia-ui-pass.css">
+<link rel="stylesheet" href="styles/026-fv94-clean-approved-toolbar.css">
+<link rel="stylesheet" href="styles/027-fv105-style.css">
+<link rel="stylesheet" href="styles/028-fv106-style.css">
+<link rel="stylesheet" href="styles/029-fv107-window-controls.css">
+<link rel="stylesheet" href="styles/030-gm108-css.css">
+<link rel="stylesheet" href="styles/031-fv109-approved-png-hud.css">
+<link rel="stylesheet" href="styles/032-fv110-interactions-css.css">
+<link rel="stylesheet" href="styles/033-fv111-visible-cash.css">
+<link rel="stylesheet" href="styles/034-gm112-css.css">
+<link rel="stylesheet" href="styles/035-gm115-integrated-style.css">
+<link rel="stylesheet" href="styles/036-gm116-clean-tabs.css">
+<link rel="stylesheet" href="styles/037-gm117-css.css">
+<link rel="stylesheet" href="styles/038-gm119-css.css"><link rel="stylesheet" href="styles/creator/039-gm18-mobile-editor-css.css" id="gm18-mobile-editor-css">
+<link rel="stylesheet" href="styles/creator/040-gm181-window-controls-css.css" id="gm181-window-controls-css">
+<link rel="stylesheet" href="styles/creator/041-gm19-studio-css.css" id="gm19-studio-css">
+
+<link rel="stylesheet" href="styles/creator/042-oc203-branding-css.css" id="oc203-branding-css">
+
+<link rel="icon" type="image/png" href="assets/branding/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="application-name" content="Only Crops">
+<meta name="apple-mobile-web-app-title" content="Only Crops">
+<link rel="stylesheet" href="styles/creator/043-only-crops-repo-branding.css" id="only-crops-repo-branding">
+</head><body><div aria-labelledby="fv73-title" aria-modal="true" hidden="" id="fv73-welcome" role="dialog">
+<div id="fv73-card"><div class="only-crops-welcome-logo" role="img" aria-label="Only Crops"></div><h2 id="fv73-title">Διάλεξε τον αγρότη σου!</h2><p>Φτιάξε το τοπικό σου προφίλ και διάλεξε αγρότη.</p>
+<label for="fv74-name" style="display:block;text-align:left;font-size:13px;font-weight:800;margin:12px 0 4px">Όνομα παίκτη</label><input autocomplete="nickname" id="fv74-name" maxlength="24" placeholder="Ο αγρότης μου" style="width:100%;box-sizing:border-box;padding:12px;border:2px solid #b99a5b;border-radius:10px;background:#fffdf4;font:600 16px system-ui;color:#533d24" type="text"/>
+<div id="fv73-options"><button aria-pressed="false" data-fv73-choice="classic" type="button"><span class="fv73-avatar">👨‍🌾</span><span>Κλασικός αγρότης</span></button><button aria-pressed="false" data-fv73-choice="blonde" type="button"><span class="fv73-avatar"><canvas aria-label="Αγρότισσα" height="108" id="fv73-blonde-preview" width="96"></canvas></span><span>Ξανθιά αγρότισσα</span></button></div>
+<button id="fv73-go" type="button">Δημιουργία προφίλ &amp; Έναρξη</button><p id="fv73-later">Το προφίλ αποθηκεύεται μόνο σε αυτόν τον browser. Μπορείς να το αλλάξεις από τις Ρυθμίσεις.</p></div>
+</div><div aria-live="polite" id="fv-boot" role="status">
+<section aria-label="Φόρτωση Only Crops" class="fv-boot-card">
+<div class="fv-boot-art" role="img" aria-label="Only Crops logo: ντομάτα και καρότο στη φάρμα"></div>
+<h1>Only Crops</h1><p class="oc203-boot-tagline">The only crops worth subscribing to.</p>
+<p id="fv-boot-message">Φορτώνει η φάρμα…</p>
+<div class="fv-boot-track" role="progressbar" aria-label="Πρόοδος φόρτωσης"><div id="fv-boot-bar"></div></div>
+<button hidden="" id="fv-boot-retry" type="button">↻ Επανάληψη φόρτωσης</button>
+<small id="fv-boot-help">Only Crops · Game Maker Checkpoint 20.3</small>
+</section>
+</div>
+<canvas aria-label="Ισομετρική φάρμα" id="game"></canvas>
+<div aria-label="FarmVille HUD" class="top fv38-hud"><div aria-live="polite" class="panel status" id="status"><div class="fv38-money"><div>🪙 1.000</div><div>💵 5</div></div><div class="fv38-experience"><div>⭐ LV 1</div><small>XP 0 / 15</small><div class="fv-level-track"><div class="fv-level-fill" style="width:0%"></div></div></div></div><div class="panel fv38-farmname" id="fvProfileTitle"><span>🏡</span><small>Η ΦΑΡΜΑ ΜΟΥ</small></div></div>
+<div class="banner"><span>🚜 Επιλεγμένο εργαλείο: Όργωμα · 15 🪙 / +1 XP · Χάρτης 18×18 · διαθέσιμη περιοχή 12×12 · κάθε χωράφι 4×4 μικρά κελιά</span></div>
+<div class="test"><h2>📐 ΚΑΤΑΛΟΓΟΣ ΑΝΤΙΚΕΙΜΕΝΩΝ · GRID V13</h2><select aria-label="Επιλογή αντικειμένου δοκιμής" id="catalog"></select><div class="actions"><button class="active" id="testBtn">🔎 Έλεγχος</button><button id="placeBtn">▣ Τοποθέτηση</button><button id="cancelBtn">✕ Άκυρο</button></div><div class="readout" id="readout">✓ = καταγραφή σε ιστορικό οδηγό FarmVille · ⚠ = αντικρουόμενες πηγές. Το μέγεθος αφορά μόνο το footprint. Επίλεξε αντικείμενο και πάτησε στον χάρτη.</div></div>
+<div class="controls"><button id="zoomIn" title="Zoom in">＋</button><button id="zoomOut" title="Zoom out">－</button><button id="recenter" title="Επαναφορά κάμερας">⌖</button></div>
+<div class="tools"><button id="plow" title="Όργωμα">🚜</button><button id="seedTool" title="Σπορά">🌱</button><button id="harvestTool" title="Συγκομιδή">🌾</button><button id="move" title="Μετακίνηση">✋</button><button id="remove" title="Αφαίρεση">♻</button><button class="active" id="toggleGrid" title="Πλέγμα">▦</button><button id="undo" title="Αναίρεση">↶</button></div>
+<div aria-label="Κλασικά εργαλεία FarmVille" class="classic-tools">
+<div class="fv38-tool-slot fv38-multi"><button aria-label="Select/Multi Tool" id="fvMulti" type="button">↖<span>Select</span></button><button aria-expanded="false" aria-label="Επιλογές Select" class="fv38-arrow" id="fv38MultiArrow" type="button">▴</button></div>
+<div class="fv38-tool-slot fv38-recycle"><button aria-label="Recycle Tool" id="fvRecycle" type="button">♻️<span>Recycle</span></button></div>
+<div aria-hidden="true" class="fv38-tool-slot fv38-move" hidden=""><button aria-label="Move Tool" id="fvMove" type="button">✋<span>Move</span></button></div>
+<div class="fv38-tool-slot fv39-ribbons"><button aria-label="Trophy, Ribbons και Animal Mastery" id="fv39Ribbons" title="Ribbons &amp; Mastery" type="button">🏅<span>Ribbons</span></button></div>
+<div class="fv38-tool-slot fv38-plow"><button aria-label="Plow Tool" id="fvPlow" type="button">🪓<span>Plow</span></button><button aria-expanded="false" aria-label="Επιλογές Plow" class="fv38-arrow" id="fv38PlowArrow" type="button">▴</button></div>
+<div class="fv38-tool-slot fv38-market"><button aria-label="Market" id="fvMarket" type="button">🛒<span>Market</span></button></div>
+<div class="fv38-tool-slot fv38-gifts"><button aria-label="Gift Box" disabled="" id="fvGifts" title="Gift Box — δεν έχει αναπτυχθεί ακόμη" type="button">🎁<span>Gifts</span></button></div>
+<button aria-expanded="false" aria-label="Περισσότερα εργαλεία" id="fvMore" type="button">⚙️<span>More</span></button><button aria-label="Περιστροφή επιλεγμένου φράχτη" hidden="" id="fvRotateActive" type="button">↻<span>Rotate</span></button>
+</div>
+<div aria-label="Πρόσθετα εργαλεία" class="fv38-submenu" hidden="" id="fv38Submenu" role="menu"></div>
+<button class="tools-qa-open" id="fvToolsQaOpen" type="button">🧪 Tools QA</button>
+<section aria-label="Περισσότερα κλασικά εργαλεία" class="fv-more-panel" id="fvMorePanel">
+<div class="fv-more-head"><strong>🧰 Farm Tools</strong><button id="fvMoreClose" type="button">✕</button></div>
+<p>Move, Rotate και Store λειτουργούν με τον ίδιο τρόπο και στις δύο φάρμες.</p>
+<button aria-label="Αλλαγή φάρμας" class="fv-profile-switch" id="fvProfileSwitch" type="button">🧪 Creative · MAX Level</button><div id="fvCreativeTimePanel"><button id="fvCreativeAddFour" type="button">⏩ +4 ώρες παιχνιδιού</button><small>Μόνο Creative · προχωρά καλλιέργειες, δέντρα και ζώα. Κάθε πάτημα προσθέτει 4 ώρες στους υπάρχοντες κύκλους.</small></div>
+<div class="fv-farm-name-editor"><label for="fvFarmNameInput">🏡 Όνομα φάρμας</label><div class="fv-farm-name-row"><input autocomplete="off" id="fvFarmNameInput" maxlength="24" placeholder="Η ΦΑΡΜΑ ΜΟΥ" type="text"><button id="fvFarmNameSave" type="button">Αποθήκευση</button></input></div></div>
+<div class="fv-more-grid">
+<button id="fvMoreRotate" title="Περιστροφή κατά 90° για τους φράχτες — επίλεξε πρώτα φράχτη με Move" type="button">↻ Rotate<small>Φράχτες · 90°</small></button>
+<button id="fvMoreStore" type="button">📦 Store<small>Αποθήκευση αντικειμένου</small></button>
+<button id="fvMoreSell" type="button">🪙 Sell<small>Πάτησε αντικείμενο</small></button>
+<button disabled="" title="Δεν υπάρχει σύστημα καυσίμου και μηχανημάτων">🚜 Tractor<small>Machinery system</small></button>
+<button disabled="" title="Δεν υπάρχει σύστημα καυσίμου και μηχανημάτων">🌱 Seeder<small>Machinery system</small></button>
+<button disabled="" title="Δεν υπάρχει σύστημα καυσίμου και μηχανημάτων">🌾 Harvester<small>Machinery system</small></button>
+<button disabled="" title="Δεν υπάρχει σύστημα καυσίμου και μηχανημάτων">🚜 Combine<small>Machinery system</small></button>
+<button disabled="" title="Το Quick Delete δεν είναι ασφαλές χωρίς αξίες/τύπους αντικειμένων">♻ Quick Delete<small>Ασφαλείς κανόνες αργότερα</small></button>
+</div>
+<button id="fvMoreQA" type="button">🧪 Έλεγχος Tools</button>
+</section>
+<section class="classic-tools-qa" id="fvToolsQa"><strong>🧪 Tools — Έλεγχοι</strong><p>Οι ενσωματωμένοι έλεγχοι δεν αντικαθιστούν τη δοκιμή στον χάρτη.</p><div id="fvToolsQaRows"></div><button id="fvToolsQaClose" type="button">Κλείσιμο</button></section>
+<section class="classic-context" id="fvContext"><strong id="fvContextTitle">Αντικείμενο</strong><div id="fvContextInfo"></div><div class="classic-actions"><button id="fvContextMove">✋ Μετακίνηση</button><button id="fvContextRecycle">♻ Αφαίρεση</button><button id="fvContextInfoBtn">ℹ️ Πληροφορίες</button>
+<button disabled="" id="fvContextRotate" title="Rotate διαθέσιμο μόνο για φράχτες" type="button">↻ Rotate</button>
+<button id="fvContextStore" type="button">📦 Store</button>
+<button disabled="" id="fvContextSell" title="Πώληση 5% μόνο για αντικείμενα με επιβεβαιωμένη τιμή Coins" type="button">🪙 Sell</button><button id="fvContextCancel">✕</button></div></section>
+<button class="fv-storage-open" hidden="" id="fvStorageOpen" type="button">📦 Storage</button>
+<section aria-label="Αποθήκη αντικειμένων" class="fv-storage-panel" id="fvStoragePanel">
+<div class="fv-storage-header"><h3>📦 Barn / Tool Shed — κοινό Storage</h3><button id="fvStorageClose" type="button">✕</button></div>
+<div class="fv-storage-summary" id="fvStorageSummary">0 / 0 θέσεις</div>
+<div class="fv-storage-help">📦 <strong>Barn Storage:</strong> Κοινή αποθήκη από Barns και Tool Sheds. Το Barn Raising χρειάζεται φίλους ή Farm Cash και δεν είναι ενεργό σε αυτή την έκδοση.</div>
+<div class="fv-storage-help">Κοινό Inventory από τα Barns και Tool Sheds της τρέχουσας φάρμας. Πάτησε ένα Barn → Look Inside. Για αποθήκευση, επέλεξε Move και σύρε το αντικείμενο πάνω στο Barn ή πάτησε το αντικείμενο → Store. Το Gift Box είναι διαφορετικό.</div>
+<div class="fv-storage-setup" id="fvStorageSetup">
+<strong id="fvStorageSetupTitle">🏠 Πρώτα ένα κτίριο Storage</strong>
+<p id="fvStorageSetupHint">Το 0/0 σημαίνει πως δεν υπάρχει Barn ή Tool Shed σε αυτή τη φάρμα.</p>
+<div class="fv-storage-setup-actions">
+<button id="fvStorageSelectBarn" type="button">🏠 Επίλεξε Red Barn (Creative)</button>
+<button id="fvStorageSelectHay" type="button">🌾 Επίλεξε Hay Bale (Creative)</button>
+</div>
+</div>
+<div class="fv-storage-setup-actions" id="fvStorageQuickCreative"><button id="fvStorageQuickBarn" type="button">🏠 + Barn</button><button id="fvStorageQuickHay" type="button">🌾 + Hay Bale</button></div>
+<button id="fvStorePick" type="button">📥 Store Item — επίλεξε αντικείμενο στον χάρτη</button>
+<div class="fv-storage-section-label">🌾 Αντικείμενα της φάρμας: πάτησε το αντικείμενο → Store <span id="fvStorageFarmCount"></span></div>
+<div class="fv-storage-farm-list" id="fvStorageFarmItems"></div>
+<div class="fv-storage-section-label">📦 Inventory — αποθηκευμένα αντικείμενα <span id="fvStorageStoredCount"></span></div>
+<div id="fvStorageItems"></div>
+<div aria-live="polite" class="fv-storage-help" id="fvStorageStatus">Επίλεξε αντικείμενο από το Multi Tool → Store, ή χρησιμοποίησε το Store Tool.</div>
+<details class="fv-barn-manual" id="fvBarnManualQA"><summary>✅ Χειροκίνητοι έλεγχοι στο iPhone (0/10)</summary>
+<p>Κάνε τους ελέγχους στην Κανονική φάρμα. Σημείωσε μόνο όσα είδες να λειτουργούν πραγματικά.</p>
+<div id="fvBarnManualRows"></div><button id="fvBarnManualReset" type="button">Μηδενισμός ελέγχων</button>
+<div id="fvBarnManualScore" role="status">0/10 επιβεβαιωμένα</div>
+<p><strong>Αποθήκη:</strong> τα αντικείμενα αποθηκεύονται στο κοινό Inventory.</p></details>
+<button id="fvStorageQa" type="button">🧪 Έλεγχος Storage</button><div id="fvStorageQaResults" style="font-size:11px;margin-top:6px"></div>
+</section>
+<section aria-label="Barn" aria-modal="false" class="fv-barn-menu" hidden="" id="fvBarnMenu" role="dialog">
+<div class="fv-barn-title" id="fvBarnTitle">🏠 Red Barn</div>
+<div class="fv-barn-capacity" id="fvBarnCapacity">0 / 6</div>
+<button id="fvBarnLookInside" type="button">📦 Look Inside</button><button hidden="" id="fvBarnCreativeUpgrade" type="button">🧪 Creative: δοκιμή αναβάθμισης</button>
+<button id="fvBarnSell" type="button">🪙 Sell</button><button id="fvBarnClose">✕ Κλείσιμο</button>
+</section>
+<section aria-hidden="true" class="fv-recycle-backdrop" id="fvSellBackdrop">
+<div aria-labelledby="fvSellHeading" aria-modal="true" class="fv-recycle-dialog" role="dialog">
+<strong id="fvSellHeading">🪙 Sell item</strong>
+<div class="fv-recycle-name" id="fvSellName">Αντικείμενο</div>
+<div class="fv-recycle-warning" id="fvSellWarning">Η πώληση είναι οριστική.</div>
+<div class="fv-recycle-actions"><button id="fvSellCancel" type="button">✕ Άκυρο</button><button class="fv-sell-confirm" id="fvSellConfirm" type="button">🪙 Πώληση</button></div>
+</div>
+</section>
+<section aria-hidden="true" class="fv-recycle-backdrop" id="fvRecycleBackdrop">
+<div aria-describedby="fvRecycleWarning" aria-labelledby="fvRecycleHeading" aria-modal="true" class="fv-recycle-dialog" role="dialog">
+<strong id="fvRecycleHeading">♻ Recycle</strong>
+<div class="fv-recycle-name" id="fvRecycleName">Αντικείμενο</div>
+<div class="fv-recycle-warning" id="fvRecycleWarning">Η αφαίρεση είναι οριστική. Δεν υπάρχει ακόμη μηχανισμός πώλησης.</div>
+<div class="fv-recycle-actions"><button id="fvRecycleCancel" type="button">✕ Άκυρο</button><button class="danger" id="fvRecycleConfirm" type="button">♻ Αφαίρεση</button></div>
+</div>
+</section>
+<section class="classic-seeds" id="fvSeeds"><strong>🌱 Φύτεψε σπόρους</strong><p id="fvSeedText">Επέλεξε σπόρο για το οργωμένο χωράφι.</p><select aria-label="Επιλογή σπόρου" id="fvSeedChoice"></select><div class="classic-actions"><button id="fvSeedPlant" type="button">🌱 Φύτευση</button><button id="fvSeedCancel" type="button">✕ Άκυρο</button></div></section>
+<div class="legend">✓ Ανεπίσημο Wiki · ⚠ Προς επιβεβαίωση. Τα οχήματα εμφανίζουν μέγεθος στάθμευσης, όχι κάλυψη εργασίας. <b>Πράσινο:</b> ελεύθερο · <em>Κόκκινο:</em> απαγορεύεται · Πάτημα για θέση · σύρσιμο για κάμερα · zoom με δύο δάχτυλα.</div>
+<div class="bottom"><span class="label">DEVELOPER · V22</span><button id="one"><strong>▫</strong>1×1</button><button id="two"><strong>▦</strong>2×2</button><button id="four"><strong>▧</strong>4×4 χωράφι</button><button id="large"><strong>🏠</strong>13×10</button><button id="check"><strong>✓</strong>Έλεγχοι grid</button><button id="plowCheck"><strong>✓</strong>Έλεγχοι plow</button><button id="fallowDemo"><strong>↻</strong>Fallow δοκιμή</button><button id="reset"><strong>↺</strong>Καθαρισμός</button></div><div aria-live="polite" class="gridResults" hidden="" id="gridResults"></div>
+<section aria-label="Έλεγχοι συστήματος οργώματος" class="plow-qa" id="plowQa"><div class="plow-qa-head"><strong>🚜 Plowing <span id="plowQaScore">—/—</span></strong><button aria-controls="plowQaList" aria-expanded="false" id="plowQaToggle">Έλεγχοι ▾</button></div><div aria-live="polite" class="plow-qa-list" id="plowQaList"></div></section><button class="crop-open" id="cropOpen" type="button">🌾 Καλλιέργειες</button>
+<button aria-label="Σύντομη πληροφορία επιλεγμένης καλλιέργειας" class="crop-mini-bubble" id="cropMiniBubble" type="button">
+<span class="mini-title">🌾 ΚΑΛΛΙΕΡΓΕΙΕΣ</span>
+<span class="mini-main" id="cropMiniMain"></span>
+<span class="mini-clock" id="cropMiniClock"></span>
+</button>
+<section aria-label="Κατάσταση καλλιεργειών" class="crop-window" id="cropWindow">
+<div class="crop-window-header"><strong>🌾 Τα χωράφια μου</strong><button id="cropClose" type="button">✕</button></div>
+<div class="crop-stats" id="cropStats">—</div>
+<div aria-live="polite" class="crop-autosave-status" id="cropAutosaveStatus">💾 Αυτόματη αποθήκευση: Έλεγχος…</div>
+<div class="crop-next-harvest" id="cropNextHarvest">🌾 Δεν υπάρχει φυτεμένη καλλιέργεια.</div>
+<div class="crop-save-tools"><button id="cropSaveExport" type="button">💾 Εξαγωγή φάρμας</button><button id="cropSaveImport" type="button">📂 Εισαγωγή φάρμας</button><input accept=".json,application/json" hidden="" id="cropSaveFile" type="file"/></div>
+<div aria-live="polite" class="crop-save-notice" id="cropSaveNotice">Η φάρμα αποθηκεύεται αυτόματα στον ίδιο browser. Για μεταφορά μεταξύ διαφορετικών HTML, χρησιμοποίησε Εξαγωγή/Εισαγωγή.</div>
+<div aria-live="polite" id="cropList"></div>
+<div class="crop-legend">Κλασικός κύκλος FarmVille: όργωμα → σπορά → ανάπτυξη → συγκομιδή → νέο όργωμα. Πατώντας φυτεμένο χωράφι εμφανίζεται για 1,5 δευτερόλεπτο η ώρα ωρίμανσής του. Τα φυτεμένα χωράφια εμφανίζονται πρώτα στη λίστα. Δεν υπάρχει αντίστροφη μέτρηση. Η πρόοδος αποθηκεύεται αυτόματα στον ίδιο browser και μπορεί να εξαχθεί σε αρχείο.</div>
+<h3>🧪 Έλεγχοι Crops System</h3><button id="cropRunTests" type="button">Εκτέλεση ελέγχων ▾ <span id="cropRunScore">—/—</span></button>
+<div class="crop-checks" id="cropCheckList"></div>
+<h3>✅ Πρακτική δοκιμή iPhone · 9 έλεγχοι</h3>
+<p class="crop-qa-help">Σημείωσε όσα δοκίμασες πραγματικά και λειτούργησαν. Τα άδεια κουτάκια παραμένουν εκκρεμή, όχι αυτόματες αποτυχίες.</p>
+<div aria-label="Χειροκίνητοι έλεγχοι καλλιεργειών" class="crop-manual-checks" id="cropManualChecks"></div>
+<div aria-live="polite" class="crop-manual-score" id="cropManualScore">0/9 επιβεβαιωμένοι</div>
+<button id="cropCopyResults" type="button">📋 Αντιγραφή αποτελεσμάτων</button>
+<div aria-live="polite" class="crop-qa-help" id="cropManualMessage"></div>
+</section>
+<div class="seed-picker" id="seedPicker"><strong>🌱 Σπόροι</strong><select aria-label="Επιλογή σπόρου" id="seedSelect"></select><small id="seedInfo"></small></div>
+<section aria-label="Έλεγχοι καλλιεργειών" class="crop-qa" id="cropQa"><div class="crop-qa-head"><strong>🌱 Crops <span id="cropQaScore">—/—</span></strong><button aria-expanded="false" id="cropQaToggle">Έλεγχοι ▾</button></div><div class="crop-qa-list" id="cropQaList"></div></section>
+<section class="farmer-qa" id="farmerQa"><div class="farmer-qa-head"><strong>👨‍🌾 Farmer <span id="farmerScore">—/—</span></strong><button id="farmerTestsBtn">Έλεγχοι ▾</button><button id="farmerStop">Ακύρωση</button></div><div class="farmer-qa-list" id="farmerTestsList"></div></section><div class="farmer-bubble" id="farmerBubble">👨‍🌾 Έτοιμος για εργασία</div><button class="asset-open" id="assetOpen" type="button">🖼️ Εικόνες</button>
+<section aria-label="Διαχείριση γραφικών" class="asset-panel" id="assetPanel"><div class="asset-head"><strong>🎨 Image &amp; Sprite System V29</strong><button id="assetClose" type="button">✕</button></div>
+<label for="assetTarget">Αντικείμενο / χαρακτήρας (όλος ο κατάλογος)</label><select id="assetTarget"><option value="farmer">👨‍🌾 Αγρότης</option><option value="apple">🌳 Μηλιά</option><option value="hay">🌾 Hay Bale (μόνο με δική σου εικόνα)</option><option value="strawberry">🍓 Φράουλα</option><option value="soybean">🌱 Σόγια</option><option value="eggplant">🍆 Μελιτζάνα</option><option value="wheat">🌾 Σιτάρι</option></select>
+<label for="assetFile">Εικόνα PNG / WebP / JPG</label><input accept="image/png,image/webp,image/jpeg" aria-label="Διάλεξε PNG ή WebP για το αντικείμενο" id="assetFile" type="file"/>
+<div class="asset-preview" id="assetPreview"><span>Χωρίς εικόνα — διατηρείται το βασικό σχέδιο</span></div><div class="asset-preview-note" id="assetPreviewNote">Η προεπισκόπηση δείχνει ένα καρέ ή το animation.</div>
+<div class="asset-row"><label>Κλίμακα <input id="assetScale" max="5" min="0.25" step="0.1" type="number" value="1"/></label><label>Καρέ ανά σειρά <input id="assetCols" max="32" min="1" step="1" type="number" value="1"/></label></div>
+<div class="asset-row"><label>Σειρές spritesheet <input id="assetRows" max="4" min="1" step="1" type="number" value="1"/></label><label>FPS <input id="assetFPS" max="30" min="1" step="1" type="number" value="8"/></label></div>
+<div class="asset-row"><label>Οριζόντια μετατόπιση (px) <input id="assetOffsetX" max="150" min="-150" step="1" type="number" value="0"/></label><label>Κάθετη μετατόπιση (px) <input id="assetOffsetY" max="150" min="-150" step="1" type="number" value="0"/></label></div><label><input id="assetFlipX" type="checkbox"/> Αντιστροφή εικόνας οριζόντια</label><small>Η προεπισκόπηση δείχνει τα καρέ του spritesheet με τις ρυθμίσεις που διάλεξες. Οι μετατοπίσεις δεν αλλάζουν τον χώρο που καταλαμβάνει το αντικείμενο. Για κοινά αντικείμενα τα καρέ παίζουν διαδοχικά· ο χώρος στο grid παραμένει ίδιος. Αγρότης: με 5 σειρές, 1η = idle, 2η = walk, 3η = work, 4η = harvest, 5η = happy. Με 3 σειρές χρησιμοποιούνται idle / walk / work. Με 1 σειρά χρησιμοποιούνται τα ίδια καρέ σε όλες τις κινήσεις. Για αντικείμενα χρησιμοποιείται το πρώτο καρέ.</small>
+<div class="asset-row" style="margin-top:9px"><button id="assetApply" type="button">Αποθήκευση εικόνας</button><button id="assetDelete" type="button">Αφαίρεση εικόνας</button></div>
+<div class="asset-row asset-export"><button id="assetExport" type="button">⬇ Πακέτο εικόνων</button><button id="assetImportBtn" type="button">⬆ Εισαγωγή πακέτου</button></div>
+<div class="asset-row asset-export"><button id="assetExportHTML" type="button">📄 HTML με εικόνες</button><span id="assetCount" style="font-size:11px">0 εικόνες</span></div>
+<label class="fv84-picker-label" for="assetImportFile">📂 Εισαγωγή υπάρχοντος πακέτου Assets JSON</label><input accept="application/json,.json" id="assetImportFile" type="file"/>
+<div aria-live="polite" class="asset-message" id="assetMessage">Οι εικόνες μένουν στο iPhone μέσω του τοπικού χώρου του browser, όταν υποστηρίζεται.</div>
+<button id="assetTestButton" type="button">Έλεγχοι εικόνων ▾ <span id="assetTestScore">—/—</span></button><div class="asset-tests" id="assetTests"></div>
+</section>
+<button class="character-open" id="characterOpen" type="button">👩‍🌾 Ο αγρότης μου</button>
+<section aria-label="Επιλογή χαρακτήρα" class="character-panel" id="characterPanel">
+<div class="character-head"><strong>👩‍🌾 Farmer Studio</strong><button id="characterClose" type="button">✕</button></div>
+<div class="character-note">Διάλεξε εμφάνιση και δες την κίνηση του χαρακτήρα πριν παίξεις.</div>
+<div class="character-preview"><canvas aria-label="Ζωντανή προεπισκόπηση αγρότη" height="220" id="characterPreviewCanvas" width="230"></canvas></div>
+<div aria-label="Προεπισκόπηση animations" class="character-anim-controls"><button class="selected" data-anim="idle" type="button">Στάση</button><button data-anim="walking" type="button">Περπάτημα</button><button data-anim="working" type="button">Δουλειά</button><button data-anim="harvesting" type="button">Συγκομιδή</button><button data-anim="happy" type="button">Χαρά</button></div>
+<div class="character-actions">
+<button data-character="classic" id="charClassic" type="button">👨‍🌾 Κλασικός χαρακτήρας</button>
+<button data-character="blonde" id="charBlonde" type="button">👩‍🌾 Ξανθιά αγρότισσα (νέο sprite)</button>
+</div>
+<div class="character-status" id="characterStatus">Επίλεξε ποιος χαρακτήρας θα χρησιμοποιείται στη φάρμα.</div>
+<div class="character-tip">Οι αλλαγές αποθηκεύονται στο iPhone. Το Creative Mode δεν επηρεάζεται.</div>
+<div class="character-qa"><button id="characterTestToggle" type="button">✓ Έλεγχοι χαρακτήρα ▾</button><div class="character-test-results" hidden="" id="characterTestResults"></div></div>
+</section>
+<button class="farmer-lab-toggle" id="farmerLabToggle" type="button">🧪 Farmer System</button>
+<section aria-label="Έλεγχος Farmer System" class="farmer-lab" id="farmerLab">
+<div class="farmer-lab-head"><strong>👨‍🌾 Farmer System · QA V35</strong><button id="farmerLabClose" type="button">✕</button></div>
+<div style="margin-top:7px">Δοκίμασε το περπάτημα πατώντας σε ελεύθερο σημείο του χάρτη. Το παιχνίδι καταγράφει αυτόματα τις τέσσερις ισομετρικές κατευθύνσεις, χωρίς βελάκια χειρισμού. Δεν αλλάζουν Coins ή καλλιέργειες.</div>
+<div class="farmer-lab-actions">
+<button id="farmerLabWalk" type="button">👣 Πάτημα στον χάρτη: ενεργό</button>
+<button id="farmerLabWork" type="button">🛠️ Εργασία</button>
+<button id="farmerLabHarvest" type="button">🌾 Συγκομιδή</button>
+<button id="farmerLabHappy" type="button">😊 Χαρά</button>
+<button id="farmerLabStop" type="button">✖ Ακύρωση</button>
+<button id="farmerLabRun" type="button">✓ Έλεγχοι</button>
+</div>
+<div class="farmer-lab-status" id="farmerLabStatus">Πάτησε ελεύθερο σημείο της φάρμας για να περπατήσει ο αγρότης. Μετά δοκίμασε και τις υπόλοιπες κινήσεις.</div>
+<div aria-live="polite" class="farmer-lab-tests" id="farmerLabTests"></div>
+</section>
+<div aria-label="Λειτουργία φάρμας" class="mode-switch"><button class="active" id="farmModeCreative" type="button">🎨 Creative</button><button id="farmModeNormal" type="button">🌾 Κανονική φάρμα</button></div>
+<section aria-label="FarmVille Market στην κανονική φάρμα" class="market-panel" id="marketPanel">
+<div class="market-head"><span>🛍️ FARM MARKET <small>Classic · 2009—2020</small></span><button aria-label="Κλείσιμο Market" id="marketClose" type="button">✕</button></div>
+<div class="market-wallet" id="marketWallet">🪙 1.000 Coins</div>
+<div class="market-help">🛍️ Αγορές με Coins / Farm Cash. Χρέωση ΜΟΝΟ μετά την τοποθέτηση. Άγνωστες τιμές δεν επινοούνται. Οι τιμές αντιστοιχούν σε τεκμηριωμένες περιόδους 2009–2020.</div>
+<label class="market-qa-toggle"><input id="marketQA" type="checkbox"/> 🧪 Δοκιμή όλων των αντικειμένων (0 Coins, χωρίς XP ή αξία πώλησης)</label>
+<div class="market-search-row"><input aria-label="Αναζήτηση Market" autocomplete="off" id="marketSearch" placeholder="🔎 Αναζήτηση αντικειμένου..." type="search"/><select aria-label="Φίλτρο διαθεσιμότητας" id="marketPriceFilter"><option value="all">Όλα</option><option value="coins">🪙 Coins</option><option value="cash">💵 Cash</option><option value="gift">🎁 Δώρα</option><option value="unknown">❔ Έρευνα</option></select></div>
+<div aria-label="Κατηγορίες Market" class="market-tabs" id="marketTabs" role="group"></div>
+<div aria-live="polite" class="market-count" id="marketCount"></div>
+<div class="market-items" id="marketItems"></div>
+<div class="market-pagination"><button id="marketPrev" type="button">◀ Πριν</button><span id="marketPage"></span><button id="marketNext" type="button">Μετά ▶</button></div>
+<div aria-live="polite" class="market-tip" id="marketStatus">Επίλεξε αγορά και μετά πάτησε ελεύθερη θέση στη φάρμα. Αλλαγή εργαλείου = ακύρωση χωρίς χρέωση.</div>
+</section>
+<button aria-pressed="false" class="general-inspect-btn" id="generalInspect" type="button">ℹ️ Πληροφορίες</button>
+<button class="general-qa-toggle" id="generalQaToggle" type="button">🧪 General QA</button>
+<section aria-label="Έλεγχοι κοινών λειτουργιών" class="general-qa-panel" id="generalQaPanel">
+<header><strong>🧪 General · Έλεγχοι</strong><button id="generalQaClose" type="button">✕</button></header>
+<p>Τα τεστ επιβεβαιώνουν τη σύνδεση των κοινών μηχανισμών. </p>
+<div aria-live="polite" id="generalQaResult"></div>
+</section>
+<button aria-hidden="true" class="creative-toggle" hidden="" id="creativeToggle" tabindex="-1" type="button">🎨 Κατάλογος ▸</button>
+<button aria-label="Περιστροφή επιλεγμένου φράχτη" class="fv-rotate-creative" hidden="" id="fvRotateCreative" title="Περιστροφή επιλεγμένου φράχτη 90°" type="button">↻ Rotate</button>
+<section aria-label="Creative Mode - πλήρης κατάλογος" class="creative-panel hidden" id="creativePanel">
+<strong>🏡 CREATIVE MODE · ΚΑΤΑΛΟΓΟΣ</strong>
+<div class="creative-note">Ελεύθερη διακόσμηση · Χωρίς κόστος · Ίδια μεγέθη V29</div>
+<label for="creativeSearch">Αναζήτηση αντικειμένου</label><input autocomplete="off" id="creativeSearch" placeholder="Hay Bale, Cow, Barn, Tree..." type="search"/>
+<label for="creativeGroup">Κατηγορία</label><select id="creativeGroup" size="1"><option value="all">Όλες οι κατηγορίες</option></select>
+<label for="creativeItems">Αντικείμενα (<span id="creativeCount">0</span>)</label><select aria-label="Επιλογή αντικειμένου" id="creativeItems" size="5"></select>
+<div class="creative-info" id="creativeInfo">Επίλεξε αντικείμενο<small>Το footprint δεν αλλάζει από το artwork.</small></div>
+<div class="creative-buttons"><button class="selected" id="creativePlace">▣ Βάλε</button><button id="creativeMove">✋ Μετακίνηση</button><button id="creativeRemove">♻ Σβήσε</button></div>
+<div class="creative-footer"><button id="creativeUndo">↶ Αναίρεση</button><button id="creativeGrid">▦ Πλέγμα</button><button id="creativeClear">🧹 Καθαρισμός</button></div>
+<div class="creative-note">Διάλεξε αντικείμενο και πάτησε το πλέγμα. Σύρε τον χάρτη για μετακίνηση. Τα χωράφια (4×4) μπαίνουν δωρεάν. Οι τοποθετήσεις αποθηκεύονται ξεχωριστά από την κανονική φάρμα.</div>
+</section>
+<div aria-live="polite" class="game-hint" id="gameHint">🚜 Όργωμα <small>15 🪙 ανά χωράφι · +1 XP</small></div><div class="notice" id="notice"></div>
+<script id="fv-bundled-assets" type="application/json"></script>
+<script src="scripts/assets/005-block-005.js"></script>
+<script src="scripts/game/006-block-006.js"></script>
+<script src="scripts/game/007-block-007.js"></script>
+<script src="scripts/game/008-block-008.js"></script>
+<script src="scripts/game/009-block-009.js"></script>
+<script src="scripts/game/010-block-010.js"></script>
+<script src="scripts/game/011-block-011.js"></script>
+<script src="scripts/game/012-block-012.js"></script>
+<script src="scripts/game/013-block-013.js"></script>
+<link rel="stylesheet" href="styles/039-block-039.css">
+<script src="scripts/game/014-block-014.js"></script><button aria-label="Πρόσθετες ρυθμίσεις" id="fv42-settings-button" title="Πρόσθετες ρυθμίσεις" type="button">⚙</button>
+<div hidden="" id="fv42-settings-overlay">
+<section aria-labelledby="fv42-settings-title" aria-modal="true" id="fv42-settings-panel" role="dialog">
+<header id="fv42-settings-header"><span id="fv42-settings-title">⚙ Πρόσθετες ρυθμίσεις</span><button aria-label="Κλείσιμο" id="fv42-settings-close" type="button">×</button></header>
+<div id="fv42-settings-content">
+<div class="fv42-setting-section">Πρόσθετες επιλογές</div>
+<label class="fv42-setting-row" for="fv45-setting-grid"><span><strong>Εμφάνιση πλέγματος (Grid)</strong><small>Εμφάνισε ή κρύψε τις βοηθητικές γραμμές της φάρμας</small></span><input aria-label="Εμφάνιση πλέγματος" id="fv45-setting-grid" type="checkbox"/></label>
+<div class="fv42-setting-section">Creative Mode · Δοκιμές</div>
+<div class="fv63-creative-settings" id="fv63-creative-settings">
+<small>Εναλλαγή ανάμεσα στην κανονική και στη Creative φάρμα. Κάθε φάρμα έχει δική της αποθήκευση.</small>
+<div id="fv63-creative-controls"></div>
+<small id="fv63-creative-hint">Το κουμπί +4 ώρες εμφανίζεται όταν μπεις στη Creative φάρμα.</small>
+</div>
+<div class="fv42-setting-section">Αντίγραφο ασφαλείας</div>
+<div class="fv42-setting-actions"><button id="fv42-setting-export" type="button">💾 Εξαγωγή φάρμας</button><button id="fv42-setting-import" type="button">📂 Επαναφορά φάρμας</button></div>
+<small style="color:#756343">Οι επιλογές αυτές είναι πρόσθετες και δεν αλλάζουν την εμφάνιση ή τους μηχανισμούς του FarmVille. Φύλαξε το αρχείο JSON στα Αρχεία του iPhone.</small>
+<div class="fv42-setting-section">Πληροφορίες</div>
+<div class="fv42-setting-row"><span><strong>FarmVille3026 · V63 (Creative Settings)</strong><small>Βασικό gameplay και κλασικά εργαλεία εκτός ρυθμίσεων</small></span></div>
+<div aria-live="polite" id="fv42-settings-feedback" role="status">Έτοιμο.</div>
+</div>
+</section>
+</div>
+<script src="scripts/game/015-block-015.js"></script>
+<script src="scripts/game/016-fv63-relocate-creative-settings.js"></script><script src="scripts/game/017-fv71-extras.js"></script><script src="scripts/game/018-fv74-local-profile.js"></script><link rel="stylesheet" href="styles/040-fv77-art-styles.css">
+<script src="scripts/game/019-fv77-art-bridge.js"></script>
+<link rel="stylesheet" href="styles/041-fv80-editor-css.css">
+<link rel="stylesheet" href="styles/042-fv81-1-hud-unclip-fix.css">
+<script src="scripts/game/020-fv82-default-skins.js"></script><script src="scripts/game/021-fv82-png-import-script.js"></script>
+<link rel="stylesheet" href="styles/043-fv83-assets-style.css">
+<script src="scripts/editor/022-fv83-editor-bridge.js"></script>
+<link rel="stylesheet" href="styles/044-fv88-hud-four-row-alignment.css"><div aria-label="Nostalgia HUD" id="fv90-nostalgia-hud">
+<div class="fv90-bars">
+<div class="fv90-item fv90-coin" data-fv90-item="coins"><span class="fv90-value" id="fv90Coins">1.000</span></div>
+<div class="fv90-item fv90-cash" data-fv90-item="cash"><span class="fv90-value" id="fv90Cash">5</span></div>
+<div class="fv90-item fv90-xp" data-fv90-item="xp"><span class="fv90-xp-level" id="fv90Level">1</span><div class="fv90-xp-track"><div class="fv90-xp-fill" id="fv90Fill"></div><span class="fv90-xp-label" id="fv90XpText">XP 0 / 15</span></div></div>
+</div>
+<div class="fv90-right"><div class="fv90-logo" data-fv90-item="logo"></div><div class="fv90-name" data-fv90-item="name"><span class="fv90-name-text" id="fv90Name">Η ΦΑΡΜΑ ΜΟΥ</span></div></div>
+</div><script src="scripts/game/023-fv90-nostalgia-hud-script.js"></script>
+<script src="scripts/editor/024-fv106-maker.js"></script><script src="scripts/editor/025-gm108-objects.js"></script><script src="scripts/game/026-fv110-interactions-js.js"></script><script src="scripts/editor/027-gm112-direct-edit.js"></script><link rel="stylesheet" href="styles/045-fv113-mechanics-css.css">
+<script src="scripts/game/028-fv113-mechanics-ui.js"></script><link rel="stylesheet" href="styles/046-fv114-crops-style.css">
+<script src="scripts/editor/029-fv114-crops-editor.js"></script><script src="scripts/editor/030-gm116-single-tabs.js"></script><script src="scripts/editor/031-gm117-editor-script.js"></script><link rel="stylesheet" href="styles/047-fv118-economy-css.css">
+<script src="scripts/game/032-fv118-economy-ui.js"></script><script src="scripts/editor/033-gm119-progression.js"></script><script src="scripts/game/034-fv125-gameplay-tool-safety.js"></script><script src="scripts/editor/036-gm18-mobile-editor-js.js" id="gm18-mobile-editor-js"></script>
+<script src="scripts/editor/037-gm181-window-controls-js.js" id="gm181-window-controls-js"></script>
+<script src="scripts/editor/038-gm19-studio-js.js" id="gm19-studio-js"></script>
+<link rel="stylesheet" href="styles/creator/053-gm191-draggable-css.css" id="gm191-draggable-css">
+<script src="scripts/editor/039-gm191-draggable-js.js" id="gm191-draggable-js"></script>
+
+<link rel="stylesheet" href="styles/creator/054-gm20-easy-navigation-css.css" id="gm20-easy-navigation-css">
+<script src="scripts/editor/040-gm20-easy-navigation-js.js" id="gm20-easy-navigation-js"></script>
+<script src="scripts/editor/041-oc203-branding-js.js" id="oc203-branding-js"></script>
+</body></html>

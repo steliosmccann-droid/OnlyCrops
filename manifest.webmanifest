@@ -1,0 +1,16 @@
+{
+  "name": "Only Crops",
+  "short_name": "Only Crops",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#82ba4d",
+  "theme_color": "#82ba4d",
+  "icons": [
+    {
+      "src": "assets/branding/only-crops-app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
