@@ -12,7 +12,7 @@ const cap=(n,a,b)=>Math.max(a,Math.min(b,Number(n)||0));
 let state={},undo=[],redo=[],section='HUD',gesture=null;
 try{const v=JSON.parse(localStorage.getItem(STORE)||localStorage.getItem('FarmVille3026_V105_GameMaker')||'{}');if(v&&typeof v==='object'&&!Array.isArray(v))state=v}catch(e){}
 const selectors=[...new Set(Object.values(groups).flat().map(a=>a[1]))];
-function store(){try{localStorage.setItem(STORE,JSON.stringify(state));return true}catch(e){return false}}
+function store(){try{const data=JSON.stringify(state);localStorage.setItem(STORE,data);return localStorage.getItem(STORE)===data}catch(e){return false}}
 function checkpoint(){undo.push(JSON.stringify(state));if(undo.length>50)undo.shift();redo=[]}
 
 // Existing Game Maker state: the toolbar remains the real gameplay toolbar.
@@ -583,7 +583,7 @@ function init(){
  }
  for(const [id,label] of [['HUD','HUD'],['UI','UI'],['Tools','Map / Assets']]){const b=add('button',tabs,label);b.dataset.tab=id;b.onclick=()=>tab(id)}
  pick.onchange=sync;
- function change(k,v,record=false){if(!$(pick.value))return;if(record)checkpoint();state[pick.value]??={};state[pick.value][k]=v;render();store();sync();msg.textContent='✓ Αποθηκεύτηκε'}
+ function change(k,v,record=false){if(!$(pick.value))return;const previous=JSON.stringify(state);if(record)checkpoint();state[pick.value]??={};state[pick.value][k]=v;if(!store()){state=JSON.parse(previous);render();sync();msg.textContent='⚠ Η αλλαγή δεν αποθηκεύτηκε · επανήλθαν οι προηγούμενες ρυθμίσεις';return}render();sync();msg.textContent='✓ Αποθηκεύτηκε'}
  for(const [k,label,min,max,step] of [['x','Θέση X',-400,400,1],['y','Θέση Y',-400,400,1],['scale','Μέγεθος %',25,250,1],['opacity','Διαφάνεια %',0,100,1]]){
   const l=add('label',fields,label),line=add('div',l);line.className='control';
   const range=add('input',line),number=add('input',line);
@@ -651,8 +651,10 @@ function init(){
  }
  function setAppearance(key,value){
   if(!$(pick.value))return;
+  const before=JSON.stringify(state);
   state[pick.value]??={};state[pick.value][key]=value;
-  renderAppearance();store();syncAppearance();msg.textContent='✓ Αποθηκεύτηκε η εμφάνιση (χωρίς αλλαγή τιμής ή XP)';
+  if(!store()){state=JSON.parse(before);renderAppearance();syncAppearance();msg.textContent='⚠ Δεν αποθηκεύτηκε η εμφάνιση · επανήλθε η προηγούμενη';return}
+  renderAppearance();syncAppearance();msg.textContent='✓ Αποθηκεύτηκε η εμφάνιση (χωρίς αλλαγή τιμής ή XP)';
  }
  function syncAppearance(){
   const sel=pick.value;
@@ -1363,7 +1365,7 @@ function init(){
    const image=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});
    checkpoint();state[pick.value]??={};state[pick.value].image=image;
   }else{const obj=JSON.parse(await f.text());if(!['FarmVille3026-GameMaker-V106','FarmVille3026-GameMaker-V105'].includes(obj.schema)||!obj.layout||typeof obj.layout!=='object'||Array.isArray(obj.layout))throw Error('Μη συμβατό JSON');checkpoint();state=obj.layout}
-  render();store();if(section!=='Tools')sync();msg.textContent='✓ Εισαγωγή ολοκληρώθηκε';
+  if(!store())throw Error('Το αρχείο εισήχθη στη μνήμη αλλά δεν αποθηκεύτηκε. Δοκίμασε μικρότερο αρχείο.');render();if(section!=='Tools')sync();msg.textContent='✓ Εισαγωγή και αποθήκευση ολοκληρώθηκαν';
  }catch(e){msg.textContent='⚠ '+e.message}finally{file.value=''}};
  launch.onclick=()=>{panel.hidden=!panel.hidden;launch.textContent=panel.hidden?'🎮 Άνοιγμα Game Maker':'🎮 Game Maker';if(!panel.hidden&&section!=='Tools')sync()};
  tab('HUD');render();
