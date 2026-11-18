@@ -1,0 +1,5 @@
+/* CP20.6: touch-size back navigation inside existing Game Maker toolbar */
+#gm106-panel #oc206-back{flex:0 0 auto;min-height:44px;min-width:58px;touch-action:manipulation;border:1px solid #92734a;border-radius:9px;background:#fffaf0;color:#3d311b;font-size:13px;font-weight:750;padding:6px 8px}
+#gm106-panel #oc206-back:disabled{opacity:.45}
+#gm106-panel #oc206-back:focus-visible{outline:3px solid #60873a;outline-offset:2px}
+@media(max-width:390px){#gm106-panel #oc204-creator-toolbar{gap:5px;padding:6px 4px}#gm106-panel #oc206-back{min-width:52px;padding:6px}#gm106-panel #oc204-home{padding:6px}#gm106-panel #oc204-help{padding:6px 9px}}
