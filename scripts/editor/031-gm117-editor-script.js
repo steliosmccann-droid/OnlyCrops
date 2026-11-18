@@ -21,7 +21,22 @@
  act('✓ Εφαρμογή & αποθήκευση',()=>{const k=species.value,previous=P.definition(k);if(!previous){msg.textContent='⚠ Δεν βρέθηκε είδος';return}const before={hours:previous.hours,coins:previous.coins};if(!P.apply(k,{hours:hours.value,coins:coins.value})){msg.textContent='⚠ Έλεγξε τις τιμές';return}if(!P.save()){P.apply(k,before);msg.textContent='⚠ Η αποθήκευση απέτυχε · επανήλθαν οι προηγούμενες τιμές';refresh();return}msg.textContent='✓ Αποθηκεύτηκε στο iPhone';refresh()});
  act('↺ Επαναφορά είδους',()=>{if(!confirm('Επαναφορά αρχικών τιμών για '+species.value+';'))return;const d=P.definition(species.value),before=d?{hours:d.hours,coins:d.coins}:null;const ok=P.resetOne(species.value);if(!ok&&before)P.apply(species.value,before);msg.textContent=ok?'✓ Επαναφέρθηκε':'⚠ Σφάλμα αποθήκευσης · επανήλθαν οι προηγούμενες τιμές';refresh()});
  act('⬇ Export JSON',()=>{const data={schema:'FarmVille3026-production-v117',items:{}};for(const [k,v] of Object.entries(P.CATALOG))data.items[k]={hours:v.hours,coins:v.coins};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='FarmVille3026_Animals_Trees.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)});
- const file=add('input',pane);file.type='file';file.accept='.json,application/json';file.setAttribute('aria-label','Import JSON παραγωγής');file.onchange=async()=>{try{const data=JSON.parse(await file.files[0].text());if(data.schema!=='FarmVille3026-production-v117'||!data.items||typeof data.items!=='object')throw Error('Μη συμβατό JSON');let n=0;for(const [k,v] of Object.entries(data.items))if(P.apply(k,v))n++;msg.textContent=P.save()?'✓ Εισήχθησαν '+n+' είδη':'⚠ Δεν αποθηκεύτηκαν';refresh()}catch(e){msg.textContent='⚠ '+e.message}file.value=''};
+ const file=add('input',pane);file.type='file';file.accept='.json,application/json';file.setAttribute('aria-label','Import JSON παραγωγής');file.onchange=async()=>{
+ const before=Object.fromEntries(Object.entries(P.CATALOG).map(([k,v])=>[k,{hours:v.hours,coins:v.coins}]));
+ try{
+  const chosen=file.files?.[0];if(!chosen)return;
+  const data=JSON.parse(await chosen.text());
+  if(data.schema!=='FarmVille3026-production-v117'||!data.items||typeof data.items!=='object'||Array.isArray(data.items))throw Error('Μη συμβατό JSON');
+  const entries=Object.entries(data.items);if(!entries.length)throw Error('Το αρχείο δεν περιέχει εγγραφές');
+  for(const [k,v] of entries){if(!P.definition(k)||!v||!Number.isFinite(Number(v.hours))||Number(v.hours)<0.05||Number(v.hours)>8760||!Number.isInteger(Number(v.coins))||Number(v.coins)<0||Number(v.coins)>1000000)throw Error('Μη έγκυρη εγγραφή: '+k)}
+  for(const [k,v] of entries)if(!P.apply(k,v))throw Error('Απέτυχε η εγγραφή: '+k);
+  if(!P.save())throw Error('Δεν αποθηκεύτηκαν οι αλλαγές');
+  msg.textContent='✓ Εισήχθησαν και αποθηκεύτηκαν '+entries.length+' είδη';refresh();
+ }catch(e){
+  for(const [k,v] of Object.entries(before))P.apply(k,v);
+  msg.textContent='⚠ '+e.message+' · επανήλθαν οι προηγούμενες τιμές';refresh();
+ }finally{file.value=''}
+};
  const otherTabs=[...tabs.querySelectorAll('button')].filter(b=>b!==button);
  button.onclick=()=>{host.hidden=false;for(const child of host.children)child.hidden=child!==pane;for(const child of gm.children){if(child===host||child===tabs||child.classList.contains('head'))continue;if(child.tagName==='SECTION')child.hidden=true;else if(child.tagName==='P'||child.tagName==='LABEL'||child.classList.contains('actions'))child.classList.add('gm116-hide')}for(const b of tabs.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b===button));gm.scrollTop=0};
  for(const b of otherTabs)b.addEventListener('click',()=>{pane.hidden=true});
