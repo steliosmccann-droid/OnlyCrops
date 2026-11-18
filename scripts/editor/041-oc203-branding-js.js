@@ -23,7 +23,12 @@ function setup(){
  <div class="oc203-actions"><button type="button" id="oc203-edit-logo">🖼️ Αλλαγή λογότυπου</button>
  <button type="button" id="oc203-restore-logo">↺ Επαναφορά Only Crops</button></div>
  <p class="oc203-feedback" id="oc203-brand-feedback" aria-live="polite">Οι αποθηκευμένες αλλαγές στον Game Maker εξακολουθούν να ισχύουν. Οι μηχανισμοί και τα saves δεν αλλάζουν.</p>`;
- edit.insertBefore(card, edit.firstChild);
+ // Keep the existing item picker and Coins positioning tool at the top of HUD.
+ // CP20.3 inserted this large logo card as the first child, burying later tools on iPhone.
+ const coinsPosition=edit.querySelector('#oc210-coins-position');
+ if(coinsPosition)coinsPosition.after(card);
+ else edit.insertBefore(card,replacement);
+
  const preview=card.querySelector('.oc203-logo'),feedback=card.querySelector('#oc203-brand-feedback');
  const selectLogo=()=>{
   if(!pick||![...pick.options].some(o=>o.value==='.fv90-logo')){feedback.textContent='⚠ Ο στόχος Logo δεν είναι διαθέσιμος.';return false;}
