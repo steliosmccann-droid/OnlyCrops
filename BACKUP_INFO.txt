@@ -1,0 +1,7 @@
+ONLY CROPS — BACKUP
+Checkpoint: 20.3
+Backup created: 2026-11-18
+Source: Saved Only_Crops_CP20_3_Editable_GitHub.zip (105 entries)
+Contains game, integrated Game Maker, styles and branded assets.
+This is a backup of the saved CP20.3 release package, not a verified byte-for-byte snapshot of the live GitHub repository.
+To restore: extract the ZIP and place the project files at the repository root, preserving folder names and paths.
