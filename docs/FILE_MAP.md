@@ -97,3 +97,7 @@
 38. `scripts/editor/039-gm191-draggable-js.js`
 39. `scripts/editor/040-gm20-easy-navigation-js.js`
 40. `scripts/editor/041-oc203-branding-js.js`
+
+## CP20.5 additive modules
+- `styles/creator/056-oc205-contextual-guide.css`
+- `scripts/editor/043-oc205-contextual-guide.js`
