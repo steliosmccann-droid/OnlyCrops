@@ -1,0 +1,4 @@
+/* CP20.5 — creator-only guidance, never modifies farm canvas or tools */
+#gm106-panel #oc205-section-hint{margin:4px 5px 9px;padding:7px 9px;border-left:3px solid #819d55;border-radius:6px;background:#f8f4e8;color:#4c5834;font-size:12px;line-height:1.4;overflow-wrap:anywhere}
+#gm106-panel #oc205-section-hint[hidden]{display:none!important}
+@media(max-width:480px){#gm106-panel #oc205-section-hint{font-size:12px}#gm106-panel #oc204-location span{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
