@@ -1,0 +1,51 @@
+
+/* CP19: isolated inside the Game Maker editor; nothing in the playfield is modified. */
+#gm106-panel #gm19-studio[hidden],#gm106-panel #gm19-studio .gm19-screen[hidden]{display:none!important}
+#gm106-panel.gm19-studio-open > :not(.head):not(#gm18-navigation):not(#gm19-studio){display:none!important}
+#gm106-panel.gm19-studio-open #gm19-studio{display:block;overflow-wrap:anywhere;padding:6px 2px 30px}
+#gm106-panel #gm19-studio{font-size:14px;color:#4f361f}
+#gm106-panel #gm19-studio h3{font-size:18px!important;margin:9px 0 12px;color:#4a3318}
+#gm106-panel #gm19-studio h4{font-size:15px!important;margin:14px 0 10px}
+#gm106-panel #gm19-studio .gm19-intro{background:#f7e5bd;border:1px solid #d2aa70;border-radius:12px;padding:13px}
+#gm106-panel #gm19-studio .gm19-intro strong{font-size:18px}
+#gm106-panel #gm19-studio .gm19-intro p{font-size:13px;line-height:1.5;margin:5px 0 0}
+#gm106-panel #gm19-studio .gm19-tabs{display:flex;overflow-x:auto;gap:7px;padding:10px 0;scrollbar-width:none}
+#gm106-panel #gm19-studio .gm19-tabs button{font-size:13px!important;flex:0 0 auto;white-space:nowrap;padding:8px 12px!important;background:#f8e7bc!important;border:1px solid #be9a64!important;border-radius:10px!important}
+#gm106-panel #gm19-studio .gm19-tabs button[aria-current=page]{background:#65833b!important;color:white!important;border-color:#536c30!important}
+#gm106-panel #gm19-studio #gm19-notice{background:#e8efd9;border-radius:10px;padding:10px;margin:5px 0 12px;font-size:13px;line-height:1.45}
+#gm106-panel #gm19-studio .gm19-error{color:#8b3022!important;background:#ffede6!important;border-color:#cf7a67!important}
+#gm106-panel #gm19-studio label{display:block;margin:10px 0 7px;font-size:13px;font-weight:700}
+#gm106-panel #gm19-studio input:not([type=checkbox]):not([type=range]),#gm106-panel #gm19-studio select{display:block;width:100%!important;max-width:100%;min-height:45px;border:1px solid #ab8c60;border-radius:10px;padding:8px;background:#fffdf6;color:#45311d;font-size:16px!important;margin-top:4px}
+#gm106-panel #gm19-studio input[type=file]{width:100%;max-width:100%;overflow:hidden;padding:8px 4px;font-size:13px!important}
+#gm106-panel #gm19-studio .gm19-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+#gm106-panel #gm19-studio .gm19-grid label{margin:5px 0;font-size:12px}
+#gm106-panel #gm19-studio .gm19-grid input{min-width:0!important;font-size:15px!important}
+#gm106-panel #gm19-studio .gm19-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#gm106-panel #gm19-studio .gm19-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:10px 0}
+#gm106-panel #gm19-studio .gm19-between{justify-content:space-between}
+#gm106-panel #gm19-studio button{min-height:44px!important;min-width:0;white-space:normal;background:#edd2a0;border:1px solid #9c7046;border-radius:11px;padding:9px 12px;color:#47301b;font-weight:750;touch-action:manipulation}
+#gm106-panel #gm19-studio button.gm19-primary{background:#688b3d!important;color:white!important;border-color:#4a6b2b!important}
+#gm106-panel #gm19-studio .gm19-info{border:1px solid #d5c2a0;background:#fffaf0;border-radius:10px;margin:10px 0;padding:10px;font-size:13px;line-height:1.5}
+#gm106-panel #gm19-studio .gm19-note{font-size:12px;line-height:1.55;color:#72533a}
+#gm106-panel #gm19-studio .gm19-check{display:flex;gap:8px;align-items:center}
+#gm106-panel #gm19-studio .gm19-preview-wrap{width:100%;display:flex;align-items:center;justify-content:center;border-radius:12px;padding:8px;background:#e7d6b5;margin:12px 0}
+#gm106-panel #gm19-studio #gm19-preview{display:block;width:min(100%,360px);height:auto;aspect-ratio:290/230;border:1px solid #bf9c67;border-radius:8px;image-rendering:pixelated}
+#gm106-panel #gm19-studio .gm19-player{display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:center;margin:10px 0}
+#gm106-panel #gm19-studio #gm19-frame{width:100%!important;margin:4px 0 8px}
+#gm106-panel #gm19-studio .gm19-list{display:flex;flex-direction:column;gap:8px;max-height:48dvh;overflow:auto}
+#gm106-panel #gm19-studio .gm19-item{display:flex;align-items:center;gap:9px;padding:8px;border:1px solid #dac29c;background:#fffaf0;border-radius:11px}
+#gm106-panel #gm19-studio .gm19-item img{width:62px;height:55px;object-fit:contain;flex:0 0 62px;background:#f0e3cc;border-radius:7px}
+#gm106-panel #gm19-studio .gm19-item-detail{display:flex;flex:1 1 auto;min-width:0;flex-direction:column;gap:3px;overflow-wrap:anywhere}
+#gm106-panel #gm19-studio .gm19-item-detail strong{font-size:13px}
+#gm106-panel #gm19-studio .gm19-item-detail span{font-size:11px;color:#70563f}
+#gm106-panel #gm19-studio .gm19-item button{font-size:13px!important;flex:0 0 auto}
+#gm106-panel #gm19-studio .gm19-future{border:1px dashed #c4a57d;background:#f4ecd9;border-radius:12px;padding:11px;margin:14px 0}
+#gm106-panel #gm19-studio .gm19-future p{font-size:13px;margin:6px 0}
+@media(max-width:420px){#gm106-panel #gm19-studio .gm19-grid{grid-template-columns:repeat(3,minmax(0,1fr))}#gm106-panel #gm19-studio .gm19-two{grid-template-columns:1fr 1fr}#gm106-panel #gm19-studio .gm19-tabs button{font-size:12px!important;padding:7px 9px!important}#gm106-panel #gm19-studio .gm19-item img{width:51px;height:51px;flex-basis:51px}}
+
+
+/* CP19.2: make danger notes and explicit target selection readable on an iPhone. */
+#gm106-panel #gm19-target-confirm {border-color:#c69c52;background:#fff4d6;font-weight:600;}
+#gm106-panel #gm19-backup-guide {border-style:dashed;}
+#gm106-panel #gm19-overwrite-import {accent-color:#9e573a;}
+

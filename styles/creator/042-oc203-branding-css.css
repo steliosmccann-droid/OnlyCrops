@@ -1,0 +1,12 @@
+
+:root{--fv90-logo:url("../../assets/branding/only-crops-hud.webp")}
+#fv-boot .oc203-boot-tagline{font-size:12px;line-height:1.4;letter-spacing:.012em;color:#4a3218;margin:2px 0 8px;font-weight:650}
+#gm106-panel #oc203-brand-card{margin:10px 0 12px;padding:11px;background:#fff9e9;border:1px solid #d5b17e;border-radius:12px;color:#49311c;font-family:system-ui;box-sizing:border-box}
+#gm106-panel #oc203-brand-card[hidden]{display:none!important}
+#gm106-panel #oc203-brand-card .oc203-heading{display:block;font-size:17px;font-weight:850;margin:0 0 5px}
+#gm106-panel #oc203-brand-card .oc203-note{font-size:12px;line-height:1.4;margin:5px 0 9px}
+#gm106-panel #oc203-brand-card .oc203-logo{height:142px;max-height:34vw;width:100%;margin:7px 0;border-radius:9px;background-color:#f0e0c1;background-image:var(--fv90-logo);background-position:center;background-repeat:no-repeat;background-size:contain;border:1px solid #e3c897}
+#gm106-panel #oc203-brand-card .oc203-tagline{font:italic 600 12px system-ui;text-align:center;margin:5px 0 10px}
+#gm106-panel #oc203-brand-card .oc203-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0}
+#gm106-panel #oc203-brand-card button{font:700 13px system-ui;white-space:normal;min-height:46px;padding:6px 8px;border-radius:8px;background:#ead5a8;color:#442c18;border:1px solid #947347}
+#gm106-panel #oc203-brand-card .oc203-feedback{font-size:11px;line-height:1.35;margin:5px 0 0}

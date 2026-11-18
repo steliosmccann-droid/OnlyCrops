@@ -1,0 +1,15 @@
+
+/* Only Crops Checkpoint 20.3 branding: decorative UI only. No gameplay or save changes. */
+#fv90-nostalgia-hud .fv90-logo{background-image:var(--fv90-logo)!important;}
+#fv-boot{background:linear-gradient(150deg,rgba(15,60,24,.62),rgba(30,65,22,.78)),url('../../assets/branding/only-crops-loading.webp') center/cover no-repeat,#82ba4d;}
+#fv-boot .fv-boot-card{width:min(720px,96vw);max-width:720px;padding:clamp(12px,3vw,20px);border:4px solid #905418;background:linear-gradient(165deg,#fff6ddef,#eacb8ef0);border-radius:19px;box-shadow:0 14px 60px #183215ad;}
+#fv-boot .fv-boot-art{width:100%;aspect-ratio:1672/640;background:url('../../assets/branding/only-crops-loading.webp') top center / 100% auto no-repeat;}
+#fv-boot .fv-boot-card h1,#fv-boot .oc203-boot-tagline{display:none;}
+#fv-boot #fv-boot-message{margin:9px 0 3px;color:#5b3016;font-size:clamp(15px,3vw,20px);text-shadow:0 1px #fff7e7;}
+#fv-boot .fv-boot-track{box-sizing:border-box;height:23px;border:3px solid #714219;background:#5f3216;border-radius:16px;box-shadow:0 2px 4px #31201680 inset;overflow:hidden;margin:12px 2px 8px;}
+#fv-boot #fv-boot-bar{height:100%;min-width:0;background:repeating-linear-gradient(-55deg,#74d81e 0,#9cf92c 15px,#49b513 16px,#49b513 22px);box-shadow:inset 0 1px 3px #e8ffae;transition:width .3s ease-out;}
+#fv-boot #fv-boot-help{font-size:11px;color:#734c2b;}
+#fv-boot.fv-boot-failed .fv-boot-track{display:none;}
+.only-crops-welcome-logo{height:clamp(70px,17vw,122px);width:100%;background:var(--fv90-logo) center / contain no-repeat;}
+#fv73-card .only-crops-welcome-logo{margin:0 auto 6px;}
+@media(max-width:480px){#fv-boot .fv-boot-card{width:96vw;padding:10px}#fv-boot #fv-boot-message{margin:7px 0 2px}}

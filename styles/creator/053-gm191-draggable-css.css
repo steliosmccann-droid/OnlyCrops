@@ -1,0 +1,27 @@
+
+/* CP19.1: creator Game Maker editor/launcher only. Gameplay and HUD untouched. */
+#gm106-launch.gm181-minimized {
+  position:fixed!important;
+  touch-action:none!important;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+  -webkit-touch-callout:none!important;
+  cursor:grab!important;
+  z-index:2147483000!important;
+}
+#gm106-launch.gm181-minimized.gm191-moving{cursor:grabbing!important;opacity:.92!important}
+#gm106-panel.gm181-small .head,
+#gm106-panel.gm181-medium .head {
+  touch-action:none!important;
+  cursor:move!important;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+}
+#gm106-panel.gm181-small .head button,
+#gm106-panel.gm181-medium .head button{touch-action:manipulation!important;cursor:pointer!important}
+#gm106-panel.gm181-small.gm191-moved,
+#gm106-panel.gm181-medium.gm191-moved{
+  transform:none!important;
+  right:auto!important;
+  bottom:auto!important;
+}
