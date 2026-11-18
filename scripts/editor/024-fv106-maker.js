@@ -1358,7 +1358,7 @@ function init(){
  btn(footer,'💾 Export προόδου φάρμας',()=>{const e=$('#fv42-setting-export');if(e)e.click();else msg.textContent='⚠ Η εξαγωγή φάρμας δεν βρέθηκε'});
  const label=add('label',panel,'⬆ Import HUD/UI JSON ή PNG για επιλεγμένο στοιχείο (όχι sprites)');
  const file=add('input',label);file.type='file';file.accept='.json,.png,image/png,application/json';
- file.onchange=async()=>{try{const f=file.files?.[0];if(!f)return;
+ file.onchange=async()=>{const before=JSON.stringify(state);try{const f=file.files?.[0];if(!f)return;
   if(f.type==='image/png'||f.name.toLowerCase().endsWith('.png')){
    if(section==='Tools'||!$(pick.value))throw Error('Επίλεξε HUD ή UI');
    if(f.size>900000)throw Error('PNG έως 900 KB');
@@ -1366,7 +1366,7 @@ function init(){
    checkpoint();state[pick.value]??={};state[pick.value].image=image;
   }else{const obj=JSON.parse(await f.text());if(!['FarmVille3026-GameMaker-V106','FarmVille3026-GameMaker-V105'].includes(obj.schema)||!obj.layout||typeof obj.layout!=='object'||Array.isArray(obj.layout))throw Error('Μη συμβατό JSON');checkpoint();state=obj.layout}
   if(!store())throw Error('Το αρχείο εισήχθη στη μνήμη αλλά δεν αποθηκεύτηκε. Δοκίμασε μικρότερο αρχείο.');render();if(section!=='Tools')sync();msg.textContent='✓ Εισαγωγή και αποθήκευση ολοκληρώθηκαν';
- }catch(e){msg.textContent='⚠ '+e.message}finally{file.value=''}};
+ }catch(e){state=JSON.parse(before);render();if(section!=='Tools')sync();msg.textContent='⚠ '+e.message+' · επανήλθαν οι προηγούμενες ρυθμίσεις'}finally{file.value=''}};
  launch.onclick=()=>{panel.hidden=!panel.hidden;launch.textContent=panel.hidden?'🎮 Άνοιγμα Game Maker':'🎮 Game Maker';if(!panel.hidden&&section!=='Tools')sync()};
  tab('HUD');render();
 }
