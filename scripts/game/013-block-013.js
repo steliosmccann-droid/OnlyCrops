@@ -1942,14 +1942,31 @@ try{const raw=JSON.parse(localStorage.getItem(FV118_KEY)||'{}');if(raw&&typeof r
 function fv118Safe(id,row){return Object.hasOwn(FV118_BASE,id)&&row&&typeof row==='object'&&Number.isSafeInteger(row.price)&&row.price>=0&&row.price<=100000000&&Number.isSafeInteger(row.level)&&row.level>=1&&row.level<=999}
 function fv118Apply(id,row){const item=V36_MARKET.find(i=>i.id===id);if(!item||!fv118Safe(id,row))return false;item.price=row.price;item.level=row.level;V36_MARKET_PRICES.set(id,row.price);return true}
 for(const [id,row] of Object.entries(FV118_OVERRIDES))if(!fv118Apply(id,row))delete FV118_OVERRIDES[id];
+function fv118Commit(next){
+ const data=JSON.stringify(next);
+ try{localStorage.setItem(FV118_KEY,data);if(localStorage.getItem(FV118_KEY)!==data)return false}catch(e){return false}
+ FV118_OVERRIDES=next;
+ for(const item of V36_MARKET){
+  const row=Object.hasOwn(next,item.id)?next[item.id]:FV118_BASE[item.id];
+  item.price=row.price;item.level=row.level;
+  if(row.price===null)V36_MARKET_PRICES.delete(item.id);else V36_MARKET_PRICES.set(item.id,row.price);
+ }
+ updateMarketUI();return true;
+}
 window.FV118Economy={
  get items(){return V36_MARKET.map(i=>({id:i.id,name:i.name,price:i.price,level:i.level,category:i.category}))},
  price(id){const item=V36_MARKET.find(i=>i.id===id);return item?.price??null},
  get(id){const item=V36_MARKET.find(i=>i.id===id);return item?{id,name:item.name,price:item.price,level:item.level,original:FV118_BASE[id]}:null},
- set(id,row){if(!fv118Apply(id,row))return false;FV118_OVERRIDES[id]={price:row.price,level:row.level};try{localStorage.setItem(FV118_KEY,JSON.stringify(FV118_OVERRIDES))}catch(e){return false}updateMarketUI();return true},
- reset(id){if(!FV118_BASE[id])return false;delete FV118_OVERRIDES[id];const original=FV118_BASE[id];const item=V36_MARKET.find(i=>i.id===id);item.price=original.price;item.level=original.level;if(original.price===null)V36_MARKET_PRICES.delete(id);else V36_MARKET_PRICES.set(id,original.price);try{localStorage.setItem(FV118_KEY,JSON.stringify(FV118_OVERRIDES))}catch(e){}updateMarketUI();return true},
- export(){return {schema:'FarmVille3026-Economy-V118',overrides:FV118_OVERRIDES}},
- import(obj){if(obj?.schema!=='FarmVille3026-Economy-V118'||!obj.overrides||typeof obj.overrides!=='object'||Array.isArray(obj.overrides))return false;const entries=Object.entries(obj.overrides);if(entries.some(([id,row])=>!fv118Safe(id,row)))return false;for(const id of Object.keys(FV118_OVERRIDES))this.reset(id);for(const [id,row] of entries)this.set(id,row);return true}
+ set(id,row){if(!fv118Safe(id,row))return false;return fv118Commit({...FV118_OVERRIDES,[id]:{price:row.price,level:row.level}})},
+ reset(id){if(!Object.hasOwn(FV118_BASE,id))return false;const next={...FV118_OVERRIDES};delete next[id];return fv118Commit(next)},
+ export(){return {schema:'FarmVille3026-Economy-V118',overrides:JSON.parse(JSON.stringify(FV118_OVERRIDES))}},
+ import(obj){
+  if(obj?.schema!=='FarmVille3026-Economy-V118'||!obj.overrides||typeof obj.overrides!=='object'||Array.isArray(obj.overrides))return false;
+  const entries=Object.entries(obj.overrides);
+  if(entries.some(([id,row])=>!fv118Safe(id,row)))return false;
+  const next=Object.fromEntries(entries.map(([id,row])=>[id,{price:row.price,level:row.level}]));
+  return fv118Commit(next);
+ }
 };
 
 const V32_MARKET_SEEDS=Object.entries(FarmCrops.SEEDS).map(([id,d])=>({id:'seed:'+id,seedId:id,
