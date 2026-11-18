@@ -1,3 +1,7 @@
+# Only Crops — Checkpoint 20.10
+
+Game Maker → HUD: απευθείας εργαλείο για την εικόνα Coins, με βελάκια θέσης, βήμα pixels και επαναφορά. Χρησιμοποιεί τα υπάρχοντα HUD overrides και την αυτόματη αποθήκευση. Backup: `backup-cp20-9-before-hud-coins-usability`. [Αναφορά](docs/CP20_10_HUD_COINS_USABILITY.md).
+
 # Only Crops — Checkpoint 20.9
 
 Έλεγχος Game Maker: διορθώσεις αποθήκευσης και rollback σε HUD/UI, παραγωγή και Market. Νέο κουμπί «🩺 Έλεγχος λειτουργιών Game Maker» στην Αρχική. Κανένα save της φάρμας δεν διαγράφηκε. [Αναφορά CP20.9](docs/CP20_9_GAME_MAKER_AUDIT.md).
