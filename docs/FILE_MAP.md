@@ -101,3 +101,7 @@
 ## CP20.5 additive modules
 - `styles/creator/056-oc205-contextual-guide.css`
 - `scripts/editor/043-oc205-contextual-guide.js`
+
+## CP20.6 additive modules
+- `styles/creator/057-oc206-section-back.css`
+- `scripts/editor/044-oc206-section-back.js`
