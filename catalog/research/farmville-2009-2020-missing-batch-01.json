@@ -4,7 +4,7 @@
   "referencePeriod": "2009-2020",
   "baselineCheckpoint": "20.7",
   "generatedDate": "2026-11-18",
-  "description": "Research staging only. These entries do not create game objects, alter active Market, grid, graphics, economy or saves. Continue further years by verified batches.",
+  "description": "Research staging only. These entries do not create game objects, alter active Market, grid, graphics, economy or saves. Continue further years by verified batches. Year is null when individual release date has not been verified.",
   "categories": [
     "animals",
     "trees",
@@ -21,7 +21,7 @@
       "name": "Artichoke",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -31,8 +31,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:bell-pepper",
@@ -40,7 +40,7 @@
       "name": "Bell Pepper",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -50,8 +50,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:blueberry",
@@ -59,7 +59,7 @@
       "name": "Blueberry",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -69,8 +69,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:broccoli",
@@ -78,7 +78,7 @@
       "name": "Broccoli",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -88,8 +88,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:carrot",
@@ -97,7 +97,7 @@
       "name": "Carrot",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -107,8 +107,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:coffee",
@@ -116,7 +116,7 @@
       "name": "Coffee",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -126,8 +126,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:corn",
@@ -135,7 +135,7 @@
       "name": "Corn",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -145,8 +145,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:cotton",
@@ -154,7 +154,7 @@
       "name": "Cotton",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -164,8 +164,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:pepper",
@@ -173,7 +173,7 @@
       "name": "Pepper",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -183,8 +183,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:pineapple",
@@ -192,7 +192,7 @@
       "name": "Pineapple",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -202,8 +202,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:pumpkin",
@@ -211,7 +211,7 @@
       "name": "Pumpkin",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -221,8 +221,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:raspberry",
@@ -230,7 +230,7 @@
       "name": "Raspberry",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -240,8 +240,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:red-wheat",
@@ -249,7 +249,7 @@
       "name": "Red Wheat",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -259,8 +259,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:rice",
@@ -268,7 +268,7 @@
       "name": "Rice",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -278,8 +278,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:squash",
@@ -287,7 +287,7 @@
       "name": "Squash",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -297,8 +297,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:sunflower",
@@ -306,7 +306,7 @@
       "name": "Sunflower",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -316,8 +316,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:tomato",
@@ -325,7 +325,7 @@
       "name": "Tomato",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -335,8 +335,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:watermelon",
@@ -344,7 +344,7 @@
       "name": "Watermelon",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -354,8 +354,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:yellow-melon",
@@ -363,7 +363,7 @@
       "name": "Yellow Melon",
       "category": "crops",
       "subcategory": "seeds",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -373,8 +373,8 @@
       "status": "historical-reference-only",
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
-      "sourceUrl": "https://onthefarm.fandom.com/wiki/Animals",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "sourceUrl": "https://farmville.fandom.com/wiki/Market",
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:apricot-tree",
@@ -610,7 +610,7 @@
       "name": "Mango Tree",
       "category": "trees",
       "subcategory": "fruit-and-special",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -621,7 +621,7 @@
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
       "sourceUrl": "https://farmville.fandom.com/wiki/Mango_Tree",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:olive-tree",
@@ -629,7 +629,7 @@
       "name": "Olive Tree",
       "category": "trees",
       "subcategory": "fruit-and-special",
-      "firstKnownYear": 2009,
+      "firstKnownYear": null,
       "grid": null,
       "acquisition": null,
       "costCoins": null,
@@ -640,7 +640,7 @@
       "spriteStatus": "missing",
       "mechanicsStatus": "not-implemented",
       "sourceUrl": "https://farmville.fandom.com/wiki/Olive_Tree",
-      "notes": "Not registered in live game; values left null unless independently verified."
+      "notes": "Not registered in live game; values left null unless independently verified. Release year needs individual verification."
     },
     {
       "id": "reference:hass-avocado-tree",
