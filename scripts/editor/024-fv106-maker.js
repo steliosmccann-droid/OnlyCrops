@@ -124,6 +124,24 @@ function init(){
  head.addEventListener('pointerup',()=>dragWindow=null);head.addEventListener('pointercancel',()=>dragWindow=null);
  const tabs=add('div',panel);tabs.className='tabs';
  const edit=add('section',panel),pick=add('select',edit);
+ // CP20.10: Direct, iPhone-friendly positioning of the REAL HUD Coins image.
+ // All actions delegate to the existing V106 `change()` and `store()` functions.
+ const coinsQuick=add('section',edit);coinsQuick.id='oc210-coins-position';
+ coinsQuick.setAttribute('aria-label','Μετακίνηση εικόνας Coins');
+ const cqTitle=add('strong',coinsQuick,'🪙 Μετακίνηση εικόνας Coins');
+ const cqHelp=add('p',coinsQuick,'Πάτησε τα βελάκια. Η εικόνα μετακινείται αμέσως στη φάρμα και κάθε βήμα αποθηκεύεται αυτόματα στο Safari. Δεν αλλάζει ο αριθμός Coins.');
+ const cqChoose=add('button',coinsQuick,'🎯 Επιλογή εικόνας Coins');cqChoose.type='button';
+ const cqPosition=add('p',coinsQuick);cqPosition.id='oc210-coins-coordinates';cqPosition.setAttribute('aria-live','polite');
+ const cqGrid=add('div',coinsQuick);cqGrid.className='oc210-move-grid';
+ const cqButtons={};
+ for(const [key,label] of [['up','↑ Πάνω'],['left','← Αριστερά'],['right','Δεξιά →'],['down','↓ Κάτω']]){
+  const btn=add('button',cqGrid,label);btn.type='button';btn.className='oc210-move-'+key;cqButtons[key]=btn;
+ }
+ const cqReset=add('button',coinsQuick,'↺ Επαναφορά θέσης Coins στο 0, 0');cqReset.type='button';cqReset.className='oc210-reset';
+ const cqFine=add('label',coinsQuick,'Βήμα μετακίνησης');
+ const cqStep=add('select',cqFine);cqStep.id='oc210-coins-step';
+ for(const n of [1,5,10,20]){const o=add('option',cqStep,n+' px');o.value=n}cqStep.value='5';
+ const cqMessage=add('p',coinsQuick);cqMessage.id='oc210-coins-message';cqMessage.setAttribute('role','status');
 
  // Creator-only Coins image inspector. It operates only on V106 layout overrides.
  // The approved HUD CSS and gameplay rendering are NOT changed.
@@ -575,14 +593,40 @@ function init(){
  const fields=add('div',edit),inputs={};
  const msg=add('p',panel,'Επίλεξε στοιχείο, μετακίνησέ το και αποθήκευσε.');msg.className='note';msg.setAttribute('aria-live','polite');
  const tools=add('section',panel);tools.hidden=true;
- function sync(){const v=state[pick.value]||{};for(const [k,x] of Object.entries(inputs)){const n=v[k]??(k==='scale'||k==='opacity'?100:0);x.range.value=n;x.number.value=n}
+ function sync(){const v=state[pick.value]||{};for(const [k,x] of Object.entries(inputs)){const n=v[k]??(k==='scale'||k==='opacity'?100:0);x.range.value=n;x.number.value=n}cqUpdate();
  note.textContent=$(pick.value)?'✓ Συνδεδεμένο — οι αλλαγές φαίνονται αμέσως':'⚠ Το στοιχείο δεν βρέθηκε';refreshRealTarget();refreshGenericReplace();refreshCoins();refreshLogo();refreshName();refreshToolbar();refreshSubmenu();syncAppearance();}
- function tab(t,sel){section=t;edit.hidden=t==='Tools';tools.hidden=t!=='Tools';if(t==='Tools')abLoadCatalog();
+ function tab(t,sel){section=t;edit.hidden=t==='Tools';tools.hidden=t!=='Tools';coinsQuick.hidden=t!=='HUD';if(t==='Tools')abLoadCatalog();
   tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===t)));
   if(!edit.hidden){pick.replaceChildren();for(const [name,s] of groups[t]){const o=add('option',pick,name);o.value=s}if(sel&&[...pick.options].some(o=>o.value===sel))pick.value=sel;sync()}
  }
  for(const [id,label] of [['HUD','HUD'],['UI','UI'],['Tools','Map / Assets']]){const b=add('button',tabs,label);b.dataset.tab=id;b.onclick=()=>tab(id)}
  pick.onchange=sync;
+ function cqUpdate(){
+  const v=state['.fv90-coin']||{},x=cap(v.x??0,-400,400),y=cap(v.y??0,-400,400);
+  cqPosition.textContent='Θέση εικόνας: X '+x+' px · Y '+y+' px';
+  const ok=!!$('.fv90-coin');cqGrid.querySelectorAll('button').forEach(b=>b.disabled=!ok);cqReset.disabled=!ok;
+  cqMessage.textContent=ok?'':'⚠ Η εικόνα Coins δεν βρέθηκε στο πραγματικό HUD';
+ }
+ function cqSelect(){if(section!=='HUD')tab('HUD','.fv90-coin');else {pick.value='.fv90-coin';sync()}cqUpdate()}
+ cqChoose.onclick=()=>{cqSelect();cqMessage.textContent='✓ Επιλέχθηκε η πραγματική εικόνα Coins'};
+ function cqMove(axis,sign){
+  cqSelect();const v=state['.fv90-coin']||{},step=Number(cqStep.value)||5;
+  const before=Number(v[axis]??0),after=cap(before+sign*step,-400,400);
+  if(after===before){cqMessage.textContent='Δεν μπορεί να μετακινηθεί πέρα από το όριο';return}
+  change(axis,after,true);cqUpdate();
+  cqMessage.textContent=(Number((state['.fv90-coin']||{})[axis]??0)===after)?'✓ Η νέα θέση αποθηκεύτηκε':'⚠ Η νέα θέση δεν αποθηκεύτηκε';
+ }
+ cqButtons.left.onclick=()=>cqMove('x',-1);
+ cqButtons.right.onclick=()=>cqMove('x',1);
+ cqButtons.up.onclick=()=>cqMove('y',-1);
+ cqButtons.down.onclick=()=>cqMove('y',1);
+ cqReset.onclick=()=>{
+  cqSelect();const before=JSON.stringify(state);
+  checkpoint();state['.fv90-coin']??={};state['.fv90-coin'].x=0;state['.fv90-coin'].y=0;
+  if(!store()){state=JSON.parse(before);cqMessage.textContent='⚠ Δεν αποθηκεύτηκε · επανήλθε η παλιά θέση';}
+  else cqMessage.textContent='✓ Η αρχική θέση αποθηκεύτηκε';
+  render();sync();cqUpdate();
+ };
  function change(k,v,record=false){if(!$(pick.value))return;const previous=JSON.stringify(state);if(record)checkpoint();state[pick.value]??={};state[pick.value][k]=v;if(!store()){state=JSON.parse(previous);render();sync();msg.textContent='⚠ Η αλλαγή δεν αποθηκεύτηκε · επανήλθαν οι προηγούμενες ρυθμίσεις';return}render();sync();msg.textContent='✓ Αποθηκεύτηκε'}
  for(const [k,label,min,max,step] of [['x','Θέση X',-400,400,1],['y','Θέση Y',-400,400,1],['scale','Μέγεθος %',25,250,1],['opacity','Διαφάνεια %',0,100,1]]){
   const l=add('label',fields,label),line=add('div',l);line.className='control';
