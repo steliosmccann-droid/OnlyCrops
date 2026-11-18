@@ -1,0 +1,9 @@
+
+
+.fv-barn-menu:not([hidden]){display:flex;flex-direction:column;gap:9px;position:fixed;z-index:130;top:34%;left:50%;transform:translateX(-50%);width:min(340px,calc(100vw - 24px));background:#fff6d9;border:3px solid #987342;box-shadow:0 12px 35px #0007;border-radius:13px;padding:15px;color:#53381b;font:600 14px/1.35 system-ui,sans-serif}
+.fv-barn-title{font-size:20px;text-align:center;color:#604021}.fv-barn-capacity{text-align:center;font-size:14px;color:#766047}
+.fv-barn-menu button{background:linear-gradient(#e2f6af,#81bf54);padding:11px 14px;border:1px solid #6f9737;border-radius:9px;color:#30451d;font-weight:700;min-height:43px}
+#fvBarnClose{background:#eee9df;color:#5b554a;border-color:#c5bba4}
+#fvStorageQuickCreative,#fvStorageFarmItems,#fvStorageFarmCount,#fvStorageQa,#fvStorageQaResults,#fvStorageSetup .fv-storage-setup-actions{display:none!important}
+.fv-storage-panel .fv-storage-header h3:after{content:' · Barn Inventory';font-size:12px;font-weight:500}
+

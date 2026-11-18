@@ -1,0 +1,4 @@
+
+
+#gm118-economy{font:14px system-ui;color:#392817;display:grid;gap:9px;padding:8px}#gm118-economy[hidden]{display:none!important}#gm118-economy label{display:grid;gap:5px;font-weight:600}#gm118-economy select,#gm118-economy input{font:16px system-ui;padding:9px;border:1px solid #9d7c51;border-radius:8px;background:#fff;width:100%;box-sizing:border-box;color:#352515}#gm118-economy .actions{display:flex;gap:7px;flex-wrap:wrap}#gm118-economy button{padding:9px;border-radius:8px;background:#ecd09b;border:1px solid #94704b;color:#352515}#gm118-economy small{line-height:1.5}
+

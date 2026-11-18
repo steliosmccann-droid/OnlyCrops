@@ -1,0 +1,10 @@
+
+
+#gm117-editor{padding:10px;background:#fff7e7;border:1px solid #c2a071;border-radius:10px;color:#46331f}
+#gm117-editor[hidden]{display:none!important}
+#gm117-editor label{display:block;margin:10px 0;font-weight:600}
+#gm117-editor input,#gm117-editor select{width:100%;padding:9px;border:1px solid #ad875a;border-radius:8px;background:#fff;font-size:16px;box-sizing:border-box}
+#gm117-editor .buttons{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+#gm117-editor button{padding:9px;border:1px solid #9d7448;border-radius:8px;background:#ebcd98;font-size:14px;color:#3e2b18}
+#gm117-editor p{font-size:13px;line-height:1.45}
+

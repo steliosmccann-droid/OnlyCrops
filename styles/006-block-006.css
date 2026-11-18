@@ -1,0 +1,9 @@
+
+
+/* One shared game, two independent progress profiles. The switch is inside More. */
+#fvProfileSwitch{display:block;width:100%;margin:7px 0 10px;min-height:44px;
+ border:2px solid #6d8842;border-radius:9px;background:linear-gradient(#f6ffd5,#cce49c);
+ color:#314c20;font-weight:800;font-size:13px;cursor:pointer;touch-action:manipulation}
+#fvProfileSwitch:active{transform:scale(.99)}
+html.profile-creative #fvProfileTitle{border-color:#72924a}
+

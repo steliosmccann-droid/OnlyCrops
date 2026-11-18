@@ -1,0 +1,14 @@
+
+
+#fv-v60-animal-card{position:fixed;z-index:99992;left:10px;top:calc(env(safe-area-inset-top) + 74px);width:min(236px,calc(100vw - 20px));box-sizing:border-box;color:#523719;background:#fff2c5;border:2px solid #936333;border-radius:10px;box-shadow:0 4px 13px #24180d88;font-family:system-ui,-apple-system,sans-serif;padding:8px 9px;pointer-events:auto}
+#fv-v60-animal-card[hidden]{display:none!important}
+#fv-v60-animal-card .animal-title{font-weight:800;font-size:13px;margin:0 24px 4px 0}
+#fv-v60-animal-card .animal-close{position:absolute;right:3px;top:2px;background:transparent;border:0;font-size:21px;color:#684e30;min-width:27px;min-height:27px}
+#fv-v60-animal-card .animal-line{font-size:11px;margin:3px 0}
+#fv-v60-animal-card .animal-track{height:5px;background:#d5c29d;border-radius:9px;overflow:hidden;border:1px solid #ad9567}
+#fv-v60-animal-card .animal-progress{height:100%;background:#80b53d;width:0%;transition:width .3s ease}
+#fv-v60-animal-card .animal-state{font-weight:700;color:#527b2b}
+#fv-v60-animal-card .animal-actions{display:flex;gap:5px;margin-top:7px}
+#fv-v60-animal-card .animal-actions button{flex:1;min-width:0;min-height:40px;padding:8px 3px;border-radius:7px;border:1px solid #9b713a;background:#f8dfa0;color:#62451b;font-size:11px;font-weight:750}
+#fv-v60-animal-card .animal-actions button:disabled{opacity:.4}
+

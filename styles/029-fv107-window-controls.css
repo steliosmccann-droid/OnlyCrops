@@ -1,0 +1,2 @@
+
+#gm106-panel .head{touch-action:none;cursor:grab;flex-wrap:nowrap}#gm106-panel .head strong{flex:1;min-width:0;font-size:13px}#gm106-panel .head button{width:35px;min-width:35px;padding:4px}#gm106-panel{min-width:240px;min-height:180px;resize:both;max-width:calc(100vw - 16px);max-height:90dvh}#gm106-panel[hidden]{display:none!important}

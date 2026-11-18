@@ -1,0 +1,5 @@
+
+
+.general-object-info{display:none;position:fixed;z-index:82;width:230px;max-width:calc(100vw - 16px);padding:8px 11px;background:#fff0c9f5;border:2px solid #9c7138;border-radius:9px;box-shadow:0 3px 12px #38281552;color:#5b381a;font:800 11px/1.3 system-ui,Arial,sans-serif;pointer-events:none}
+.general-object-info.visible{display:block}.general-object-info strong{display:block;font-size:12px;white-space:normal}.general-object-info span{display:block;font-size:11px;font-weight:650;margin-top:3px;color:#39622c}
+

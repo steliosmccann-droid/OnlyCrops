@@ -1,0 +1,14 @@
+
+
+#fv78-editor{max-height:72dvh!important;min-height:48px;overflow:auto!important;padding:10px!important;touch-action:pan-y}
+#fv78-editor #fv80-dragbar{position:sticky;top:-10px;z-index:2;background:linear-gradient(#f9dca8,#ecc083);border-radius:9px;padding:9px 6px;margin:-9px -8px 10px!important;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+#fv78-editor #fv80-dragbar button{flex:0 0 auto;min-width:37px}
+#fv78-editor.fv80-mini{height:49px!important;min-height:49px!important;max-height:49px!important;overflow:hidden!important}
+#fv78-editor.fv80-mini>*:not(header){display:none!important}
+#fv78-editor .fv80-swatch{display:flex;gap:4px;align-items:center;flex:1;min-width:85px;font-size:11px}
+#fv78-editor .fv80-swatch input[type=color]{width:38px;height:34px;min-width:38px;border:1px solid #ad8147;background:#fffbeb;border-radius:6px;padding:2px}
+#fv78-editor .fv80-swatch button{padding:4px 7px}
+#fv78-editor .fv79-field{flex-wrap:wrap}
+#fv78-editor .fv79-field input[type=number]{width:100%;flex:1;min-width:65px}
+#fv78-editor #fv79-tools .fv78-row{align-items:stretch}
+

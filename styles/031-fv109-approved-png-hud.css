@@ -1,0 +1,17 @@
+
+
+/* V109: Restore the approved PNG visual layer; preserve the live DOM values. */
+html.mode-farm #status.panel.status{position:absolute!important;left:-99999px!important;top:-99999px!important;visibility:hidden!important;pointer-events:none!important}
+html.mode-farm #fv90-nostalgia-hud .fv90-logo::after{content:none!important}
+html.mode-farm #fv90-nostalgia-hud .fv90-item,
+html.mode-farm #fv90-nostalgia-hud .fv90-logo,
+html.mode-farm #fv90-nostalgia-hud .fv90-name{
+ border:0!important;box-shadow:none!important;background-color:transparent!important;
+}
+html.mode-farm #fv90-nostalgia-hud .fv90-item::before,
+html.mode-farm #fv90-nostalgia-hud .fv90-item::after,
+html.mode-farm #fv90-nostalgia-hud .fv90-logo::before,
+html.mode-farm #fv90-nostalgia-hud .fv90-name::before{
+ content:revert-layer;
+}
+

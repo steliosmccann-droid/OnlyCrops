@@ -1,0 +1,14 @@
+
+
+/* V27 — production-only interface. QA nodes are retained inert for compatibility with the existing engine. */
+#fvStorageOpen,#cropOpen,#generalInspect,#generalQaToggle,#generalQaPanel,
+#fvToolsQaOpen,#fvToolsQa,#fvMoreQA,#farmerLabToggle,#farmerLab,
+#plowQa,#farmerQa,#cropQa,#fvStorageQa,#fvStorageQaResults,
+#assetTestButton,#assetTests,#characterTestToggle,#characterTestResults,
+#cropRunTests,#farmerTestsBtn,#farmerTestsList,#farmerTestsBtn,
+#plowQaToggle,#cropQaToggle,#farmerTestsList,
+.farmer-qa,.plow-qa,.crop-qa,.character-qa,.asset-tests,
+#generalQaResult,#fvToolsQaRows,
+#farmerLabTests,#farmerLabStatus,#cropManualMessage {display:none!important;visibility:hidden!important;pointer-events:none!important}
+/* The short crop info bubble is gameplay, not the removed crop QA button. */
+

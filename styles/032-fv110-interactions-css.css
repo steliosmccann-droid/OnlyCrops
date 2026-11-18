@@ -1,0 +1,9 @@
+
+
+#fv90-nostalgia-hud .fv110-add{position:absolute;right:0;top:3%;width:22%;height:94%;z-index:12;border:0!important;background:transparent!important;color:transparent!important;font-size:0!important;cursor:pointer;touch-action:manipulation;padding:0!important;box-shadow:none!important}
+#fv90-nostalgia-hud .fv110-add:focus-visible{outline:3px solid #fff;outline-offset:2px;border-radius:8px}
+#fv110-dialog{position:fixed;inset:0;z-index:2147483400;display:flex;align-items:center;justify-content:center;background:#0009;padding:16px;box-sizing:border-box}
+#fv110-dialog[hidden]{display:none!important}
+#fv110-card{width:min(360px,95vw);background:#fff0cc;border:3px solid #8b5a2e;border-radius:16px;padding:16px;box-sizing:border-box;color:#412b17;font:15px system-ui;box-shadow:0 12px 40px #0007}
+#fv110-card h3{margin:0 0 10px;font-size:19px}#fv110-card p{line-height:1.5;margin:9px 0 18px}#fv110-card button{min-height:44px;padding:8px 18px;background:#e7c68a;color:#40270e;border:2px solid #9b703c;border-radius:9px;font:700 15px system-ui}
+

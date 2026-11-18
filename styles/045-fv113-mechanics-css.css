@@ -1,0 +1,6 @@
+
+
+#gm113-launch{position:fixed;bottom:135px;left:10px;z-index:2147483001;background:#f4d49a;color:#38210e;border:2px solid #95642c;border-radius:12px;padding:11px;font:700 14px system-ui}
+#gm113-panel{position:fixed;z-index:2147483004;left:8px;top:8dvh;width:min(420px,calc(100vw - 16px));max-height:80dvh;overflow:auto;box-sizing:border-box;border:3px solid #95642c;border-radius:14px;background:#fff2d7;color:#3c2919;padding:12px;font:14px system-ui;box-shadow:0 8px 30px #0008}
+#gm113-panel[hidden]{display:none!important}#gm113-panel button,#gm113-panel input,#gm113-panel select{font:16px system-ui;min-height:38px;box-sizing:border-box;border-radius:8px;border:1px solid #b49264;background:#fffdf8;color:#392817;padding:6px}#gm113-panel select,#gm113-panel input[type=search]{width:100%}#gm113-panel .gm113-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:9px 0}#gm113-panel label{display:block;margin:8px 0}#gm113-panel input[type=number]{width:80px}#gm113-panel .gm113-note{font-size:12px;line-height:1.4}
+

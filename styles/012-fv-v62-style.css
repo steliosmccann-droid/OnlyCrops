@@ -1,0 +1,7 @@
+
+
+#fvCreativeTimePanel{display:none;background:#fff4d0;border:2px solid #c3a16b;border-radius:9px;padding:10px 9px;margin:7px 0 10px;color:#563919;font-size:12px}
+html.profile-creative #fvCreativeTimePanel{display:block}
+#fvCreativeAddFour{width:100%;min-height:45px;border:2px solid #8a5e34;border-radius:9px;background:linear-gradient(#fff2b3,#eab75e);color:#4c3518;font-weight:900;font-size:15px;touch-action:manipulation}
+#fvCreativeTimePanel small{display:block;margin-top:5px;color:#78603d;line-height:1.35}
+

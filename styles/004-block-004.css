@@ -1,0 +1,8 @@
+
+
+.fv-barn-manual{margin:10px 0;background:#f9f5e8;border:2px solid #bd9a5a;border-radius:10px;padding:10px;color:#43351e;font-size:12px}
+.fv-barn-manual summary{font-weight:800;cursor:pointer}.fv-barn-manual p{margin:7px 0;line-height:1.45}
+.fv-manual-row{display:block;padding:8px 3px;border-bottom:1px solid #ddd1ba;line-height:1.5;cursor:pointer}
+.fv-manual-row input{width:17px;height:17px;vertical-align:middle;accent-color:#44924d}
+#fvBarnManualScore{font-weight:800;padding:6px 0}#fvBarnCreativeUpgrade{background:#d9ebfd;color:#173857}
+

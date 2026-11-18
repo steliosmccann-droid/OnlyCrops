@@ -1,0 +1,6 @@
+
+
+#gm112-mode{position:fixed;right:9px;bottom:88px;z-index:2147483004;border:2px solid #6b481d;border-radius:12px;padding:11px;background:#f9dca1;color:#34220e;font:700 14px system-ui;box-shadow:0 3px 12px #0005}#gm112-mode.active{background:#287c4b;color:white;border-color:#14502c}
+.gm112-highlight{outline:3px dashed #f9d437!important;outline-offset:3px!important;filter:drop-shadow(0 0 5px #161616)!important}
+#gm112-tip{position:fixed;left:8px;right:8px;bottom:137px;z-index:2147483003;max-width:440px;margin:auto;padding:8px 12px;background:#27231de9;color:white;border-radius:10px;font:12px system-ui;text-align:center;pointer-events:none}#gm112-tip[hidden]{display:none!important}
+

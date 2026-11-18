@@ -1,0 +1,11 @@
+
+
+#maker-toggle{position:fixed;left:10px;bottom:90px;z-index:2147483000;background:#efcf94;border:2px solid #8b572b;border-radius:12px;padding:12px 14px;color:#382411;font:700 16px system-ui;box-shadow:0 4px 12px #0005}
+#maker-panel{position:fixed;z-index:2147483003;top:5dvh;left:8px;width:min(430px,calc(100vw - 16px));max-height:86dvh;overflow:auto;box-sizing:border-box;border:3px solid #966135;border-radius:15px;background:#fff0ce;color:#3d2a17;padding:12px;font:14px system-ui;box-shadow:0 12px 35px #0009}
+#maker-panel[hidden],#maker-pick[hidden]{display:none!important}#maker-panel button,#maker-panel select,#maker-panel input{font:16px system-ui;min-height:40px;border:1px solid #977046;border-radius:8px;background:#fffdf7;color:#362715;box-sizing:border-box}
+#maker-panel button{padding:7px 10px;background:#efd09a}#maker-panel select,#maker-panel input[type=number],#maker-panel input[type=file]{width:100%;padding:5px}
+#maker-panel .maker-head,#maker-panel .maker-tabs,#maker-panel .maker-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:8px 0}#maker-panel .maker-head{justify-content:space-between;touch-action:none}#maker-panel .maker-tabs button{flex:1}#maker-panel button[aria-pressed=true]{background:#986331;color:white}
+#maker-panel .maker-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}#maker-panel label{display:block;font-weight:650;margin:7px 0}#maker-panel .maker-note{font-size:12px;line-height:1.5}#maker-panel .maker-warning{color:#b12923}
+#maker-pick{position:fixed;inset:0;z-index:2147483002;background:#0002;touch-action:manipulation}
+#assetPanel.maker-assets-visible{display:block!important;z-index:2147483005!important}
+

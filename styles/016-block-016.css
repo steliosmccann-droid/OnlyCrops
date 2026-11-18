@@ -1,0 +1,16 @@
+
+
+/* V67 Ribbon catalog — only Trophy screen */
+#fv64-achievements .fv67-ribbon-intro{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin:2px 0 9px;background:#f8efd7;border:2px solid #c7a873;padding:8px;color:#695135;font:13px Georgia,serif}
+#fv64-achievements .fv67-ribbon-intro strong{font-size:19px;color:#3f806d}
+#fv64-achievements .fv67-ribbon-intro span{margin-left:auto;font-weight:bold}
+#fv64-achievements .fv67-ribbon-intro small{width:100%;color:#836744}
+#fv64-achievements .fv67-category-heading{margin:15px 0 7px;font:700 16px Georgia,serif;color:#6c4d27;border-bottom:2px solid #bba174;padding-bottom:5px}
+#fv64-achievements .fv67-category-heading span{display:block;font:11px Arial,sans-serif;color:#977f5c;margin:4px 0}
+#fv64-achievements .fv67-pending{opacity:1;background:#fff6e0;border-style:dashed}
+#fv64-achievements .fv67-pending .fv65-ach-info strong{color:#76532b}
+#fv64-achievements .fv67-locked-label{font:11px Arial,sans-serif;color:#8b7453;line-height:1.4;display:block}
+@media(max-width:390px){#fv64-achievements .fv67-pending .fv65-ribbon{width:21px;height:30px}}
+
+/* consolidated anonymous stylesheet */
+.fv70-reward-info{font-size:11px;color:#795525;font-weight:700;background:#f7e9bb;border-top:1px solid #bda979;padding:4px 9px;flex-basis:100%;text-align:left}.fv65-ribbon-row{flex-wrap:wrap}.fv70-toast{position:fixed;left:12px;right:12px;top:max(18px,env(safe-area-inset-top));max-width:520px;margin:auto;z-index:999999;border:3px solid #b38735;border-radius:12px;padding:12px 14px;background:#fff1bf;color:#64451d;box-shadow:0 6px 24px #0007;font-weight:800;text-align:center;font-size:13px;pointer-events:none}

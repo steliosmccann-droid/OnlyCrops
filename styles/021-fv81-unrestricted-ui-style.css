@@ -1,0 +1,13 @@
+
+
+/* UI-only: remove HTML-drawn frames on a per-element basis; preserve PNG artwork */
+html.mode-farm .fv81-no-frame{border-width:0!important;outline:0!important;box-shadow:none!important}
+html.mode-farm .fv81-no-frame:not(.fv78-selected)::before,html.mode-farm .fv81-no-frame:not(.fv78-selected)::after{border:0!important;box-shadow:none!important}
+html.mode-farm .fv81-transparent{background-color:transparent!important;background-image:none!important}
+html.mode-farm .fv81-no-shadow{box-shadow:none!important;filter:none!important}
+#fv78-editor .fv81-check{display:flex;align-items:center;gap:4px;width:100%;min-height:33px;font-weight:700;font-size:12px}
+#fv78-editor .fv81-check input{width:20px;height:20px;flex:none}
+#fv78-editor #fv79-tools .fv78-row{align-items:center}
+#fv78-editor #fv79-tools input[type=number]{max-width:100%;width:95px}
+#fv78-editor #fv79-tools .fv79-field{flex-wrap:wrap}
+

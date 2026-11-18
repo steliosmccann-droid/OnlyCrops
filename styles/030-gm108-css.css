@@ -1,0 +1,11 @@
+
+
+#gm108-box{margin:12px 0;padding:10px;border:2px solid #a47743;border-radius:12px;background:#fff9e9;color:#372515;font:14px system-ui}
+#gm108-box button,#gm108-box select,#gm108-box input{font:16px system-ui;min-height:39px;border-radius:7px;border:1px solid #aa8050;background:#fffdf7;color:#362514;box-sizing:border-box}
+#gm108-box button{padding:7px 10px;background:#efd39e}#gm108-box select,#gm108-box input[type=text],#gm108-box input[type=file],#gm108-box input[type=number]{width:100%;padding:6px}
+#gm108-box label{display:block;margin:8px 0;font-weight:650}#gm108-box .actions{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}
+#gm108-box .fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}#gm108-box p{font-size:12px;line-height:1.5}
+.gm108-object{position:fixed;z-index:1200;touch-action:none;user-select:none;white-space:pre-wrap;box-sizing:border-box;cursor:move}
+.gm108-object img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.gm108-object.gm108-selected{outline:2px dashed #ffd74a;outline-offset:3px}
+

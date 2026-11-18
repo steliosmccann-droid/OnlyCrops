@@ -1,0 +1,10 @@
+
+
+/* Explicitly visible controls, rather than the invisible hit areas in V110. */
+html.mode-farm #fv90-nostalgia-hud .fv90-bars,html.mode-farm #fv90-nostalgia-hud .fv90-item{overflow:visible!important}
+html.mode-farm #fv90-nostalgia-hud .fv110-add{position:absolute!important;right:-5px!important;top:50%!important;transform:translate(50%,-50%)!important;display:flex!important;align-items:center!important;justify-content:center!important;width:35px!important;min-width:35px!important;height:35px!important;min-height:35px!important;padding:0!important;border:2px solid #fff1c5!important;border-radius:50%!important;background:linear-gradient(145deg,#81cb41,#2f862c)!important;color:white!important;font:bold 25px/1 system-ui!important;text-shadow:0 1px 2px #174c1d!important;box-shadow:0 2px 5px #0008!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;z-index:100!important;touch-action:manipulation!important}
+html.mode-farm #fv90-nostalgia-hud .fv110-add::after{content:none!important}
+html.mode-farm #fv90-nostalgia-hud .fv110-add:active{filter:brightness(1.18)}
+html.mode-farm #fv90-nostalgia-hud .fv90-cash{z-index:20!important}
+html.mode-farm #fv90-nostalgia-hud .fv90-coin{z-index:19!important}
+

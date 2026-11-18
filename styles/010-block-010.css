@@ -1,0 +1,13 @@
+
+#fv-boot{position:fixed;inset:0;z-index:999999;background:#83a974;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif;color:#4b3a22}
+#fv-boot[hidden]{display:none!important}
+.fv-boot-card{max-width:360px;width:100%;border:4px solid #885b32;border-radius:19px;background:#fff1c9;box-shadow:0 14px 50px #213b2688;padding:28px 18px;text-align:center}
+.fv-boot-logo{font-size:56px}.fv-boot-card h1{margin:8px 0;font-size:27px;color:#577b2d}.fv-boot-card p{font-size:15px;font-weight:600}
+.fv-boot-track{height:13px;border-radius:30px;background:#d5c59a;border:2px solid #a48d58;overflow:hidden;margin:18px 0}
+#fv-boot-bar{height:100%;width:16%;background:linear-gradient(90deg,#65ad40,#a4d96e);transition:width .35s}
+#fv-boot-help{display:block;color:#856d47;font-size:12px;overflow-wrap:anywhere}
+#fv-boot-retry{background:#68a947;border:2px solid #42732e;border-radius:10px;padding:12px 20px;font-weight:800;color:white;margin:10px}
+#fv-boot.fv-boot-done{opacity:0;pointer-events:none;transition:opacity .35s}
+#fv-boot.fv-boot-failed .fv-boot-track{display:none}
+html:not(.dev-mode) :is(#fvToolsQaOpen,#fvToolsQa,#fvMoreQA,#fvBarnManualQA,#fvStorageQa,#fvStorageQaResults,#farmerLabToggle,#farmerLab,#generalQaToggle,#generalQaPanel,#characterTestToggle,#characterTestResults,#assetTestButton,#assetTests,.market-qa-toggle,#marketQA,.plow-qa,.crop-qa,.gridResults,.tools-qa-open,.classic-tools-qa){display:none!important}
+

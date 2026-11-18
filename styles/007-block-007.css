@@ -1,0 +1,13 @@
+
+
+/* V29: standard in-game HUD and farm editing. No debugging UI. */
+.fv-level-track{height:5px;margin:5px 0 1px;border-radius:6px;background:#8d7348;border:1px solid #795c31;overflow:hidden}
+.fv-level-fill{height:100%;background:linear-gradient(90deg,#7cba42,#d2f382);transition:width .2s}
+.fv-farm-name-editor{padding:9px;margin:4px 0 8px;background:#fff5dc;border:1px solid #bb9665;border-radius:9px;color:#62441f}
+.fv-farm-name-editor label{display:block;font-size:12px;font-weight:850;margin-bottom:6px}
+.fv-farm-name-row{display:flex;gap:6px}
+.fv-farm-name-row input{min-width:0;flex:1;height:40px;border:2px solid #bd9555;border-radius:8px;padding:0 8px;background:white;color:#51391e;font-size:14px}
+.fv-farm-name-row button{border:2px solid #88632f;border-radius:8px;padding:0 10px;background:#e5c387;color:#4b3219;font-weight:800;font-size:12px;min-height:40px}
+#fvSellBackdrop .fv-sell-confirm{background:#f5d274;border-color:#a27a2d;color:#513611}
+#fvBarnSell{background:#fae0a5}
+

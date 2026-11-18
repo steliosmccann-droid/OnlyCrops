@@ -1,0 +1,8 @@
+
+
+/* V84: native visible file input works even when file.click() on a hidden input is blocked by iOS */
+#fv82-png-panel input[type="file"],#assetPanel input[type="file"],#fv78-editor input[type="file"]{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;position:relative!important;width:100%;max-width:100%;min-height:46px;z-index:5;font-size:16px;touch-action:manipulation;box-sizing:border-box;margin:8px 0 12px;padding:8px 4px;color:#593b22;background:#fff6e3;border:1px solid #aa8456;border-radius:8px}
+#fv82-png-panel input[type="file"]::file-selector-button,#assetPanel input[type="file"]::file-selector-button,#fv78-editor input[type="file"]::file-selector-button{font-size:15px;background:#f7dc92;border:1px solid #a77f3b;border-radius:6px;padding:8px;color:#563c22}
+.fv84-picker-label{display:block;font-size:12px;font-weight:700;margin-top:12px}
+#assetPanel,#fv78-editor,#fv82-png-panel{ -webkit-user-select:auto; }
+

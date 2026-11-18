@@ -1,0 +1,27 @@
+
+
+/* V91: keep approved PNG art; hide baked sample labels only within the text wells. */
+#fv90-nostalgia-hud .fv90-cash .fv90-value{
+ left:31%;right:20%;top:24%;bottom:20%;background:#f6d9a7;
+ border-radius:6px;font-size:clamp(10px,2.7vw,15px);z-index:2;
+}
+#fv90-nostalgia-hud .fv90-cash .fv90-value::before{content:'NF ';font-size:.85em}
+#fv90-nostalgia-hud .fv90-xp-track{
+ left:30%;width:61%;top:25%;height:48%;background:#f7d69d;
+ border:2px solid #b87a24;z-index:2;
+}
+#fv90-nostalgia-hud .fv90-xp-level{z-index:3}
+#fv90-nostalgia-hud .fv90-xp-label{z-index:3}
+#fv90-nostalgia-hud .fv90-name-text{
+ left:19%;right:9%;top:21%;bottom:20%;background:#f4d8a4;border-radius:5px;
+ font-size:clamp(9px,2.4vw,13px)
+}
+/* Do not let the character button cover the approved nameplate. */
+html.mode-farm .character-open{top:calc(198px + env(safe-area-inset-top))!important}
+html.mode-farm .character-panel{top:calc(236px + env(safe-area-inset-top))!important}
+#fv91-editor{margin-top:12px;padding:10px;border:2px solid #ac8249;border-radius:10px;background:#fff5d9}
+#fv91-editor .fv91-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:5px;align-items:center;margin:7px 0}
+#fv91-editor input{width:100%;min-width:0;box-sizing:border-box;min-height:34px!important;font-size:14px!important}
+#fv91-editor button{min-height:38px;margin:5px 4px 3px 0}
+#fv91-editor small{display:block;line-height:1.4}
+

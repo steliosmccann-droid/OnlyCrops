@@ -1,0 +1,10 @@
+
+
+#gm119-progression{padding:10px;display:grid;gap:9px;color:#44311c}
+#gm119-progression[hidden]{display:none!important}
+#gm119-progression select,#gm119-progression input{width:100%;min-height:42px;border:1px solid #a88a62;border-radius:8px;background:#fffdf7;color:#352512;font-size:16px;padding:7px}
+#gm119-progression label{display:grid;gap:5px;font-weight:700}
+#gm119-progression .gm119-note{font-size:12px;line-height:1.5;margin:0}
+#gm119-progression .actions{display:flex;flex-wrap:wrap;gap:8px}
+#gm119-progression .actions button{flex:1;min-height:42px}
+

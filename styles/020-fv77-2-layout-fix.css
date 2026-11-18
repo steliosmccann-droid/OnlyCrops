@@ -1,0 +1,20 @@
+
+
+/* V77.2 — screenshot-corrected iPhone HUD and Recycle; visual only */
+html.mode-farm .top.fv38-hud{display:grid!important;grid-template-columns:minmax(0, 1.85fr) minmax(0,1fr)!important;gap:7px!important;left:8px!important;right:8px!important;align-items:stretch!important}
+html.mode-farm .top.fv38-hud .status{min-width:0!important;min-height:66px!important;display:grid!important;grid-template-columns:minmax(0,43%) minmax(0,57%)!important;gap:5px!important;align-items:center!important;padding:6px!important;overflow:hidden!important}
+html.mode-farm .top.fv38-hud .fv38-money{min-width:0!important;width:100%!important;display:flex!important;flex-direction:column!important;gap:5px!important;overflow:hidden!important}
+html.mode-farm .fv38-money>div{box-sizing:border-box!important;min-width:0!important;width:100%!important;min-height:24px!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;overflow:hidden!important;white-space:nowrap!important;text-overflow:clip!important;font-size:clamp(10px,2.65vw,13px)!important;line-height:1.2!important;padding:1px 5px!important;background-image:none!important;background:linear-gradient(#fff7dd,#f7d69b)!important;border:1px solid #a47839!important;border-radius:6px!important;color:#583715!important}
+html.mode-farm .top.fv38-hud .fv38-experience{min-width:0!important;max-width:none!important;width:100%!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:stretch!important;gap:2px!important;padding:4px 5px!important;background-image:none!important;overflow:hidden!important}
+html.mode-farm .fv38-experience>div:first-child{font-size:13px!important;line-height:1.2!important;white-space:nowrap!important}
+html.mode-farm .fv38-experience small{display:block!important;font-size:10px!important;line-height:1.2!important;max-width:100%!important}
+html.mode-farm .fv38-experience .fv-level-track{height:9px!important;width:100%!important;margin:2px 0 0!important;max-width:100%!important}
+html.mode-farm .top.fv38-hud .fv38-farmname{min-width:0!important;max-width:none!important;width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:3px!important;padding:27px 5px 5px!important;overflow:hidden!important;box-sizing:border-box!important;background-size:100% 100%!important}
+html.mode-farm .fv38-farmname span{display:none!important}
+html.mode-farm .fv38-farmname small{display:block!important;max-width:100%!important;min-width:0!important;text-overflow:ellipsis!important;overflow:hidden!important;white-space:nowrap!important;text-align:center!important;font-size:clamp(9px,2.4vw,12px)!important;line-height:1.1!important;color:#4d3115!important;text-shadow:0 1px #fff8dd!important}
+/* The empty top-right slot is Recycle: restore its original functional button instead of hiding its contents. */
+html.mode-farm .classic-tools .fv38-recycle>button:first-child{background-image:none!important;background:linear-gradient(#fff7de,#e9bf77)!important;border:2px solid #985a27!important;border-radius:10px!important;box-shadow:inset 0 2px 2px #fff9e7,0 2px 2px #44260d77!important;color:#533513!important;font-size:22px!important;text-shadow:none!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;padding:0!important}
+html.mode-farm .classic-tools .fv38-recycle>button:first-child span{font-size:9px!important;visibility:visible!important;line-height:1.1!important;color:#513513!important}
+html.mode-farm .classic-tools .fv38-recycle>button:first-child:active{background:linear-gradient(#efd2a0,#cc9853)!important;transform:translateY(1px)}
+@media(max-width:390px){html.mode-farm .top.fv38-hud .status{grid-template-columns:minmax(0,44%) minmax(0,56%)!important;padding:4px!important;gap:3px!important}html.mode-farm .fv38-money>div{font-size:10px!important;padding:1px 3px!important}html.mode-farm .fv38-experience>div:first-child{font-size:11px!important}}
+

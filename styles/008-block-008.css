@@ -1,0 +1,18 @@
+
+
+#fv42-settings-button{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:12px;z-index:99990;width:43px;height:43px;border:2px solid #f6e3a1;border-radius:13px;background:linear-gradient(#fff2c5,#d7ad65);color:#624018;font-size:23px;box-shadow:0 3px 0 #8b6637,0 6px 16px #0005;cursor:pointer;touch-action:manipulation}
+#fv42-settings-overlay[hidden]{display:none!important}
+#fv42-settings-overlay{position:fixed;inset:0;z-index:99991;display:flex;align-items:center;justify-content:center;padding:18px;background:#112a1ab8;box-sizing:border-box}
+#fv42-settings-panel{width:min(410px,100%);max-height:min(85dvh,720px);overflow:auto;box-sizing:border-box;border:4px solid #86552c;border-radius:18px;background:#fff7db;color:#3c321e;box-shadow:0 18px 55px #0008;font-family:system-ui,-apple-system,sans-serif}
+#fv42-settings-header{background:linear-gradient(#8dc54d,#43852c);color:white;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:20px;font-weight:800;text-shadow:0 2px 1px #204917}
+#fv42-settings-close{border:2px solid #fff9;border-radius:9px;background:#ffffff33;color:white;font-size:23px;width:35px;height:35px}
+#fv42-settings-content{padding:15px;display:grid;gap:12px}
+.fv42-setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #dfcaa5;background:#fffdf0;padding:11px;border-radius:11px}
+.fv42-setting-row strong{display:block;font-size:14px}.fv42-setting-row small{display:block;color:#776c53;font-size:11px;margin-top:3px}
+.fv42-setting-row input{width:23px;height:23px;accent-color:#4b9a30;flex-shrink:0}
+.fv42-setting-section{font-size:12px;font-weight:800;color:#88632e;margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
+.fv42-setting-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fv42-setting-actions button{min-height:43px;padding:8px;border-radius:9px;border:2px solid #8b6637;background:linear-gradient(#fff3c9,#e8c37b);color:#563819;font-size:13px;font-weight:700}
+#fv42-settings-feedback{font-size:12px;color:#5f6141;min-height:18px}
+@media(max-width:600px){#fv42-settings-button{top:calc(env(safe-area-inset-top,0px) + 55px);right:8px;width:39px;height:39px;font-size:21px}}
+

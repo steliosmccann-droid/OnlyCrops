@@ -1,0 +1,37 @@
+
+
+/* V38 Classic: top HUD + 3x2 compact toolbar. Keep the existing game mechanics intact. */
+html.mode-farm .top.fv38-hud{top:calc(5px + env(safe-area-inset-top));left:6px;right:6px;display:flex;flex-wrap:nowrap;align-items:stretch;gap:4px;z-index:30}
+html.mode-farm .top.fv38-hud .panel{border:2px solid #865323;background:linear-gradient(#fff2c7,#dda763);color:#513516;box-shadow:0 2px 3px #3d281d85;padding:4px 6px;border-radius:7px}
+html.mode-farm .top.fv38-hud .status{display:flex!important;align-items:center;gap:7px;max-width:none!important;flex:1 1 auto;min-width:0;text-align:left;white-space:nowrap;font-size:11px}
+.fv38-money{display:flex;flex-direction:column;gap:3px;line-height:1.15;min-width:66px;font-weight:900}
+.fv38-experience{display:flex;flex-direction:column;justify-content:center;min-width:76px;max-width:145px;flex:1;font-size:11px;font-weight:900;line-height:1.1}
+.fv38-experience small{font-size:9px!important;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.9}
+.fv38-experience .fv-level-track{width:100%;height:7px;margin-top:3px}
+html.mode-farm .top.fv38-hud .fv38-farmname{display:flex;align-items:center;gap:4px;flex:0 1 35%;min-width:75px;max-width:185px;font-weight:900;overflow:hidden}
+.fv38-farmname span{font-size:17px}.fv38-farmname small{min-width:0;font-size:10px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+html.mode-farm .classic-tools{grid-template-columns:repeat(3,47px);grid-template-rows:repeat(2,46px);width:max-content;bottom:calc(19px + env(safe-area-inset-bottom));right:6px;gap:3px;padding:5px;z-index:35}
+html.mode-farm .classic-tools>.fv38-tool-slot{position:relative;min-height:46px;min-width:47px}
+html.mode-farm .classic-tools>.fv38-tool-slot>button:first-child{width:47px;height:46px;min-height:46px;min-width:47px;font-size:20px;padding:2px 0 0}
+html.mode-farm .classic-tools>.fv38-tool-slot>button:first-child span{font-size:9px}
+html.mode-farm .classic-tools .fv38-arrow{display:flex;align-items:center;justify-content:center;position:absolute;right:-2px;bottom:-2px;z-index:2;min-height:20px;min-width:19px;width:19px;height:20px;font-size:14px!important;padding:0!important;border:1px solid #815324;border-radius:4px;background:linear-gradient(#fff8cb,#d59e55);color:#573519;box-shadow:0 1px 2px #5b3e2470}
+html.mode-farm .classic-tools .fv38-arrow[aria-expanded="true"]{background:#f6bd63}
+html.mode-farm .classic-tools>#fvMore,html.mode-farm .classic-tools>#fvRotateActive{display:none!important}
+/* V39: verified original top row Multi / Plow / Recycle, bottom Ribbons / Market / Gifts */
+html.mode-farm .classic-tools .fv38-multi{grid-column:1;grid-row:1}
+html.mode-farm .classic-tools .fv38-plow{grid-column:2;grid-row:1}
+html.mode-farm .classic-tools .fv38-recycle{grid-column:3;grid-row:1}
+html.mode-farm .classic-tools .fv39-ribbons{grid-column:1;grid-row:2}
+html.mode-farm .classic-tools .fv38-market{grid-column:2;grid-row:2}
+html.mode-farm .classic-tools .fv38-gifts{grid-column:3;grid-row:2}
+html.mode-farm .classic-tools .fv38-move{display:none!important}
+html.mode-farm .classic-tools .fv39-ribbons>button:disabled{opacity:.72}
+html.mode-farm .classic-tools .fv39-ribbons span{font-size:9px}
+.fv38-submenu[hidden]{display:none!important}
+.fv38-submenu{position:absolute;right:8px;bottom:calc(133px + env(safe-area-inset-bottom));width:205px;max-width:calc(100vw - 16px);padding:7px;z-index:61;border:3px solid #835522;border-radius:10px;background:linear-gradient(#ffedba,#ddb06b);box-shadow:0 5px 13px #30201080;display:flex;flex-direction:column;gap:5px;color:#513517;touch-action:manipulation}
+.fv38-submenu strong{font-size:12px;padding:2px 4px}
+.fv38-submenu button{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:7px 8px;min-height:34px;color:#573719;background:linear-gradient(#fff9e6,#eccb92);border:1px solid #94642d;border-bottom-width:3px;border-radius:6px;font-size:12px;font-weight:850;touch-action:manipulation;text-align:left}
+.fv38-submenu button:disabled{opacity:.58}
+.fv38-submenu button small{font-size:9px;font-weight:600}
+@media(max-width:360px){html.mode-farm .top.fv38-hud .status{gap:4px;padding:4px!important}.fv38-money{font-size:10px;min-width:60px}.fv38-experience{min-width:68px}.fv38-farmname span{display:none}.fv38-farmname small{font-size:9px!important}}
+

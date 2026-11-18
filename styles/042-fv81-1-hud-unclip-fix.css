@@ -1,0 +1,11 @@
+
+
+/* Allow Coins and XP to move freely beyond their HUD parent while editing. */
+html.mode-farm .top.fv38-hud {overflow:visible!important;}
+html.mode-farm .top.fv38-hud .status,
+html.mode-farm .top.fv38-hud .fv38-money,
+html.mode-farm .top.fv38-hud .fv38-experience {overflow:visible!important;}
+html.mode-farm .top.fv38-hud .status,
+html.mode-farm .top.fv38-hud .fv38-money,
+html.mode-farm .top.fv38-hud .fv38-experience {position:relative!important;}
+
