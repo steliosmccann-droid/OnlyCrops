@@ -43,9 +43,9 @@ const ORIGINAL=JSON.parse(JSON.stringify(CATALOG));
 const KEY='FarmVille3026_V117_Production';
 function validate(v){return v&&Number.isFinite(Number(v.hours))&&Number(v.hours)>=0.05&&Number(v.hours)<=8760&&Number.isInteger(Number(v.coins))&&Number(v.coins)>=0&&Number(v.coins)<=1000000}
 function apply(kind,data){if(!Object.prototype.hasOwnProperty.call(CATALOG,kind)||!validate(data))return false;CATALOG[kind].hours=Number(data.hours);CATALOG[kind].coins=Number(data.coins);return true}
-function save(){try{const data={};for(const k of Object.keys(CATALOG))data[k]={hours:CATALOG[k].hours,coins:CATALOG[k].coins};localStorage.setItem(KEY,JSON.stringify(data));return true}catch(e){return false}}
+function save(){try{const data={};for(const k of Object.keys(CATALOG))data[k]={hours:CATALOG[k].hours,coins:CATALOG[k].coins};const serialized=JSON.stringify(data);localStorage.setItem(KEY,serialized);return localStorage.getItem(KEY)===serialized}catch(e){return false}}
 function restore(){try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');for(const [k,v] of Object.entries(saved))apply(k,v)}catch(e){}}
-function resetOne(kind){if(!ORIGINAL[kind])return false;apply(kind,ORIGINAL[kind]);return save()}
+function resetOne(kind){if(!ORIGINAL[kind])return false;const old=definition(kind),before={hours:old.hours,coins:old.coins};apply(kind,ORIGINAL[kind]);if(save())return true;apply(kind,before);return false}
 restore();
 window.FarmProduction=Object.freeze({CATALOG,definition,status,start,reset,formatTime,apply,save,resetOne,storageKey:KEY});
 })();
