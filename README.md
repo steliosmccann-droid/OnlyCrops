@@ -1,3 +1,7 @@
+# Only Crops — Checkpoint 20.12
+
+Απλοποιημένος HUD Editor για iPhone: διάλεξε στοιχείο → μετακίνησε με βελάκια → αυτόματη αποθήκευση. Τα προχωρημένα εργαλεία ανοίγουν μόνο όταν τα χρειάζεσαι. [Τεκμηρίωση](docs/CP20_12_SIMPLE_HUD.md).
+
 # Only Crops — Checkpoint 20.10
 
 Game Maker → HUD: απευθείας εργαλείο για την εικόνα Coins, με βελάκια θέσης, βήμα pixels και επαναφορά. Χρησιμοποιεί τα υπάρχοντα HUD overrides και την αυτόματη αποθήκευση. Backup: `backup-cp20-9-before-hud-coins-usability`. [Αναφορά](docs/CP20_10_HUD_COINS_USABILITY.md).
