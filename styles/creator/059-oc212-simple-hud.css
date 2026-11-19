@@ -1,0 +1,28 @@
+/* CP20.12: one-screen HUD editor for iPhone; legacy tools available on demand. */
+#gm106-panel #oc212-simple-hud{display:grid;gap:10px;margin:8px 0 16px;padding:13px;background:#fffaf0;border:2px solid #77924b;border-radius:14px;color:#47321c;min-width:0}
+#gm106-panel #oc212-simple-hud[hidden]{display:none!important}
+#gm106-panel #oc212-simple-hud h2{font-size:20px;line-height:1.25;margin:0;color:#344e1c}
+#gm106-panel #oc212-simple-hud p{font-size:13px;line-height:1.4;margin:0}
+#gm106-panel #oc212-simple-hud label{display:grid;gap:6px;font-weight:750;font-size:14px;line-height:1.3}
+#gm106-panel #oc212-simple-hud select{width:100%;min-width:0;min-height:46px;font-size:16px;font-weight:750;border:1px solid #9a7b4c;border-radius:9px;color:#3d301f;background:#fff;padding:9px}
+#gm106-panel #oc212-simple-hud button{font-size:16px;min-width:0;min-height:48px;line-height:1.1;border:1px solid #97734a;border-radius:10px;background:#fffdf5;color:#54391e;font-weight:800;padding:10px;touch-action:manipulation;white-space:normal}
+#gm106-panel #oc212-simple-hud button:active{background:#e6cc9a}
+#gm106-panel #oc212-simple-hud button:disabled{opacity:.5}
+#gm106-panel #oc212-simple-hud #oc212-coordinates{padding:10px;background:#eef4df;border-radius:9px;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+#gm106-panel #oc212-simple-hud .oc212-pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,53px);gap:8px;width:100%;max-width:310px;justify-self:center}
+#gm106-panel #oc212-simple-hud .oc212-pad button{font-size:26px;padding:2px}
+#gm106-panel #oc212-simple-hud .oc212-up{grid-area:1/2}
+#gm106-panel #oc212-simple-hud .oc212-left{grid-area:2/1}
+#gm106-panel #oc212-simple-hud .oc212-right{grid-area:2/3}
+#gm106-panel #oc212-simple-hud .oc212-down{grid-area:3/2}
+#gm106-panel #oc212-simple-hud .oc212-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#gm106-panel #oc212-simple-hud #oc212-feedback{font-size:12px;color:#486125;font-weight:700;min-height:16px}
+#gm106-panel.oc212-hud-active .oc212-legacy-hidden{display:none!important}
+#gm106-panel.oc212-hud-active #gm18-content-lead,
+#gm106-panel.oc212-hud-active #gm18-support,
+#gm106-panel.oc212-hud-active #gm18-status,
+#gm106-panel.oc212-hud-active #gm20-note,
+#gm106-panel.oc212-hud-active > .note{display:none!important}
+#gm106-panel.oc212-hud-active > button:not(#oc212-advanced){display:none!important}
+#gm106-panel.oc212-hud-active #gm18-navigation{margin-bottom:4px!important}
+#gm106-panel.oc212-hud-active #oc204-creator-toolbar{margin-bottom:4px!important}
