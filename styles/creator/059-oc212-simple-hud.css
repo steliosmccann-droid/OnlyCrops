@@ -23,6 +23,6 @@
 #gm106-panel.oc212-hud-active #gm18-status,
 #gm106-panel.oc212-hud-active #gm20-note,
 #gm106-panel.oc212-hud-active > .note{display:none!important}
-#gm106-panel.oc212-hud-active > button:not(#oc212-advanced){display:none!important}
+#gm106-panel.oc212-hud-active:not(.oc212-hud-advanced) > button{display:none!important}
 #gm106-panel.oc212-hud-active #gm18-navigation{margin-bottom:4px!important}
 #gm106-panel.oc212-hud-active #oc204-creator-toolbar{margin-bottom:4px!important}
