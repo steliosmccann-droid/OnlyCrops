@@ -88,7 +88,7 @@
    sync();feedback.textContent='✓ Η θέση επανήλθε στο 0, 0';
   };
   function showAdvanced(on){
-   advanced=on;more.setAttribute('aria-expanded',String(on));
+   advanced=on;panel.classList.toggle('oc212-hud-advanced',on);more.setAttribute('aria-expanded',String(on));
    more.textContent=on?'✕ Κλείσιμο προηγμένων ρυθμίσεων':'⚙️ Περισσότερες ρυθμίσεις';
    for(const child of edit.children)if(child!==card)child.classList.toggle('oc212-legacy-hidden',!on);
   }
