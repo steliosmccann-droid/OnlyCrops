@@ -47,6 +47,35 @@ function mount(){
  const fpsLabel=make('label',opts,'Ταχύτητα FPS');
  const fps=make('input',fpsLabel);fps.type='number';fps.min='1';fps.max='30';fps.value='6';fps.inputMode='numeric';
  const summary=make('p',page);summary.className='oc217-summary';summary.id='oc217-summary';
+ const libraryTitle=make('strong',page,'Αποθηκευμένες κινήσεις του ζώου');
+ const library=make('div',page);library.id='oc219-clip-status';library.setAttribute('aria-live','polite');
+ const recheck=make('button',page,'↻ Ανανέωση βιβλιοθήκης');recheck.type='button';
+ function inspectClips(){
+  const api=window.OnlyCropsAnimalMotion;
+  const keys=new Set(api?.status?.().clips||[]);
+  library.replaceChildren();
+  if(!api){library.textContent='Η σύνδεση animations δεν έχει φορτωθεί.';return}
+  let count=0;
+  for(const [state,stateLabel] of actions){
+   const line=make('div',library);line.className='oc219-status-row';
+   const heading=make('strong',line,stateLabel);
+   const detail=make('span',line);
+   detail.textContent=directions.map(([dir,label])=>{
+    const has=keys.has(species.value+'/'+state+'/'+dir);
+    if(has)count++;
+    return (has?'✓ ':'— ')+label;
+   }).join(' · ');
+  }
+  const note=make('p',library,'Βρέθηκαν '+count+'/16 συνδυασμοί. Το Eat αποθηκεύεται, αλλά δεν ενεργοποιείται ακόμη από τη φάρμα.');
+  note.className='oc219-status-note';
+ }
+ recheck.onclick=async()=>{
+  recheck.disabled=true;
+  try{await window.OnlyCropsAnimalMotion?.refresh();inspectClips()}
+  finally{recheck.disabled=false}
+ };
+ species.addEventListener('change',inspectClips);
+
  const start=make('button',page,'🎞️ Δημιουργία animation');start.type='button';start.id='oc217-start';
  const desc=make('p',page,'Στην επόμενη οθόνη θα επιλέξεις PNG/Sprite Sheet, θα δεις τα καρέ σε κίνηση και θα πατήσεις «Αποθήκευση στο Studio». Κάθε συνδυασμός κίνησης/κατεύθυνσης αποθηκεύεται χωριστά.');
  const status=make('p',page);status.id='oc217-status';status.setAttribute('role','status');
@@ -119,7 +148,7 @@ function mount(){
  // The native GM19 uploader may set default columns/asset name after decoding.
  // Only apply the preset on explicit creator action after their upload completes.
  if(input)input.addEventListener('change',()=>{if(preset&&!companion.hidden)result.textContent='Η εικόνα φορτώνεται. Μόλις εμφανιστεί, πάτησε «Εφαρμογή ρυθμίσεων».'});
- refreshSummary();
+ refreshSummary();inspectClips();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
 })();
