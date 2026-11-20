@@ -18,3 +18,10 @@
 #gm106-panel #oc217-edit-help p{margin:0;font-size:13px;line-height:1.45}
 #gm106-panel #oc217-edit-help button{width:100%}
 @media(max-width:370px){#gm106-panel #oc217-animal-editor .oc217-grid{grid-template-columns:1fr}}
+
+/* CP20.19: saved animal animation coverage, read-only status */
+#gm106-panel #oc219-clip-status{display:grid;gap:7px;margin:0;padding:9px;border-radius:10px;background:#edf2df;min-width:0}
+#gm106-panel #oc219-clip-status .oc219-status-row{display:grid;gap:3px;padding:8px;border:1px solid #cbd7b5;border-radius:8px;background:#fffef7;overflow-wrap:anywhere}
+#gm106-panel #oc219-clip-status .oc219-status-row strong{font-size:13px}
+#gm106-panel #oc219-clip-status .oc219-status-row span{font-size:12px;line-height:1.6}
+#gm106-panel #oc219-clip-status .oc219-status-note{font-size:12px;line-height:1.5}
