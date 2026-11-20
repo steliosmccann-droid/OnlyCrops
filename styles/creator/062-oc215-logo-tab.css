@@ -1,0 +1,22 @@
+/* CP20.15 — The logo has ONE dedicated tab, never part of HUD editing. */
+#gm106-panel #oc203-brand-card.oc215-logo-tab{display:block;box-sizing:border-box;max-width:100%;min-width:0;margin:10px 6px 18px}
+#gm106-panel #oc203-brand-card.oc215-logo-tab[hidden]{display:none!important}
+#gm106-panel:not(.oc215-branding-open) #oc203-brand-card{display:none!important}
+#gm106-panel.oc215-branding-open #oc203-brand-card{display:block!important}
+#gm106-panel.oc215-branding-open #oc203-brand-card .oc203-logo{max-width:100%;background-size:contain}
+#gm106-panel.oc215-branding-open #gm106-logo-asset-card{max-width:100%;box-sizing:border-box;overflow-wrap:anywhere}
+#gm106-panel.oc215-branding-open #gm106-logo-asset-card input[type=file]{display:block;max-width:100%;width:100%;min-height:44px}
+#gm106-panel.oc215-branding-open #gm18-navigation,
+#gm106-panel.oc215-branding-open #gm18-content-lead,
+#gm106-panel.oc215-branding-open #gm18-support,
+#gm106-panel.oc215-branding-open #gm18-status,
+#gm106-panel.oc215-branding-open #gm20-note,
+#gm106-panel.oc215-branding-open #oc204-creator-toolbar,
+#gm106-panel.oc215-branding-open > .tabs,
+#gm106-panel.oc215-branding-open > .note{display:none!important}
+/* The original HUD controls stay mounted for the original logo PNG handlers,
+   but are not displayed when the standalone Logo screen is selected. */
+#gm106-panel.oc215-branding-open > section:has(> #oc212-simple-hud){display:none!important}
+#gm106-panel.oc215-branding-open #oc203-brand-card .oc203-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#gm106-panel.oc215-branding-open #oc203-brand-card button{min-height:48px;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:390px){#gm106-panel.oc215-branding-open #oc203-brand-card .oc203-actions{grid-template-columns:1fr}}
