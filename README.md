@@ -1,3 +1,7 @@
+# Only Crops — Checkpoint 20.17
+
+Νέα επιλογή **🐄 Animations ζώων** στον Game Maker: κάθε ζώο με ξεχωριστά Idle/Walk/Eat/Production animations, τέσσερις κατευθύνσεις και sprite-sheet FPS/καρέ μέσα στο υπάρχον Animation Studio. Οι κινήσεις αποθηκεύονται ως Studio assets· η αυτόματη εναλλαγή τους στη φάρμα είναι μελλοντικό ξεχωριστό στάδιο. [Τεκμηρίωση](docs/CP20_17_ANIMAL_ANIMATIONS.md).
+
 # Only Crops — Checkpoint 20.16
 
 Game Maker → Εικόνες: επιλογή αντικειμένου, αναζήτηση, προεπισκόπηση και άμεση εισαγωγή PNG/JPG/WebP σε μία οθόνη. Τα προηγμένα εργαλεία παραμένουν διαθέσιμα. Backup `backup-cp20-15-before-simple-sprites`. [Αναφορά](docs/CP20_16_SIMPLE_SPRITES.md).
