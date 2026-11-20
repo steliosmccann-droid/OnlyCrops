@@ -78,8 +78,8 @@
   for(const k of choices)if(records.has(k))return records.get(k);
   return null;
  }
- function stateFor({animal,objectId,moving,ready}){
-  if(moving&&records.has(key(animal,'walk','front')))return 'walk';
+ function stateFor({animal,objectId,moving,ready,direction}){
+  if(moving&&(records.has(key(animal,'walk',direction))||records.has(key(animal,'walk','front'))))return 'walk';
   const last=recent.get(objectId);
   if(last&&last>Date.now())return 'produce';
   if(ready)return 'produce';
@@ -87,7 +87,7 @@
  }
  function draw({animal,objectId,moving=false,ready=false,direction='front',ctx,cx,groundY,baseWidth,zoom=1,scale=1,offsetX=0,offsetY=0,flipX=false}){
   if(!ANIMALS.has(animal)||!ctx)return false;
-  const state=stateFor({animal,objectId,moving,ready});
+  const state=stateFor({animal,objectId,moving,ready,direction});
   const selected=available(animal,state,DIRECTIONS.has(direction)?direction:'front');
   if(!selected)return false;
   const source=imageFor(selected);if(!source)return false;
