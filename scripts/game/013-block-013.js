@@ -1107,7 +1107,7 @@ if(tool==='test'){info(p);return}if(farmMode==='farm'&&tool==='place'){
  }
  if(marketPendingCurrency==='test'&&!marketQaSelected){label('Ανενεργή δοκιμή',false);return;}
 }if(tool==='place'&&id==='plot'&&false){label('Χρησιμοποίησε όργωμα.',false);return}if(reason){label(`✕ ${reason}`,false);if(tool==='move')show('↻ Μετακίνηση: '+reason+' · διάλεξε ελεύθερο χώρο');return}
-if(tool==='move'){const o=objects.find(o=>o.id===movingId);if(!o){updateTool('test');return}snapshot();o.x=a.x;o.y=a.y;if(pendingFenceRotation?.id===o.id)o.orientation=pendingFenceRotation.orientation;pendingFenceRotation=null;movingId=null;moveOffset={x:0,y:0};window.FarmClassicTools?.syncRotate();label('✓ Επιτυχημένη μετακίνηση / περιστροφή',true);show('✓ Τοποθετήθηκε · '+dims(o).w+'×'+dims(o).h+' mini blocks')}else{
+if(tool==='move'){const o=objects.find(o=>o.id===movingId);if(!o){updateTool('test');return}snapshot();const oldX=o.x,oldY=o.y;o.x=a.x;o.y=a.y;if(v60Animal(o))window.OnlyCropsAnimalMotion?.onMove(o.id,a.x-oldX,a.y-oldY);if(pendingFenceRotation?.id===o.id)o.orientation=pendingFenceRotation.orientation;pendingFenceRotation=null;movingId=null;moveOffset={x:0,y:0};window.FarmClassicTools?.syncRotate();label('✓ Επιτυχημένη μετακίνηση / περιστροφή',true);show('✓ Τοποθετήθηκε · '+dims(o).w+'×'+dims(o).h+' mini blocks')}else{
  snapshot();const currency=marketPendingCurrency,amount=marketPendingPrice;
  objects.push({id:idCounter++,kind:id,x:a.x,y:a.y,...(V36_HARVEST[id]?{harvestReadyAt:Date.now()+V36_HARVEST[id].hours*3600000,harvestCount:0}:{}),...(id==='plot'?{soil:'ready'}:{}),
   ...(farmMode==='farm'&&currency==='test'?{marketTest:true}:{})});
@@ -1429,7 +1429,7 @@ function drawAssetObject(kind,o){
   const conf=FarmImages.get(kind)?.conf||FarmImages.settings();
   const motion=window.OnlyCropsAnimalMotion;
   const orientation=normalizeOrientation(o.orientation);
-  const facing=orientation===1?'left':'front';
+  const facing=window.OnlyCropsAnimalMotion?.directionFor(o.id,orientation===1?'left':'front')||'front';
   if(motion.draw({animal:kind,objectId:o.id,moving:tool==='move'&&movingId===o.id,
    ready:!!v36HarvestStatus(o)?.ready,direction:facing,ctx,cx:p.x,groundY:p.y,baseWidth:width,zoom,
    scale:conf.scale,offsetX:conf.offsetX,offsetY:conf.offsetY,flipX:conf.flipX}))return true;
@@ -1621,7 +1621,7 @@ function classicDragFinish(objId,startCell,endCell){
  const reason=validatePlacement(a,item.kind,item.id);
  if(reason){show('✕ '+reason);return}
  if(a.x===item.x&&a.y===item.y)return;
- snapshot();item.x=a.x;item.y=a.y;save();refreshStatus();refreshStorageUI();dirty=true;
+ snapshot();const oldX=item.x,oldY=item.y;item.x=a.x;item.y=a.y;if(v60Animal(item))window.OnlyCropsAnimalMotion?.onMove(item.id,a.x-oldX,a.y-oldY);save();refreshStatus();refreshStorageUI();dirty=true;
  movingId=null;moveOffset={x:0,y:0};pendingFenceRotation=null;
  window.FarmClassicTools?.syncRotate();
  show('✓ Μετακινήθηκε: '+(defs.get(item.kind)?.name||item.kind));
