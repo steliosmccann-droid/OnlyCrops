@@ -1,3 +1,7 @@
+# Only Crops — Checkpoint 20.14
+
+Πιο καθαρός Game Maker: 4 βασικές επιλογές, ένα κουμπί «← Αρχική», κρυμμένα τα διπλά μενού στα HUD/Κουμπιά και πρόσβαση στα υπόλοιπα εργαλεία από «⚙ Μενού». Backup: `backup-cp20-13-before-maker-simplification`. [Αναφορά αλλαγών](docs/CP20_14_SIMPLIFIED_GAME_MAKER.md).
+
 # Only Crops — Checkpoint 20.13
 
 Game Maker → Κουμπιά: απλή επιλογή κουμπιού, μετακίνηση, αυτόματη αποθήκευση από τον υπάρχοντα editor και προηγμένες ρυθμίσεις προαιρετικά. [Αναλυτικά](docs/CP20_13_SIMPLE_UI.md).
