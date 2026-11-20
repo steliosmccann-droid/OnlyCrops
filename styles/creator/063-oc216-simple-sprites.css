@@ -1,0 +1,20 @@
+/* Only Crops CP20.16 — one visible sprite workflow, existing editor remains in DOM */
+#gm106-panel #oc216-simple-sprites{display:grid;gap:10px;box-sizing:border-box;margin:4px 0 10px;padding:12px;border:2px solid #809447;border-radius:13px;background:#fffaf0;color:#46341e;min-width:0}
+#gm106-panel #oc216-simple-sprites[hidden]{display:none!important}
+#gm106-panel #oc216-simple-sprites h2{margin:0;font-size:20px;color:#3e541f}
+#gm106-panel #oc216-simple-sprites p{font-size:13px;line-height:1.4;margin:0}
+#gm106-panel #oc216-simple-sprites label{display:grid;gap:7px;font-size:14px;font-weight:750;min-width:0}
+#gm106-panel #oc216-simple-sprites input[type=search],#gm106-panel #oc216-simple-sprites select{width:100%;max-width:100%;box-sizing:border-box;min-height:45px;background:#fff;color:#3f3021;border:1px solid #a58856;border-radius:9px;padding:10px;font-size:16px}
+#gm106-panel #oc216-simple-sprites button{min-height:48px;box-sizing:border-box;padding:10px;border:1px solid #98754b;border-radius:10px;background:#fffdf6;color:#4d381e;font-size:15px;font-weight:800;white-space:normal;touch-action:manipulation}
+#gm106-panel #oc216-simple-sprites button:disabled{opacity:.5}
+#gm106-panel #oc216-simple-sprites #oc216-info{padding:9px;background:#edf2de;border-radius:9px;font-size:13px;font-weight:750}
+#gm106-panel #oc216-preview{display:flex;align-items:center;justify-content:center;min-height:130px;max-height:190px;padding:10px;border-radius:10px;background:#efe2c8;overflow:hidden}
+#gm106-panel #oc216-preview img{display:block;max-width:100%;max-height:168px;object-fit:contain}
+#gm106-panel #oc216-preview img[hidden],#gm106-panel #oc216-preview p[hidden]{display:none!important}
+#gm106-panel #oc216-message{font-size:12px;font-weight:700;color:#3e5a22;overflow-wrap:anywhere}
+#gm106-panel.oc216-assets-active:not(.oc216-assets-advanced) #gm106-real-asset-bridge > :not(#oc216-simple-sprites){display:none!important}
+#gm106-panel.oc216-assets-active:not(.oc216-assets-advanced) #gm20-subbox,
+#gm106-panel.oc216-assets-active:not(.oc216-assets-advanced) #gm18-content-lead,
+#gm106-panel.oc216-assets-active:not(.oc216-assets-advanced) #gm18-support,
+#gm106-panel.oc216-assets-active:not(.oc216-assets-advanced) #gm18-status,
+#gm106-panel.oc216-assets-active:not(.oc216-assets-advanced) #gm20-note{display:none!important}
