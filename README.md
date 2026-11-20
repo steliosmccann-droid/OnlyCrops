@@ -1,3 +1,7 @@
+# Only Crops — Checkpoint 20.15
+
+Το **🍅 Λογότυπο** έχει πλέον δική του καρτέλα στον Game Maker και δεν εμφανίζεται ανάμεσα στις ρυθμίσεις HUD, Coins και Κουμπιών. Οι ίδιες λειτουργίες PNG και επαναφοράς διατηρούνται. [Αναφορά](docs/CP20_15_LOGO_TAB.md).
+
 # Only Crops — Checkpoint 20.14
 
 Πιο καθαρός Game Maker: 4 βασικές επιλογές, ένα κουμπί «← Αρχική», κρυμμένα τα διπλά μενού στα HUD/Κουμπιά και πρόσβαση στα υπόλοιπα εργαλεία από «⚙ Μενού». Backup: `backup-cp20-13-before-maker-simplification`. [Αναφορά αλλαγών](docs/CP20_14_SIMPLIFIED_GAME_MAKER.md).
