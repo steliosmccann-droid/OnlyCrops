@@ -1,0 +1,36 @@
+/* CP20.14 — reduced Game Maker navigation. Existing editors/inputs stay untouched. */
+#gm106-panel.oc214-ready #oc214-shell{display:block;position:relative;margin:4px 0 8px;padding:0;z-index:30}
+#gm106-panel.oc214-ready #oc214-shell .oc214-bar{display:flex;align-items:center;gap:7px;min-width:0;padding:7px;border-radius:12px;background:#f1e6c9;border:1px solid #dbc49d}
+#gm106-panel.oc214-ready #oc214-shell button{appearance:none;min-height:44px;padding:8px 11px;border:1px solid #a58757;border-radius:9px;background:#fffaf0;color:#50391e;font-size:13px;font-weight:800;white-space:nowrap;touch-action:manipulation}
+#gm106-panel.oc214-ready #oc214-home[hidden]{display:none!important}
+#gm106-panel.oc214-ready #oc214-current{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#37521d;font-size:16px}
+#gm106-panel.oc214-ready #oc214-welcome{display:grid;gap:13px;margin:0;padding:12px 4px}
+#gm106-panel.oc214-ready #oc214-welcome h2{margin:0;font-size:22px;line-height:1.15;color:#38521b}
+#gm106-panel.oc214-ready #oc214-welcome p{margin:0;color:#6d593c;font-size:14px;line-height:1.4}
+#gm106-panel.oc214-ready #oc214-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#gm106-panel.oc214-ready #oc214-choices button{display:flex;flex-direction:column;gap:8px;align-items:flex-start;text-align:left;border:1px solid #b7a073;background:#fffef8;color:#3d311e;padding:14px 11px;border-radius:13px;min-height:136px;min-width:0;white-space:normal;box-shadow:0 2px 0 #e2d1b1}
+#gm106-panel.oc214-ready #oc214-choices .oc214-icon{font-size:27px}
+#gm106-panel.oc214-ready #oc214-choices button > span:last-child{display:grid;gap:5px;min-width:0}
+#gm106-panel.oc214-ready #oc214-choices strong{font-size:16px;color:#36511d}
+#gm106-panel.oc214-ready #oc214-choices small{font-size:12px;color:#705b3f;line-height:1.35;white-space:normal}
+#gm106-panel.oc214-ready #oc214-welcome .oc214-more{white-space:normal;text-align:center;font-size:13px;line-height:1.35;padding:12px;width:100%;min-height:48px}
+#gm106-panel.oc214-ready #gm18-home > :not(#oc214-welcome){display:none!important}
+#gm106-panel.oc214-ready:not(.oc214-full-mode) #oc204-creator-toolbar,
+#gm106-panel.oc214-ready:not(.oc214-full-mode) #oc204-help-text,
+#gm106-panel.oc214-ready:not(.oc214-full-mode) #oc206-back,
+#gm106-panel.oc214-ready:not(.oc214-full-mode) #gm18-status,
+#gm106-panel.oc214-ready:not(.oc214-full-mode) #gm18-content-lead,
+#gm106-panel.oc214-ready:not(.oc214-full-mode) #gm18-support,
+#gm106-panel.oc214-ready:not(.oc214-full-mode) #gm20-note,
+#gm106-panel.oc214-ready:not(.oc214-full-mode) #gm20-note[hidden]{display:none!important}
+/* Only hide the technical section selector where there is already one clear edit task.
+   Keep original submenus visible for Sprites, Systems and Studio. */
+#gm106-panel.oc214-ready:not(.oc214-full-mode)[data-oc214-screen="home"] #gm18-navigation,
+#gm106-panel.oc214-ready:not(.oc214-full-mode)[data-oc214-screen="hud"] #gm18-navigation,
+#gm106-panel.oc214-ready:not(.oc214-full-mode)[data-oc214-screen="ui"] #gm18-navigation{display:none!important}
+#gm106-panel.oc214-ready[data-oc214-screen="home"] #gm18-home{padding:4px 0!important}
+@media(max-width:350px){
+ #gm106-panel.oc214-ready #oc214-choices{grid-template-columns:1fr}
+ #gm106-panel.oc214-ready #oc214-choices button{min-height:87px}
+ #gm106-panel.oc214-ready #oc214-shell button{font-size:12px;padding:7px}
+}
