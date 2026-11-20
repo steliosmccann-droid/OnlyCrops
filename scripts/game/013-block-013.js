@@ -1075,7 +1075,7 @@ function v36CollectObject(o,now=Date.now()){
  const st=v36HarvestStatus(o,now);if(!st)return {ok:false,reason:'Το αντικείμενο δεν παράγει Coins'};
  if(!Number.isFinite(o.harvestReadyAt)){v36InitPlaced(o,now);save();return {ok:false,reason:'Η παραγωγή μόλις ξεκίνησε'};}
  if(!st.ready)return {ok:false,reason:'Έτοιμο σε '+v36Time(st.remaining)};
- snapshot();coins+=st.coins;window.FarmProduction.reset(o,now);
+ snapshot();coins+=st.coins;window.FarmProduction.reset(o,now);if(v60Animal(o))window.OnlyCropsAnimalMotion?.onHarvest(o.id);
  const v64Rewards=v60Animal(o)?v64AdvanceAnimal(o.kind):v68RecordHarvest('tree',o.kind);
  save();refreshStatus();dirty=true;if(v75Harvestable(o))v60InspectAnimal(o);show(v64Rewards.length?v64Rewards.join(' • '):'🧺 '+st.product+' · +'+st.coins+' Coins · νέα παραγωγή');return {ok:true,reward:st.coins,next:o.harvestReadyAt};
 }
@@ -1423,7 +1423,19 @@ function drawAssetFarmer(){
  ctx.drawImage(img,col*fw,row*fh,fw,fh,-targetWidth/2,-targetHeight,targetWidth,targetHeight);
  ctx.restore();return true;
 }
-function drawAssetObject(kind,o){const d=dims(o),p=iso(o.x+d.w/2,o.y+d.h/2);return FarmImages.draw(kind,p.x,p.y,Math.max(15,(d.w+d.h)*UNITW*.65)*zoom)}
+function drawAssetObject(kind,o){
+ const d=dims(o),p=iso(o.x+d.w/2,o.y+d.h/2),width=Math.max(15,(d.w+d.h)*UNITW*.65)*zoom;
+ if(v36HarvestData(o)?.type==='animal'&&window.OnlyCropsAnimalMotion){
+  const conf=FarmImages.get(kind)?.conf||FarmImages.settings();
+  const motion=window.OnlyCropsAnimalMotion;
+  const orientation=normalizeOrientation(o.orientation);
+  const facing=orientation===1?'left':'front';
+  if(motion.draw({animal:kind,objectId:o.id,moving:tool==='move'&&movingId===o.id,
+   ready:!!v36HarvestStatus(o)?.ready,direction:facing,ctx,cx:p.x,groundY:p.y,baseWidth:width,zoom,
+   scale:conf.scale,offsetX:conf.offsetX,offsetY:conf.offsetY,flipX:conf.flipX}))return true;
+ }
+ return FarmImages.draw(kind,p.x,p.y,width);
+}
 function drawAssetCrop(kind,p,stage){return FarmImages.draw(kind,p.x,p.y+5*zoom,42*zoom,stage)}
 function assetPanelInit(){
  const panel=document.getElementById('assetPanel'),target=document.getElementById('assetTarget'),file=document.getElementById('assetFile'),prev=document.getElementById('assetPreview'),note=document.getElementById('assetMessage');
@@ -2543,7 +2555,7 @@ farmSaveStatus();
 document.getElementById('cropRunTests').onclick=()=>{const results=cropTests();document.getElementById('cropRunScore').textContent=`${results.filter(x=>x.ok).length}/${results.length}`;const area=document.getElementById('cropCheckList');area.replaceChildren(...results.map(x=>{const el=document.createElement('div');el.className=x.ok?'ok':'bad';el.textContent=(x.ok?'✓ ':'✕ ')+x.name;return el}));area.classList.toggle('open')};
 
 
-if(new URLSearchParams(location.search).get('dev')==='1')document.documentElement.classList.add('dev-mode');window.addEventListener('resize',resize);resize();load();v36MigrateTimers();updateFarmNameUI();refreshStatus();updateTool('multi');window.__farmerLabWalkMode=false;document.getElementById('farmerLabWalk').classList.remove('active');let lastTick=0;let lastAssetFrame=0;function loop(now){if(FarmImages.hasAnimated()&&now-lastAssetFrame>110){dirty=true;lastAssetFrame=now}if(FarmImages.get('farmer')&&farmer.state!=='idle')dirty=true;updateFarmer(now);if(now-lastTick>1200){lastTick=now;if(objects.some(o=>o.crop||v36HarvestData(o)))dirty=true;renderCropWindow()}draw();requestAnimationFrame(loop)}loop();window.dispatchEvent(new Event("farmville:ready"));
+if(new URLSearchParams(location.search).get('dev')==='1')document.documentElement.classList.add('dev-mode');window.addEventListener('resize',resize);resize();load();v36MigrateTimers();updateFarmNameUI();refreshStatus();updateTool('multi');window.__farmerLabWalkMode=false;document.getElementById('farmerLabWalk').classList.remove('active');let lastTick=0;let lastAssetFrame=0;function loop(now){if((FarmImages.hasAnimated()||window.OnlyCropsAnimalMotion?.hasActive())&&now-lastAssetFrame>110){dirty=true;lastAssetFrame=now}if(FarmImages.get('farmer')&&farmer.state!=='idle')dirty=true;updateFarmer(now);if(now-lastTick>1200){lastTick=now;if(objects.some(o=>o.crop||v36HarvestData(o)))dirty=true;renderCropWindow()}draw();requestAnimationFrame(loop)}loop();window.dispatchEvent(new Event("farmville:ready"));
 // A tiny test interface for automated smoke/regression checks; no external libraries.
 function cropTests(){const cases=[],t=(name,ok)=>cases.push({name,ok:!!ok});
  const plot=()=>({kind:'plot',soil:'ready',x:0,y:0}),w=()=>({coins:100,xp:0}),now=100000000;
