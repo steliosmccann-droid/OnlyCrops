@@ -18,6 +18,9 @@ function install(){
  // Move, don't copy: the approved logo, restore logic and PNG handlers stay intact.
  shell.after(brand);
  brand.classList.add('oc215-logo-tab');
+ // Old simple HUD/UI views may have marked this old card as hidden.
+ brand.classList.remove('oc212-legacy-hidden','oc213-ui-legacy-hidden','gm18-off');
+ logoEditor.classList.remove('oc212-legacy-hidden','oc213-ui-legacy-hidden','gm18-off');
  // The existing logo inspector remains the only place that changes its PNG.
  brand.appendChild(logoEditor);
  const choice=document.createElement('button');
