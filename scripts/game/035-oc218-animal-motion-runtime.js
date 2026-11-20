@@ -8,7 +8,7 @@
  const STATES=new Set(['idle','walk','eat','produce']);
  const DIRECTIONS=new Set(['front','back','left','right']);
  const DB='NostalgiaVille_Studio_CP19',STORE='assets';
- const records=new Map(),decoded=new Map(),pending=new Map(),recent=new Map();
+ const records=new Map(),decoded=new Map(),pending=new Map(),recent=new Map(),recentMoves=new Map();
  let connected=false,loading=false,revision=0;
  const key=(animal,state,direction)=>animal+'/'+state+'/'+direction;
  const validRecord=a=>{
@@ -79,16 +79,31 @@
   return null;
  }
  function stateFor({animal,objectId,moving,ready,direction}){
-  if(moving&&(records.has(key(animal,'walk',direction))||records.has(key(animal,'walk','front'))))return 'walk';
+  const moved=recentMoves.get(objectId);
+  const hasWalk=records.has(key(animal,'walk',direction))||records.has(key(animal,'walk','front'));
+  if(hasWalk&&(moving||(moved&&moved.until>Date.now())))return 'walk';
   const last=recent.get(objectId);
   if(last&&last>Date.now())return 'produce';
   if(ready)return 'produce';
   return 'idle';
  }
+ function directionFor(objectId,fallback='front'){
+  const moved=recentMoves.get(objectId);
+  return moved&&moved.until>Date.now()?moved.direction:fallback;
+ }
+ function onMove(id,dx,dy){
+  if(id==null||(!dx&&!dy))return;
+  // Transient visual orientation based on the actual validated grid move.
+  const direction=Math.abs(dx)>=Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'front':'back');
+  recentMoves.set(id,{direction,until:Date.now()+1350});
+ }
+ function resetTransient(){recent.clear();recentMoves.clear()}
+
  function draw({animal,objectId,moving=false,ready=false,direction='front',ctx,cx,groundY,baseWidth,zoom=1,scale=1,offsetX=0,offsetY=0,flipX=false}){
   if(!ANIMALS.has(animal)||!ctx)return false;
-  const state=stateFor({animal,objectId,moving,ready,direction});
-  const selected=available(animal,state,DIRECTIONS.has(direction)?direction:'front');
+  const facing=directionFor(objectId,DIRECTIONS.has(direction)?direction:'front');
+  const state=stateFor({animal,objectId,moving,ready,direction:facing});
+  const selected=available(animal,state,facing);
   if(!selected)return false;
   const source=imageFor(selected);if(!source)return false;
   const {img,w,h}=source,frame=Math.floor(performance.now()/1000*selected.fps)%selected.count;
@@ -105,8 +120,9 @@
  }
  function onHarvest(id){if(id!=null)recent.set(id,Date.now()+1800)}
  function hasActive(){return decoded.size>0||pending.size>0}
- window.OnlyCropsAnimalMotion={refresh,draw,onHarvest,hasActive,
-  status:()=>({connected,animations:records.size,decoded:decoded.size,animals:[...ANIMALS],revision})};
+ window.OnlyCropsAnimalMotion={refresh,draw,onHarvest,onMove,resetTransient,directionFor,hasActive,
+  status:()=>({connected,animations:records.size,decoded:decoded.size,animals:[...ANIMALS],revision,
+   clips:[...records.keys()].sort()})};
  // The original GM19 Save in Studio button creates/updates the same IndexedDB.
  // Refresh asynchronously after its transaction; do not interfere with its save listener.
  let reload;
