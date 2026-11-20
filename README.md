@@ -1,3 +1,7 @@
+# Only Crops — Checkpoint 20.19
+
+Animal Animation Editor: πίνακας πραγματικά αποθηκευμένων Idle/Walk/Eat/Produce clips ανά κατεύθυνση. Η επιτυχής μετακίνηση ζώου επιλέγει προσωρινά τη σωστή κατεύθυνση Walk, χωρίς αλλαγή στα saves ή στην παραγωγή. [Τεκμηρίωση](docs/CP20_19_ANIMAL_DIRECTIONS.md).
+
 # Only Crops — Checkpoint 20.18
 
 Τα αποθηκευμένα clips του **Animal Animation Editor** συνδέονται πλέον με τον πραγματικό Canvas χάρτη για Idle, Move-item Walk και παραγωγή/συγκομιδή. Χωρίς αποθηκευμένα clips παραμένουν τα παλιά sprites. Τα saves, grid, Coins και timers δεν αλλάζουν. [Τεκμηρίωση και όρια](docs/CP20_18_ANIMAL_RUNTIME.md).
