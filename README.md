@@ -1,3 +1,7 @@
+# Only Crops — Checkpoint 20.18
+
+Τα αποθηκευμένα clips του **Animal Animation Editor** συνδέονται πλέον με τον πραγματικό Canvas χάρτη για Idle, Move-item Walk και παραγωγή/συγκομιδή. Χωρίς αποθηκευμένα clips παραμένουν τα παλιά sprites. Τα saves, grid, Coins και timers δεν αλλάζουν. [Τεκμηρίωση και όρια](docs/CP20_18_ANIMAL_RUNTIME.md).
+
 # Only Crops — Checkpoint 20.17
 
 Νέα επιλογή **🐄 Animations ζώων** στον Game Maker: κάθε ζώο με ξεχωριστά Idle/Walk/Eat/Production animations, τέσσερις κατευθύνσεις και sprite-sheet FPS/καρέ μέσα στο υπάρχον Animation Studio. Οι κινήσεις αποθηκεύονται ως Studio assets· η αυτόματη εναλλαγή τους στη φάρμα είναι μελλοντικό ξεχωριστό στάδιο. [Τεκμηρίωση](docs/CP20_17_ANIMAL_ANIMATIONS.md).
