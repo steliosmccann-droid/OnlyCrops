@@ -129,7 +129,43 @@ function drawGround(){
  ctx.strokeStyle='rgba(36,82,39,.34)';ctx.lineWidth=Math.max(1.3,1.8*zoom);ctx.stroke();
  ctx.restore();
 }
-function drawGrid(){if(!grid)return;for(let i=0;i<=N;i++){const major=i%4===0;line(i,0,i,N,major?'#47763eaa':'#47763e5a',major?1.15:.45);line(0,i,N,i,major?'#47763eaa':'#47763e5a',major?1.15:.45)}}
+function drawGrid(){
+ // The classic placement grid is visible automatically in Move, independently
+ // of the player's usual Grid toggle. No grid or save setting is modified.
+ if(!grid&&tool!=='move')return;
+ const placement=tool==='move',end=placement?OPEN:N;
+ for(let i=0;i<=end;i++){
+  const major=i%4===0;
+  const stroke=placement?(major?'#315b2cdd':'#44813eaa'):(major?'#47763eaa':'#47763e5a');
+  const weight=placement?(major?1.65:.95):(major?1.15:.45);
+  line(i,0,i,end,stroke,weight);line(0,i,end,i,stroke,weight);
+ }
+}
+function drawMoveFootprint(){
+ // This is a visual guide only; real placement always uses validatePlacement().
+ if(tool!=='move')return;
+ const selected=objects.find(o=>o.id===movingId);
+ if(selected){
+  const a=footprint(selected);
+  shape(polygon(a.x,a.y,a.w,a.h),'#4b9bf044','#2677da',2.4);
+ }
+ // Clearly distinguish the full proposed footprint and the original position.
+ const a=currentCandidate();
+ if(!a||!movingId||!selected)return;
+ const reason=validatePlacement(a,selected.kind,selected.id);
+ const poly=polygon(a.x,a.y,a.w,a.h);
+ shape(poly,reason?'#ec444b5a':'#42db6958',reason?'#e3263c':'#1baf4b',Math.max(2.2,2.8*zoom));
+ const center=iso(a.x+a.w/2,a.y+a.h/2);
+ const labelText=reason?'✕ Δεν χωράει':'✓ Ελεύθερο';
+ ctx.save();
+ ctx.font='bold '+Math.max(11,Math.min(17,13*zoom))+'px system-ui';
+ ctx.textAlign='center';ctx.textBaseline='middle';
+ const tw=ctx.measureText(labelText).width,py=center.y+Math.max(10,11*zoom);
+ ctx.fillStyle=reason?'#6b2224e6':'#1f6534e6';
+ ctx.beginPath();ctx.roundRect(center.x-tw/2-8,py-11,tw+16,22,6);ctx.fill();
+ ctx.fillStyle='#ffffff';ctx.fillText(labelText,center.x,py);
+ ctx.restore();
+}
 function tree(o){const d=dims(o),p=iso(o.x+d.w/2,o.y+d.h/2),z=zoom;ellipse(p.x,p.y+2*z,12*z,4*z,'#37592d66');ctx.strokeStyle='#805028';ctx.lineWidth=5*z;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x,p.y-23*z);ctx.stroke();ellipse(p.x-9*z,p.y-25*z,12*z,11*z,'#39813a');ellipse(p.x+8*z,p.y-29*z,13*z,12*z,'#337934');ellipse(p.x,p.y-39*z,15*z,14*z,'#4e9842');for(const [a,b]of [[-7,-35],[7,-33],[1,-44]])ellipse(p.x+a*z,p.y+b*z,2.8*z,2.8*z,'#cf4931')}
 function bale(o){const p=iso(o.x+.5,o.y+.5),z=zoom,x=p.x,y=p.y;ellipse(x,y+3*z,10*z,3*z,'#38552677');shape([{x:x-10*z,y:y-8*z},{x,y:y-13*z},{x:x+11*z,y:y-8*z},{x,y:y-3*z}],'#f0cf68','#a57b2e');shape([{x:x-10*z,y:y-8*z},{x,y:y-3*z},{x,y:y+4*z},{x:x-10*z,y:y-1*z}],'#bf8b37','#9b6b29');shape([{x,y:y-3*z},{x:x+11*z,y:y-8*z},{x:x+11*z,y:y-1*z},{x,y:y+4*z}],'#dbac4d','#a77b31')}
 function drawFarmFence(o){
@@ -176,7 +212,7 @@ function drawItem(o){
 function currentCandidate(){if(tool==='multi'||tool==='recycle')return null;if(!hover)return null;if(tool==='move'&&!movingId){const o=hit(hover);return o?footprint(o):null}if(tool==='remove'){const o=hit(hover);return o?footprint(o):null}if(tool==='seed'||tool==='harvest'){const o=plotAt(hover);return o?footprint(o):null}const movingObj=tool==='move'?objects.find(o=>o.id===movingId):null;const id=tool==='plow'?'plot':tool==='move'?movingObj?.kind:sel.value;const a=id?anchor(hover,id,tool==='move'?moveOffset:{x:0,y:0}):null;if(a&&movingObj&&ROTATABLE_FENCES.has(id)){const d=dims({...movingObj,orientation:previewFenceOrientation(movingObj)});a.w=d.w;a.h=d.h}return a}
 function objectGroundDepth(o){const d=dims(o);return o.kind==='plot'?-100000:o.x+o.y+(d.w+d.h)/2;}
 function farmerGroundDepth(){return farmer.x+farmer.y;}
-function draw(){if(!dirty)return;dirty=false;ctx.clearRect(0,0,W,H);ctx.fillStyle=fv52OuterGrass();ctx.fillRect(0,0,W,H);drawGround();drawGrid();const scene=objects.map(o=>({type:'object',depth:objectGroundDepth(o),o}));scene.push({type:'farmer',depth:farmerGroundDepth()});scene.sort((a,b)=>a.depth-b.depth||(a.type==='farmer'?1:-1));for(const entry of scene){if(entry.type==='farmer')drawFarmer();else {drawItem(entry.o);if(farmMode==='farm'&&v36HarvestStatus(entry.o)?.ready){const d=dims(entry.o),pt=iso(entry.o.x+d.w/2,entry.o.y+d.h/2);ctx.save();ctx.font=`${Math.max(13,15*zoom)}px system-ui`;ctx.textAlign='center';ctx.shadowColor='#265329';ctx.shadowBlur=4*zoom;if(v75Harvestable(entry.o)){v61DrawAnimalMarker(pt,entry.o)}else{ctx.fillText('🧺',pt.x,pt.y-17*zoom)}ctx.restore()}}}const a=currentCandidate();if(a){let except=tool==='move'?movingId:null;const selecting=(tool==='move'&&!movingId)||tool==='remove';const kind=tool==='plow'?'plot':tool==='move'?objects.find(o=>o.id===movingId)?.kind:sel.value;const target=(tool==='seed'||tool==='harvest')?plotAt(hover):null;const reason=tool==='seed'?(target&&target.soil==='ready'&&!target.crop&&coins>=FarmCrops.SEEDS[seedSelect.value].cost?'':'Μη διαθέσιμο'):tool==='harvest'?(target&&target.crop&&FarmCrops.stage(target.crop)==='ripe'?'':'Δεν είναι ώριμο'):selecting?'':tool==='plow'?FarmPlowing.plan({x:hover.x,y:hover.y,items:objects,coins,grid:gridEngine}).reason:validatePlacement(a,kind,except);shape(polygon(a.x,a.y,a.w,a.h),selecting?'#6ebef07e':reason?'#f35f587e':'#48f08070',selecting?'#35a5e4':reason?'#e3312c':'#1fd64a',2.6);
+function draw(){if(!dirty)return;dirty=false;ctx.clearRect(0,0,W,H);ctx.fillStyle=fv52OuterGrass();ctx.fillRect(0,0,W,H);drawGround();drawGrid();const scene=objects.map(o=>({type:'object',depth:objectGroundDepth(o),o}));scene.push({type:'farmer',depth:farmerGroundDepth()});scene.sort((a,b)=>a.depth-b.depth||(a.type==='farmer'?1:-1));for(const entry of scene){if(entry.type==='farmer')drawFarmer();else {drawItem(entry.o);if(farmMode==='farm'&&v36HarvestStatus(entry.o)?.ready){const d=dims(entry.o),pt=iso(entry.o.x+d.w/2,entry.o.y+d.h/2);ctx.save();ctx.font=`${Math.max(13,15*zoom)}px system-ui`;ctx.textAlign='center';ctx.shadowColor='#265329';ctx.shadowBlur=4*zoom;if(v75Harvestable(entry.o)){v61DrawAnimalMarker(pt,entry.o)}else{ctx.fillText('🧺',pt.x,pt.y-17*zoom)}ctx.restore()}}}drawMoveFootprint();const a=currentCandidate();if(a){let except=tool==='move'?movingId:null;const selecting=(tool==='move'&&!movingId)||tool==='remove';const kind=tool==='plow'?'plot':tool==='move'?objects.find(o=>o.id===movingId)?.kind:sel.value;const target=(tool==='seed'||tool==='harvest')?plotAt(hover):null;const reason=tool==='seed'?(target&&target.soil==='ready'&&!target.crop&&coins>=FarmCrops.SEEDS[seedSelect.value].cost?'':'Μη διαθέσιμο'):tool==='harvest'?(target&&target.crop&&FarmCrops.stage(target.crop)==='ripe'?'':'Δεν είναι ώριμο'):selecting?'':tool==='plow'?FarmPlowing.plan({x:hover.x,y:hover.y,items:objects,coins,grid:gridEngine}).reason:validatePlacement(a,kind,except);if(tool!=='move'||!movingId)shape(polygon(a.x,a.y,a.w,a.h),selecting?'#6ebef07e':reason?'#f35f587e':'#48f08070',selecting?'#35a5e4':reason?'#e3312c':'#1fd64a',2.6);
 if(kind&&((tool==='place'&&(farmMode!=='farm'||marketSelected===kind))||(tool==='move'&&movingId))){
  const o=tool==='move'?objects.find(v=>v.id===movingId):null;
  const ghost={...(o||{kind,id:-1}),x:a.x,y:a.y,
