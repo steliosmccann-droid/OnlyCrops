@@ -1,3 +1,7 @@
+# Only Crops — Checkpoint 20.20
+
+Κλασικό grid στο Move: εμφανίζεται αυτόματα, μπλε αρχική θέση και πράσινη/κόκκινη προτεινόμενη θέση με τον πραγματικό έλεγχο τοποθέτησης. Δεν αλλάζουν grid footprint, saves ή οικονομία. [Τεκμηρίωση](docs/CP20_20_CLASSIC_MOVE_GRID.md).
+
 # Only Crops — Checkpoint 20.19
 
 Animal Animation Editor: πίνακας πραγματικά αποθηκευμένων Idle/Walk/Eat/Produce clips ανά κατεύθυνση. Η επιτυχής μετακίνηση ζώου επιλέγει προσωρινά τη σωστή κατεύθυνση Walk, χωρίς αλλαγή στα saves ή στην παραγωγή. [Τεκμηρίωση](docs/CP20_19_ANIMAL_DIRECTIONS.md).
