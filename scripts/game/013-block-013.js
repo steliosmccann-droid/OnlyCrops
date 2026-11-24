@@ -1167,8 +1167,12 @@ cv.addEventListener('pointerdown',e=>{
  const p=coord(e),cell=pick(p.x,p.y);
  hover=cell;dirty=true;
  const obj=(tool==='move'&&cell)?hit(cell):null;
+ // CP20.22: do NOT begin a new drag on an unselected object.
+ // A tap or the original context Move action must select it first.
+ const selectedForDrag=!!obj&&tool==='move'&&movingId===obj.id;
  pointers.set(e.pointerId,{...p,startX:p.x,startY:p.y,
-   dragCandidate:obj?{id:obj.id,cell:{x:cell.x,y:cell.y}}:null,draggingObject:false,preselectedId:movingId});
+   dragCandidate:selectedForDrag?{id:obj.id,cell:{x:cell.x,y:cell.y}}:null,
+   draggingObject:false,preselectedId:movingId});
  if(pointers.size>=2)gesture=true;
 });
 cv.addEventListener('pointermove',e=>{
@@ -1178,7 +1182,8 @@ cv.addEventListener('pointermove',e=>{
  if(pointers.size===1){
   if(old.dragCandidate&&Math.hypot(p.x-old.startX,p.y-old.startY)>9){
    old.draggingObject=true;dragged=true;
-   if(movingId!==old.dragCandidate.id){movingId=old.dragCandidate.id;moveOffset={x:old.dragCandidate.cell.x-(objects.find(o=>o.id===movingId)?.x||0),y:old.dragCandidate.cell.y-(objects.find(o=>o.id===movingId)?.y||0)};window.FarmClassicTools?.syncRotate()}
+   // Move selection is explicit. Never silently switch to another object.
+   if(movingId!==old.dragCandidate.id){old.draggingObject=false;old.dragCandidate=null;}
   }
   if(old.draggingObject){hover=pick(p.x,p.y);dirty=true}
   else {if(Math.hypot(p.x-old.startX,p.y-old.startY)>9)dragged=true;
@@ -1193,7 +1198,7 @@ cv.addEventListener('pointermove',e=>{
 });
 cv.addEventListener('pointerup',e=>{
  const p=coord(e),old=pointers.get(e.pointerId);
- if(old&&pointers.size===1&&!gesture&&old.draggingObject&&old.dragCandidate){
+ if(old&&pointers.size===1&&!gesture&&old.draggingObject&&old.dragCandidate&&movingId===old.dragCandidate.id){
   classicDragFinish(old.dragCandidate.id,old.dragCandidate.cell,pick(p.x,p.y));
  }else if(old&&pointers.size===1&&!dragged&&!gesture&&Math.hypot(p.x-old.startX,p.y-old.startY)<10){action(p.x,p.y)}
  pointers.delete(e.pointerId);
