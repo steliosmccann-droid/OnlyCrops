@@ -1658,11 +1658,20 @@ function classicDragFinish(objId,startCell,endCell){
  const offset={x:startCell.x-item.x,y:startCell.y-item.y};
  const a=anchor(endCell,item.kind,offset);
  if(!a)return;
- const d=dims(item);a.w=d.w;a.h=d.h;
+ // Use the same orientation preview as the Move grid and tap-to-drop flow.
+ const proposedOrientation=previewFenceOrientation(item);
+ const proposed={...item,orientation:proposedOrientation};
+ const d=dims(proposed);a.w=d.w;a.h=d.h;
  const reason=validatePlacement(a,item.kind,item.id);
  if(reason){show('✕ '+reason);return}
- if(a.x===item.x&&a.y===item.y)return;
- snapshot();const oldX=item.x,oldY=item.y;item.x=a.x;item.y=a.y;if(v60Animal(item))window.OnlyCropsAnimalMotion?.onMove(item.id,a.x-oldX,a.y-oldY);save();refreshStatus();refreshStorageUI();dirty=true;
+ const moved=a.x!==item.x||a.y!==item.y;
+ const rotated=proposedOrientation!==normalizeOrientation(item.orientation);
+ if(!moved&&!rotated)return;
+ snapshot();const oldX=item.x,oldY=item.y;
+ item.x=a.x;item.y=a.y;
+ if(rotated)item.orientation=proposedOrientation;
+ if(moved&&v60Animal(item))window.OnlyCropsAnimalMotion?.onMove(item.id,a.x-oldX,a.y-oldY);
+ save();refreshStatus();refreshStorageUI();dirty=true;
  movingId=null;moveOffset={x:0,y:0};pendingFenceRotation=null;
  window.FarmClassicTools?.syncRotate();
  show('✓ Μετακινήθηκε: '+(defs.get(item.kind)?.name||item.kind));
