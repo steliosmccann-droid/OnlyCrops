@@ -72,7 +72,7 @@ window.OnlyCropsPlacement={draw:drawPlacement,pointAt,bindDrag:bindPlacementDrag
 function attachAnimalCenter(picker,after){
  const wrap=document.createElement('section');wrap.className='animal-placement';after.after(wrap);
  function add(tag,label){const n=document.createElement(tag);n.textContent=label;wrap.append(n);return n}
- const hint=add('p','Σύρε το ζώο πάνω στον ρόμβο. Άφησέ το για αποθήκευση.');
+ const hint=add('p','');
  const canvas=add('canvas','');canvas.width=320;canvas.height=220;canvas.style.cssText='width:100%;height:auto;display:block;touch-action:manipulation';
  const next=add('button',''),reset=add('button','Επαναφορά στοίχισης');next.type=reset.type='button';
  const status=add('p','');status.setAttribute('role','status');
@@ -85,7 +85,7 @@ function attachAnimalCenter(picker,after){
   const ready=!!a?.img?.naturalWidth;
   canvas.hidden=!ready;canvas.style.display=ready?'block':'none';reset.hidden=!ready||!engine.manualAnchor(id,'sprite',frame);
   if(!ready){next.hidden=true;hint.textContent='Διάλεξε εικόνα ζώου για να εμφανιστεί ο ρόμβος.';if(a?.img&&!a.img.complete)a.img.addEventListener('load',refresh,{once:true});return}
-  hint.textContent='Σύρε το ζώο πάνω στον ρόμβο. Άφησέ το για αποθήκευση.';
+  hint.textContent='Σύρε πάνω στον ρόμβο.';
   const cols=a.conf.cols,rows=a.conf.rows,count=cols*rows;
   frame%=count;next.hidden=count===1;next.textContent='Καρέ '+(frame+1)+' / '+count+' · Επόμενο';
   const w=a.img.naturalWidth/cols,h=a.img.naturalHeight/rows;
@@ -110,10 +110,6 @@ function install(){
  if(document.getElementById('oc216-simple-sprites'))return;
  const create=(tag,parent,value)=>{const e=document.createElement(tag);if(value!==undefined)e.textContent=value;parent.append(e);return e};
  const card=create('section',bridge);card.id='oc216-simple-sprites';bridge.prepend(card);
- const searchBox=create('details',card);
- create('summary',searchBox,'Αναζήτηση');
- const searchLabel=create('label',searchBox);
- const search=create('input',searchLabel);search.type='search';search.setAttribute('aria-label','Αναζήτηση αντικειμένου');search.placeholder='π.χ. cow, chicken, apple…';search.id='oc216-search';search.autocomplete='off';
  const pickerLabel=create('label',card,'Αντικείμενο');
  const picker=create('select',pickerLabel);picker.id='oc216-picker';
  const info=create('p',card);info.id='oc216-info';info.setAttribute('aria-live','polite');
@@ -124,6 +120,11 @@ function install(){
  const showCenter=attachAnimalCenter(picker,pickerLabel);
  const message=create('p',card);message.id='oc216-message';message.setAttribute('role','status');
  const advanced=create('button',card,'Περισσότερες ρυθμίσεις');advanced.id='oc216-advanced';advanced.type='button';advanced.setAttribute('aria-expanded','false');
+ const options=create('details',card);
+ create('summary',options,'Επιλογές');
+ const searchLabel=create('label',options,'Αναζήτηση αντικειμένου');
+ const search=create('input',searchLabel);search.type='search';search.id='oc216-search';search.autocomplete='off';
+ options.append(advanced);
  let objectUrl=null,advancedOpen=false,all=[];
  function fold(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('el-GR')}
  function data(){
@@ -162,6 +163,8 @@ function install(){
   preview.hidden=!id||!!engine?.isAnimal?.(id);
   info.hidden=true;
   choose.textContent=asset?'Αλλαγή εικόνας':'Διάλεξε εικόνα';
+  if(asset)options.insertBefore(choose,advanced);
+  else card.insertBefore(choose,message);
   if(preview.hidden)return;
   let src='';
   if(asset?.blob){objectUrl=URL.createObjectURL(asset.blob);src=objectUrl}
@@ -187,7 +190,11 @@ function install(){
   if(!picker.options.length)fill();
   else draw();
  }
- searchBox.addEventListener('toggle',()=>{if(!searchBox.open&&search.value){search.value='';fill()}});
+ options.addEventListener('toggle',()=>{
+  if(options.open)return;
+  if(advancedOpen)changeAdvanced(false);
+  if(search.value){search.value='';fill()}
+ });
  picker.addEventListener('change',selectOriginal);
  search.addEventListener('input',fill);
  choose.addEventListener('click',()=>{
