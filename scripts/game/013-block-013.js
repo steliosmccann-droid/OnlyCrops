@@ -148,6 +148,26 @@ function drawMoveFootprint(){
  if(selected){
   const a=footprint(selected);
   shape(polygon(a.x,a.y,a.w,a.h),'#4b9bf044','#2677da',2.4);
+  // A blocked rotation is a *preview*, not a saved orientation. Show its
+  // proposed footprint over the source, even before the user moves the item.
+  const preview=previewFenceOrientation(selected);
+  if(preview!==normalizeOrientation(selected.orientation)){
+   const rotated=footprint({...selected,orientation:preview});
+   const blocked=validatePlacement(rotated,selected.kind,selected.id);
+   shape(polygon(rotated.x,rotated.y,rotated.w,rotated.h),
+      blocked?'#e93f4440':'#49ce6a30',blocked?'#d92c38':'#249e46',2.8);
+  }
+  // Front/back art may be identical or symmetrical: distinguish orientation
+  // without distorting the 2.5D sprite or fabricating a rear-facing image.
+  const heading=preview===1?'↻ 90°':'↻ 0°';
+  const origin=iso(a.x+a.w/2,a.y+a.h/2);
+  ctx.save();ctx.font='bold '+Math.max(12,13*zoom)+'px system-ui';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  const tWidth=ctx.measureText(heading).width;
+  ctx.fillStyle='#2a4c27e8';
+  ctx.fillRect(origin.x-tWidth/2-7,origin.y+8*zoom-10,tWidth+14,20);
+  ctx.fillStyle='#fff';ctx.fillText(heading,origin.x,origin.y+8*zoom);
+  ctx.restore();
  }
  // Clearly distinguish the full proposed footprint and the original position.
  const a=currentCandidate();
@@ -212,7 +232,11 @@ function drawItem(o){
 function currentCandidate(){if(tool==='multi'||tool==='recycle')return null;if(!hover)return null;if(tool==='move'&&!movingId){const o=hit(hover);return o?footprint(o):null}if(tool==='remove'){const o=hit(hover);return o?footprint(o):null}if(tool==='seed'||tool==='harvest'){const o=plotAt(hover);return o?footprint(o):null}const movingObj=tool==='move'?objects.find(o=>o.id===movingId):null;const id=tool==='plow'?'plot':tool==='move'?movingObj?.kind:sel.value;const a=id?anchor(hover,id,tool==='move'?moveOffset:{x:0,y:0}):null;if(a&&movingObj&&ROTATABLE_FENCES.has(id)){const d=dims({...movingObj,orientation:previewFenceOrientation(movingObj)});a.w=d.w;a.h=d.h}return a}
 function objectGroundDepth(o){const d=dims(o);return o.kind==='plot'?-100000:o.x+o.y+(d.w+d.h)/2;}
 function farmerGroundDepth(){return farmer.x+farmer.y;}
-function draw(){if(!dirty)return;dirty=false;ctx.clearRect(0,0,W,H);ctx.fillStyle=fv52OuterGrass();ctx.fillRect(0,0,W,H);drawGround();drawGrid();const scene=objects.map(o=>({type:'object',depth:objectGroundDepth(o),o}));scene.push({type:'farmer',depth:farmerGroundDepth()});scene.sort((a,b)=>a.depth-b.depth||(a.type==='farmer'?1:-1));for(const entry of scene){if(entry.type==='farmer')drawFarmer();else {const lifted=tool==='move'&&movingId===entry.o.id&&[...pointers.values()].some(v=>v.draggingObject);if(lifted){ctx.save();ctx.globalAlpha=.26}drawItem(entry.o);if(lifted)ctx.restore();if(farmMode==='farm'&&v36HarvestStatus(entry.o)?.ready){const d=dims(entry.o),pt=iso(entry.o.x+d.w/2,entry.o.y+d.h/2);ctx.save();ctx.font=`${Math.max(13,15*zoom)}px system-ui`;ctx.textAlign='center';ctx.shadowColor='#265329';ctx.shadowBlur=4*zoom;if(v75Harvestable(entry.o)){v61DrawAnimalMarker(pt,entry.o)}else{ctx.fillText('🧺',pt.x,pt.y-17*zoom)}ctx.restore()}}}const a=currentCandidate();if(a){let except=tool==='move'?movingId:null;const selecting=(tool==='move'&&!movingId)||tool==='remove';const kind=tool==='plow'?'plot':tool==='move'?objects.find(o=>o.id===movingId)?.kind:sel.value;const target=(tool==='seed'||tool==='harvest')?plotAt(hover):null;const reason=tool==='seed'?(target&&target.soil==='ready'&&!target.crop&&coins>=FarmCrops.SEEDS[seedSelect.value].cost?'':'Μη διαθέσιμο'):tool==='harvest'?(target&&target.crop&&FarmCrops.stage(target.crop)==='ripe'?'':'Δεν είναι ώριμο'):selecting?'':tool==='plow'?FarmPlowing.plan({x:hover.x,y:hover.y,items:objects,coins,grid:gridEngine}).reason:validatePlacement(a,kind,except);if(tool!=='move'||!movingId)shape(polygon(a.x,a.y,a.w,a.h),selecting?'#6ebef07e':reason?'#f35f587e':'#48f08070',selecting?'#35a5e4':reason?'#e3312c':'#1fd64a',2.6);
+function draw(){if(!dirty)return;dirty=false;ctx.clearRect(0,0,W,H);ctx.fillStyle=fv52OuterGrass();ctx.fillRect(0,0,W,H);drawGround();drawGrid();const scene=objects.map(o=>({type:'object',depth:objectGroundDepth(o),o}));scene.push({type:'farmer',depth:farmerGroundDepth()});scene.sort((a,b)=>a.depth-b.depth||(a.type==='farmer'?1:-1));for(const entry of scene){if(entry.type==='farmer')drawFarmer();else {const lifted=tool==='move'&&movingId===entry.o.id&&[...pointers.values()].some(v=>v.draggingObject);if(lifted){ctx.save();ctx.globalAlpha=.26}// Draw an unsaved, blocked Rotate choice as a visual preview. The original
+ // object orientation and saved data remain untouched until a valid drop.
+ const display=tool==='move'&&pendingFenceRotation?.id===entry.o.id
+   ?{...entry.o,orientation:previewFenceOrientation(entry.o)}:entry.o;
+ drawItem(display);if(lifted)ctx.restore();if(farmMode==='farm'&&v36HarvestStatus(entry.o)?.ready){const d=dims(entry.o),pt=iso(entry.o.x+d.w/2,entry.o.y+d.h/2);ctx.save();ctx.font=`${Math.max(13,15*zoom)}px system-ui`;ctx.textAlign='center';ctx.shadowColor='#265329';ctx.shadowBlur=4*zoom;if(v75Harvestable(entry.o)){v61DrawAnimalMarker(pt,entry.o)}else{ctx.fillText('🧺',pt.x,pt.y-17*zoom)}ctx.restore()}}}const a=currentCandidate();if(a){let except=tool==='move'?movingId:null;const selecting=(tool==='move'&&!movingId)||tool==='remove';const kind=tool==='plow'?'plot':tool==='move'?objects.find(o=>o.id===movingId)?.kind:sel.value;const target=(tool==='seed'||tool==='harvest')?plotAt(hover):null;const reason=tool==='seed'?(target&&target.soil==='ready'&&!target.crop&&coins>=FarmCrops.SEEDS[seedSelect.value].cost?'':'Μη διαθέσιμο'):tool==='harvest'?(target&&target.crop&&FarmCrops.stage(target.crop)==='ripe'?'':'Δεν είναι ώριμο'):selecting?'':tool==='plow'?FarmPlowing.plan({x:hover.x,y:hover.y,items:objects,coins,grid:gridEngine}).reason:validatePlacement(a,kind,except);if(tool!=='move'||!movingId)shape(polygon(a.x,a.y,a.w,a.h),selecting?'#6ebef07e':reason?'#f35f587e':'#48f08070',selecting?'#35a5e4':reason?'#e3312c':'#1fd64a',2.6);
 if(kind&&((tool==='place'&&(farmMode!=='farm'||marketSelected===kind))||(tool==='move'&&movingId))){
  const o=tool==='move'?objects.find(v=>v.id===movingId):null;
  const ghost={...(o||{kind,id:-1}),x:a.x,y:a.y,
