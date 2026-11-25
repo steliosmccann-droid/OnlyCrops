@@ -1536,7 +1536,7 @@ const FarmImages=(()=>{
   else if((name==='farmer'||name==='farmer_blonde')&&conf.rows>=3){row=stage==='walking'?1:stage==='working'||stage==='harvesting'?2:0;}
   const tick=Math.floor(performance.now()/1000*conf.fps);
   let col=tick%conf.cols;
-  if(animalKinds.has(name)&&conf.rows>1&&Object.keys(placement(name,'sprite').value).length)row=Math.floor(tick/conf.cols)%conf.rows;
+  if(animalKinds.has(name)&&conf.rows>1)row=Math.floor(tick/conf.cols)%conf.rows;
   const ww=baseWidth*conf.scale,hh=ww*(fh/fw);
   const anchor=manualAnchor(name,'sprite',row*conf.cols+col)||groundAnchor(name,img,col*fw,row*fh,fw,fh);
   ctx.save();
@@ -1558,7 +1558,7 @@ const FarmImages=(()=>{
   }
   dirty=true;return count;
  }
- return {manualAnchor,setManualAnchor,measureGround,groundAnchor,setCentered,isAnimal:id=>animalKinds.has(id),isCentered:id=>centered.has(id),get,set,remove,init,draw,loadBundled,settings,allowed,storageOK:()=>storageOK,entries:()=>Array.from(assets.entries()),hasAnimated:()=>Array.from(assets.entries()).some(([id,a])=>a.conf.cols>1||(a.conf.rows>1&&animalKinds.has(id)&&Object.keys(placement(id,'sprite').value).length))};
+ return {manualAnchor,setManualAnchor,measureGround,groundAnchor,setCentered,isAnimal:id=>animalKinds.has(id),isCentered:id=>centered.has(id),get,set,remove,init,draw,loadBundled,settings,allowed,storageOK:()=>storageOK,entries:()=>Array.from(assets.entries()),hasAnimated:()=>Array.from(assets.entries()).some(([id,a])=>a.conf.cols>1||(a.conf.rows>1&&animalKinds.has(id)))};
 })();
 // V83: Editor bridge — same sprite engine, no change to placements or footprints.
 window.FV83Assets=FarmImages;
