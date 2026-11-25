@@ -112,7 +112,7 @@
   const dw=baseWidth*scale,dh=dw*h/w;
   if(!Number.isFinite(dw)||!Number.isFinite(dh)||dw<=0||dh<=0)return false;
   ctx.save();
-  const anchor=window.FV83Assets?.groundAnchor?.(animal,img,sx,sy,w,h);
+  const anchor=window.FV83Assets?.manualAnchor?.(animal,selected.state+'/'+selected.direction,frame)||window.FV83Assets?.groundAnchor?.(animal,img,sx,sy,w,h);
   ctx.translate(cx+(anchor?0:offsetX*zoom),groundY+(anchor?0:offsetY*zoom));
   // The object renderer already mirrors the canvas for Rotate. Keep authored
   // side views facing their intended direction; mirror a front fallback once.
