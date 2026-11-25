@@ -26,6 +26,21 @@ function install(){
  const noImg=create('p',preview,'Δεν υπάρχει ακόμη δική σου εικόνα γι’ αυτό το αντικείμενο.');
  const fileLabel=create('label',card,'📁 Επιλογή PNG, JPG ή WebP από iPhone');
  const choose=create('button',fileLabel,'＋ Διάλεξε εικόνα');choose.type='button';
+ const center=create('button',card,'Κεντράρισμα στο πλέγμα');center.type='button';
+ function showCenter(){
+  const engine=window.FV83Assets,id=picker.value;
+  center.hidden=!engine?.isAnimal?.(id);
+  center.style.display=center.hidden?'none':'';
+  center.setAttribute('aria-pressed',String(!!engine?.isCentered?.(id)));
+  center.textContent=engine?.isCentered?.(id)?'✓ Κεντραρισμένο · Αναίρεση':'Κεντράρισμα στο πλέγμα';
+ }
+ center.onclick=()=>{
+  const engine=window.FV83Assets,id=picker.value;
+  if(!engine?.isAnimal?.(id))return;
+  const on=!engine.isCentered(id),saved=engine.setCentered(id,on);
+  showCenter();
+  message.textContent=(on?'Τα πόδια ευθυγραμμίστηκαν με το κέντρο του κελιού.':'Επανήλθε η προηγούμενη στοίχιση.')+(saved?'':' Η αλλαγή ισχύει μόνο για αυτή τη συνεδρία.');
+ };
  const explanation=create('p',card,'Χρησιμοποιεί την ίδια εισαγωγή εικόνας που υπάρχει ήδη στο παιχνίδι. Μέχρι 8 MB. Το grid δεν αλλάζει.');
  const message=create('p',card);message.id='oc216-message';message.setAttribute('role','status');
  const advanced=create('button',card,'⚙ Περισσότερα: μέγεθος, animation, backup');advanced.id='oc216-advanced';advanced.type='button';advanced.setAttribute('aria-expanded','false');
@@ -45,6 +60,7 @@ function install(){
   if(all.some(o=>o.id===current))picker.value=current;
   else if(all.length)picker.value=all[0].id;
   picker.disabled=!all.length;choose.disabled=!all.length;
+  showCenter();
   if(!all.length){info.textContent='Δεν βρέθηκε αντικείμενο. Δοκίμασε άλλη αναζήτηση.';img.hidden=true;noImg.hidden=false;return}
   selectOriginal();
  }
@@ -59,6 +75,7 @@ function install(){
   draw();
  }
  function draw(){
+  showCenter();
   const id=picker.value,engine=window.FV83Assets,asset=engine?.get?.(id),def=window.FV83Defs?.get?.(id);
   if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}
   img.removeAttribute('src');img.hidden=true;noImg.hidden=false;
