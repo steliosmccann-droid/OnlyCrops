@@ -72,6 +72,30 @@ window.OnlyCropsPlacement={draw:drawPlacement,pointAt,bindDrag:bindPlacementDrag
 function attachAnimalCenter(picker,after){
  const wrap=document.createElement('section');wrap.className='animal-placement';after.after(wrap);
  function add(tag,label){const n=document.createElement(tag);n.textContent=label;wrap.append(n);return n}
+ const layoutLabel=add('label','Διάταξη εικόνας');
+ layoutLabel.style.gridColumn='1 / -1';
+ const layout=document.createElement('select');layout.setAttribute('aria-label','Διάταξη sprite sheet');
+ for(const [value,label] of [['1x1','Μία εικόνα'],['2x2','4 καρέ · 2 × 2 (αγελάδα)'],['4x1','4 καρέ · μία σειρά'],['custom','Άλλη διάταξη']]){
+  const option=document.createElement('option');option.value=value;option.textContent=label;option.disabled=value==='custom';layout.append(option);
+ }
+ layoutLabel.append(layout);
+ let layoutBusy=false;
+ layout.onchange=async()=>{
+  const engine=window.FV83Assets,id=picker.value,asset=engine.get(id);
+  if(!asset||layoutBusy)return;
+  const [cols,rows]=layout.value.split('x').map(Number);
+  if(!cols||!rows)return;
+  layoutBusy=true;layout.disabled=true;
+  try{
+   const blob=asset.blob||await (await fetch(asset.inlineSrc)).blob();
+   if(engine.get(id)!==asset)throw Error('Η εικόνα άλλαξε. Δοκίμασε ξανά.');
+   const persisted=await engine.set(id,blob,{...asset.conf,cols,rows});
+   const aligned=engine.setManualAnchor(id,'sprite',0,null);
+   frame=0;draft=null;refresh();
+   status.textContent=persisted&&aligned?'Η διάταξη αποθηκεύτηκε. Ρύθμισε τη θέση ανά καρέ.':'Η διάταξη εφαρμόστηκε. Η μόνιμη αποθήκευση δεν επιβεβαιώθηκε.';
+  }catch(error){status.textContent=error.message;refresh()}
+  finally{layoutBusy=false;layout.disabled=false}
+ };
  const hint=add('p','');
  const canvas=add('canvas','');canvas.width=320;canvas.height=220;canvas.style.cssText='width:100%;height:auto;display:block;touch-action:manipulation';
  const controls=add('div','');controls.className='placement-arrows';controls.setAttribute('role','group');controls.setAttribute('aria-label','Μετακίνηση καρέ');
@@ -101,6 +125,9 @@ function attachAnimalCenter(picker,after){
   if(last!==id){frame=0;last=id;draft=null;status.textContent=''}
   box=null;if(wrap.hidden)return;
   const ready=!!a?.img?.naturalWidth;
+  layout.disabled=layoutBusy||!ready;
+  const arrangement=a?a.conf.cols+'x'+a.conf.rows:'1x1';
+  layout.value=['1x1','2x2','4x1'].includes(arrangement)?arrangement:'custom';
   controls.hidden=auto.hidden=!ready;
   canvas.hidden=!ready;canvas.style.display=ready?'block':'none';reset.hidden=!ready||!engine.manualAnchor(id,'sprite',frame);
   if(!ready){next.hidden=true;hint.textContent='Διάλεξε εικόνα ζώου για να εμφανιστεί ο ρόμβος.';if(a?.img&&!a.img.complete)a.img.addEventListener('load',refresh,{once:true});return}
