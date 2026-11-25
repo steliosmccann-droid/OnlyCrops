@@ -1,32 +1,67 @@
 /* Only Crops CP20.16 — simple Sprite entry point; uses the original CP12 image input
  and Sprite Engine; does not create a second editor or touch farm data. */
 (()=>{'use strict';
-function attachAnimalCenter(picker,after){
- const button=document.createElement('button');
- button.type='button';
- after.after(button);
- const notice=document.createElement('p');
- notice.setAttribute('role','status');button.after(notice);
- function refresh(){
-  const engine=window.FV83Assets,id=picker.value;
-  const enabled=!!engine?.isAnimal?.(id);
-  button.disabled=!enabled;
-  const on=enabled&&engine.isCentered(id);
-  button.setAttribute('aria-pressed',String(on));
-  button.textContent=on?'✓ Κεντράρισμα στο πλέγμα · Αναίρεση':'Κεντράρισμα στο πλέγμα';
-  notice.textContent=enabled?'':'Διάλεξε ζώο για κεντράρισμα.';
-  notice.hidden=!notice.textContent;
+function drawPlacement(canvas,id,clip,frame,img,sx,sy,fw,fh){
+ const engine=window.FV83Assets,ctx=canvas.getContext('2d');
+ const def=window.FV83Defs.get(id),conf=engine.get(id)?.conf||{};
+ const anchor=engine.manualAnchor(id,clip,frame)||engine.groundAnchor(id,img,sx,sy,fw,fh)||{x:.5,y:1};
+ const W=canvas.width,H=canvas.height;
+ const base=Math.max(15,(def.w+def.h)*15.5*.65),scale=conf.scale||1;
+ const automatic=!!engine.manualAnchor(id,clip,frame)||engine.isCentered(id);
+ const dx=automatic?0:conf.offsetX||0,dy=automatic?0:conf.offsetY||0;
+ const width=base*scale,height=width*fh/fw,flip=!!conf.flipX;
+ const ax=flip?1-anchor.x:anchor.x;
+ const halfX=(def.w+def.h)*15.5/4,halfY=(def.w+def.h)*8/4;
+ const extentX=Math.max(halfX,width+Math.abs(dx)),extentY=Math.max(halfY,height+Math.abs(dy));
+ const z=Math.min((W-20)/(2*extentX),(H-20)/(2*extentY));
+ const cx=W/2,cy=H/2;
+ const x=cx+(dx-width*ax)*z,y=cy+(dy-height*anchor.y)*z,w=width*z,h=height*z;
+ ctx.fillStyle='#f6efdc';ctx.fillRect(0,0,W,H);
+ ctx.beginPath();
+ for(const [i,[gx,gy]] of [[0,0],[def.w,0],[def.w,def.h],[0,def.h]].entries()){
+  const px=cx+((gx-def.w/2)-(gy-def.h/2))*7.75*z,py=cy+((gx-def.w/2)+(gy-def.h/2))*4*z;
+  if(i)ctx.lineTo(px,py);else ctx.moveTo(px,py);
  }
- button.onclick=()=>{
-  const engine=window.FV83Assets,id=picker.value;
-  if(!engine?.isAnimal?.(id))return;
-  const on=!engine.isCentered(id),saved=engine.setCentered(id,on);
-  refresh();
-  notice.hidden=false;
-  notice.textContent=(on?'Το ζώο κεντραρίστηκε στο κελί του.':'Επανήλθε η προηγούμενη στοίχιση.')+(saved?'':' Η αλλαγή ισχύει μόνο για αυτή τη συνεδρία.');
- };
- picker.addEventListener('change',refresh);
- refresh();return refresh;
+ ctx.closePath();ctx.fillStyle='#b9d496';ctx.fill();ctx.strokeStyle='#527335';ctx.lineWidth=2;ctx.stroke();
+ ctx.save();ctx.translate(flip?x+w:x,y);if(flip)ctx.scale(-1,1);
+ ctx.drawImage(img,sx,sy,fw,fh,0,0,w,h);ctx.restore();
+ ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#8a3219';ctx.stroke();
+ return {x,y,w,h,flip};
+}
+function pointAt(canvas,box,event){
+ const r=canvas.getBoundingClientRect();
+ const x=((event.clientX-r.left)*canvas.width/r.width-box.x)/box.w;
+ const y=((event.clientY-r.top)*canvas.height/r.height-box.y)/box.h;
+ return x>=0&&x<=1&&y>=0&&y<=1?{x:box.flip?1-x:x,y}:null;
+}
+window.OnlyCropsPlacement={draw:drawPlacement,pointAt};
+function attachAnimalCenter(picker,after){
+ const wrap=document.createElement('section');after.after(wrap);
+ function add(tag,label){const n=document.createElement(tag);n.textContent=label;wrap.append(n);return n}
+ add('strong','Στοίχιση στο πλέγμα');
+ const hint=add('p','Πάτησε ανάμεσα στα πόδια. Το πρώτο σημείο ισχύει για όλα τα καρέ. Μετά διορθώνεις κάθε καρέ χωριστά.');
+ const canvas=add('canvas','');canvas.width=320;canvas.height=220;canvas.style.cssText='width:100%;height:auto;display:block;touch-action:manipulation';
+ const next=add('button',''),reset=add('button','Επαναφορά στοίχισης');next.type=reset.type='button';
+ const status=add('p','');status.setAttribute('role','status');
+ let frame=0,last='',box=null;
+ function refresh(){
+  const id=picker.value,engine=window.FV83Assets,a=engine?.get(id);
+  wrap.hidden=!engine?.isAnimal?.(id);wrap.style.display=wrap.hidden?'none':'';
+  if(last!==id){frame=0;last=id;status.textContent=''}
+  box=null;if(wrap.hidden)return;
+  const ready=!!a?.img?.naturalWidth;
+  canvas.hidden=!ready;canvas.style.display=ready?'block':'none';reset.disabled=!ready;
+  if(!ready){next.hidden=true;hint.textContent='Διάλεξε εικόνα ζώου για να εμφανιστεί ο ρόμβος.';if(a?.img&&!a.img.complete)a.img.addEventListener('load',refresh,{once:true});return}
+  hint.textContent='Πάτησε ανάμεσα στα πόδια. Το πρώτο σημείο ισχύει για όλα τα καρέ. Μετά διορθώνεις κάθε καρέ χωριστά.';
+  const cols=a.conf.cols,rows=a.conf.rows,count=cols*rows;
+  frame%=count;next.hidden=count===1;next.textContent='Καρέ '+(frame+1)+' / '+count+' · Επόμενο';
+  const w=a.img.naturalWidth/cols,h=a.img.naturalHeight/rows;
+  box=drawPlacement(canvas,id,'sprite',frame,a.img,(frame%cols)*w,Math.floor(frame/cols)*h,w,h);
+ }
+ function save(pt){const ok=window.FV83Assets.setManualAnchor(picker.value,'sprite',frame,pt);refresh();status.textContent=ok?'Η στοίχιση αποθηκεύτηκε.':'Η στοίχιση ισχύει για αυτή τη συνεδρία.'}
+ next.onclick=()=>{frame++;refresh()};reset.onclick=()=>save(null);
+ canvas.onclick=ev=>{if(box){const pt=pointAt(canvas,box,ev);if(pt)save(pt)}};
+ picker.addEventListener('change',refresh);refresh();return refresh;
 }
 window.OnlyCropsAttachAnimalCenter=attachAnimalCenter;
 let attempts=0;
@@ -89,6 +124,7 @@ function install(){
   draw();
  }
  function draw(){
+  showCenter();
   const id=picker.value,engine=window.FV83Assets,asset=engine?.get?.(id),def=window.FV83Defs?.get?.(id);
   if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}
   img.removeAttribute('src');img.hidden=true;noImg.hidden=false;
