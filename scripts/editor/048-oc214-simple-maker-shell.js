@@ -7,7 +7,7 @@ function install(){
  const nav=document.getElementById('gm20-section');
  const home=document.getElementById('gm18-home');
  const studio=document.getElementById('gm19-studio');
- if(!panel||!nav||!home||!studio||!document.getElementById('oc212-simple-hud')||!document.getElementById('oc213-simple-ui')){
+ if(!panel||!nav||!home||!studio){
   if(++attempts<90)setTimeout(install,200);return;
  }
  if(document.getElementById('oc214-shell'))return;
@@ -18,17 +18,18 @@ function install(){
  const bar=el('div',shell);bar.className='oc214-bar';
  const back=el('button',bar,'← Αρχική');back.type='button';back.id='oc214-home';
  const where=el('strong',bar,'Game Maker');where.id='oc214-current';
- const full=el('button',bar,'⚙ Μενού');full.type='button';full.id='oc214-menu';full.setAttribute('aria-expanded','false');
+ const full=el('button',bar,'Προηγμένα');full.type='button';full.id='oc214-menu';full.setAttribute('aria-expanded','false');
  const welcome=el('section',home);welcome.id='oc214-welcome';
  home.insertBefore(welcome,home.firstChild);
  el('h2',welcome,'Τι θέλεις να αλλάξεις;');
- el('p',welcome,'Διάλεξε μία εργασία. Δεν χρειάζεται να ψάχνεις σε όλα τα μενού.');
+
  const choices=el('div',welcome);choices.id='oc214-choices';
  const buttons=[
-  ['hud','🪙','HUD','Coins, NF Cash, XP και λογότυπο'],
+  ['assets','🌳','Εικόνες','Εικόνα, θέση και μέγεθος'],
   ['ui','🧰','Κουμπιά','Select, Plow, Market και Zoom'],
-  ['assets','🌳','Εικόνες','PNG ζώων, δέντρων και κτιρίων'],
-  ['systems','⚙','Μηχανισμοί','Crops, ζώα, Market και XP']
+  ['hud','🪙','Οθόνη παιχνιδιού','Coins, XP και λογότυπο'],
+  ['systems','⚙','Κανόνες παιχνιδιού','Καλλιέργειες, τιμές και χρόνοι'],
+  ['files','💾','Αρχεία','Εισαγωγή και αντίγραφα']
  ];
  for(const [key,emoji,name,detail] of buttons){
   const b=el('button',choices);b.type='button';b.dataset.oc214Screen=key;
@@ -36,11 +37,27 @@ function install(){
   const copy=el('span',b);el('strong',copy,name);el('small',copy,detail);
   b.addEventListener('click',()=>navigate(key));
  }
- const extra=el('button',welcome,'Περισσότερα εργαλεία: Animation, Αρχεία, Στοιχεία HUD');
+ const extra=el('button',welcome,'Προηγμένα εργαλεία');
  extra.type='button';extra.className='oc214-more';
  extra.addEventListener('click',()=>{setFull(true);sync()});
  const descriptions={home:'Αρχική',hud:'HUD',ui:'Κουμπιά',assets:'Εικόνες / Sprites',systems:'Μηχανισμοί',studio:'Animation Studio',files:'Αρχεία',objects:'Στοιχεία HUD',gametools:'Εργαλεία'};
- let fullMode=false;
+ const tools=el('div',shell);tools.className='oc235-tools';
+ const sub=document.getElementById('gm20-subsection');
+ let fullMode=false,toolSignature='';
+ function syncTools(section){
+  const visible=section==='systems'||section==='studio'||(section==='assets'&&panel.classList.contains('oc216-assets-advanced'));
+  tools.hidden=fullMode||!visible;
+  const signature=section+'|'+Array.from(sub?.options||[],o=>o.value+'='+o.textContent).join('|');
+  if(signature!==toolSignature){
+   toolSignature=signature;tools.replaceChildren();
+   for(const option of sub?.options||[]){
+    const button=el('button',tools,option.textContent);button.type='button';button.dataset.tool=option.value;
+    button.onclick=()=>{sub.value=option.value;sub.dispatchEvent(new Event('change',{bubbles:true}));requestAnimationFrame(sync)};
+   }
+  }
+  for(const button of tools.children)button.setAttribute('aria-pressed',String(button.dataset.tool===sub?.value));
+ }
+
  function navigate(section){
   if(![...nav.options].some(o=>o.value===section))return;
   nav.value=section;
@@ -52,13 +69,14 @@ function install(){
   fullMode=!!on;
   panel.classList.toggle('oc214-full-mode',fullMode);
   full.setAttribute('aria-expanded',String(fullMode));
-  full.textContent=fullMode?'✕ Απλό':'⚙ Μενού';
+  full.textContent=fullMode?'✕ Απλό':'Προηγμένα';
  }
  function sync(){
   const section=nav.value||'home';
   panel.dataset.oc214Screen=section;
   where.textContent=descriptions[section]||'Game Maker';
   back.hidden=section==='home';
+  syncTools(section);
   // Avoid editor scroll retaining deep old position when switching sections.
   if(section==='home')panel.scrollTop=0;
  }
@@ -72,6 +90,10 @@ function install(){
  // Preserve the original home buttons/actions invisibly: they are still present for
  // links and original event handlers, but the creator sees only the four choices.
  panel.classList.add('oc214-ready');
+ const observer=new MutationObserver(()=>requestAnimationFrame(sync));
+ observer.observe(nav,{attributes:true});
+ if(sub)observer.observe(sub,{childList:true});
+ observer.observe(panel,{attributes:true,attributeFilter:['class']});
  sync();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
