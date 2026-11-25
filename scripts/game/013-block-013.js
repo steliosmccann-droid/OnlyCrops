@@ -1488,16 +1488,18 @@ const FarmImages=(()=>{
   const pt=value[frame]||value.base;
   return pt&&[pt.x,pt.y].every(n=>Number.isFinite(n)&&n>=-1&&n<=2)?pt:null;
  }
- function setManualAnchor(id,clip,frame,pt){
+ function setManualAnchor(id,clip,frame,pt,frameOnly=false){
   if(!animalKinds.has(id))return false;
   const {key,value}=placement(id,clip);
-  const next=pt?(value.base?{...value,[frame]:pt}:{base:pt}):{};
+  const next=pt?(value.base||frameOnly?{...value,[frame]:pt}:{base:pt}):{};
   placements.set(key,next);dirty=true;
   try{if(pt)localStorage.setItem(key,JSON.stringify(next));else localStorage.removeItem(key);return true}catch{return false}
  }
  const frameAnchors=new WeakMap();
  function groundAnchor(id,img,sx,sy,w,h){
-  if(!centered.has(id))return null;
+  return centered.has(id)?measureGround(img,sx,sy,w,h):null;
+ }
+ function measureGround(img,sx,sy,w,h){
   let cache=frameAnchors.get(img);
   if(!cache){cache=new Map();frameAnchors.set(img,cache)}
   const key=[sx,sy,w,h].join(',');
@@ -1534,7 +1536,7 @@ const FarmImages=(()=>{
   else if((name==='farmer'||name==='farmer_blonde')&&conf.rows>=3){row=stage==='walking'?1:stage==='working'||stage==='harvesting'?2:0;}
   const tick=Math.floor(performance.now()/1000*conf.fps);
   let col=tick%conf.cols;
-  if(animalKinds.has(name)&&conf.rows>1&&placement(name,'sprite').value.base)row=Math.floor(tick/conf.cols)%conf.rows;
+  if(animalKinds.has(name)&&conf.rows>1&&Object.keys(placement(name,'sprite').value).length)row=Math.floor(tick/conf.cols)%conf.rows;
   const ww=baseWidth*conf.scale,hh=ww*(fh/fw);
   const anchor=manualAnchor(name,'sprite',row*conf.cols+col)||groundAnchor(name,img,col*fw,row*fh,fw,fh);
   ctx.save();
@@ -1556,7 +1558,7 @@ const FarmImages=(()=>{
   }
   dirty=true;return count;
  }
- return {manualAnchor,setManualAnchor,groundAnchor,setCentered,isAnimal:id=>animalKinds.has(id),isCentered:id=>centered.has(id),get,set,remove,init,draw,loadBundled,settings,allowed,storageOK:()=>storageOK,entries:()=>Array.from(assets.entries()),hasAnimated:()=>Array.from(assets.entries()).some(([id,a])=>a.conf.cols>1||(a.conf.rows>1&&animalKinds.has(id)&&placement(id,'sprite').value.base))};
+ return {manualAnchor,setManualAnchor,measureGround,groundAnchor,setCentered,isAnimal:id=>animalKinds.has(id),isCentered:id=>centered.has(id),get,set,remove,init,draw,loadBundled,settings,allowed,storageOK:()=>storageOK,entries:()=>Array.from(assets.entries()),hasAnimated:()=>Array.from(assets.entries()).some(([id,a])=>a.conf.cols>1||(a.conf.rows>1&&animalKinds.has(id)&&Object.keys(placement(id,'sprite').value).length))};
 })();
 // V83: Editor bridge — same sprite engine, no change to placements or footprints.
 window.FV83Assets=FarmImages;
