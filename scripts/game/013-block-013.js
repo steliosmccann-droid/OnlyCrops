@@ -212,7 +212,13 @@ function drawFarmFence(o){
  }
  ctx.restore();
 }
-function drawItemBase(o){const d=dims(o),a=footprint(o),p=polygon(a.x,a.y,a.w,a.h);if(ROTATE_FENCE_TYPES.has(o.kind)){drawFarmFence(o);return}if(o.kind==='plot'){const fallow=o.soil==='fallow';shape(p,fallow?'#85745e':'#86603b','#513c26',1.3);shape(polygon(a.x+.25,a.y+.25,a.w-.5,a.h-.5),fallow?'#a99b81':'#a87a4a',fallow?'#bcae97':'#c69c66',.7);
+function drawItemBase(o){const d=dims(o),a=footprint(o),p=polygon(a.x,a.y,a.w,a.h);if(ROTATE_FENCE_TYPES.has(o.kind)){const mid=iso(a.x+a.w/2,a.y+a.h/2);
+ ctx.save();
+ if(normalizeOrientation(o.orientation)){ctx.translate(2*mid.x,0);ctx.scale(-1,1)}
+ const drawn=drawAssetObject(o.kind,o);
+ ctx.restore();
+ if(!drawn)drawFarmFence(o);
+ return}if(o.kind==='plot'){const fallow=o.soil==='fallow';shape(p,fallow?'#85745e':'#86603b','#513c26',1.3);shape(polygon(a.x+.25,a.y+.25,a.w-.5,a.h-.5),fallow?'#a99b81':'#a87a4a',fallow?'#bcae97':'#c69c66',.7);
 // Furrows run along the grid axes; cosmetic only, no change to footprint.
 if(!fallow){for(let k=.7;k<3.8;k+=.65){const swap=normalizeOrientation(o.orientation)%2===1;const st=swap?iso(a.x+k,a.y+.25):iso(a.x+.25,a.y+k),en=swap?iso(a.x+k,a.y+a.h-.25):iso(a.x+a.w-.25,a.y+k);ctx.beginPath();ctx.moveTo(st.x,st.y);ctx.lineTo(en.x,en.y);ctx.strokeStyle='#664627';ctx.lineWidth=Math.max(.65,zoom*.9);ctx.stroke();const hi=swap?iso(a.x+k+.15,a.y+.25):iso(a.x+.25,a.y+k+.15),hj=swap?iso(a.x+k+.15,a.y+a.h-.25):iso(a.x+a.w-.25,a.y+k+.15);ctx.beginPath();ctx.moveTo(hi.x,hi.y);ctx.lineTo(hj.x,hj.y);ctx.strokeStyle='#d3a270';ctx.lineWidth=Math.max(.5,zoom*.55);ctx.stroke();}}
 if(o.crop){const d=FarmCrops.SEEDS[o.crop.seed];if(d){const stage=FarmCrops.stage(o.crop);const progress=Math.min(1,Math.max(0,(Date.now()-o.crop.plantedAt)/d.grow));const mid=iso(a.x+2,a.y+2),z=zoom;ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`${Math.max(14,20*z)}px system-ui`;ctx.globalAlpha=stage==='withered'?.45:1;if(stage==='withered'||(stage==='growing'&&progress<.35)){ctx.fillText(stage==='withered'?'🥀':'🌱',mid.x,mid.y-7*z)}else if(!drawAssetCrop(o.crop.seed,mid,stage))ctx.fillText(stage==='growing'&&progress<.65?'🌿':d.icon,mid.x,mid.y-7*z);ctx.globalAlpha=1;if(stage==='growing'){ctx.fillStyle='#492d18';ctx.fillRect(mid.x-15*z,mid.y+7*z,30*z,4*z);ctx.fillStyle='#65cf59';ctx.fillRect(mid.x-15*z,mid.y+7*z,30*z*progress,4*z)}}}
@@ -1496,7 +1502,7 @@ function drawAssetObject(kind,o){
   const orientation=normalizeOrientation(o.orientation);
   const facing=window.OnlyCropsAnimalMotion?.directionFor(o.id,orientation===1?'left':'front')||'front';
   if(motion.draw({animal:kind,objectId:o.id,moving:tool==='move'&&movingId===o.id,
-   ready:!!v36HarvestStatus(o)?.ready,direction:facing,ctx,cx:p.x,groundY:p.y,baseWidth:width,zoom,
+   ready:!!v36HarvestStatus(o)?.ready,direction:facing,mirrored:orientation===1,ctx,cx:p.x,groundY:p.y,baseWidth:width,zoom,
    scale:conf.scale,offsetX:conf.offsetX,offsetY:conf.offsetY,flipX:conf.flipX}))return true;
  }
  return FarmImages.draw(kind,p.x,p.y,width);
@@ -2716,7 +2722,7 @@ window.__farmGridTest={gridDiagnostics,get items(){return objects.map(o=>({...o}
  function activeFence(){
   const moving=tool==='move'&&movingId!==null?objects.find(o=>o.id===movingId):null;
   const contextObject=contextTarget?objects.find(o=>o.id===contextTarget.id):null;
-  const o=moving||contextObject;
+  const o=contextObject||moving;
   return o&&ROTATABLE_FENCES.has(o.kind)?o:null;
  }
  function syncRotate(){
