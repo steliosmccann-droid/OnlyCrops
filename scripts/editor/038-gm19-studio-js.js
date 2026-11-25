@@ -157,8 +157,36 @@ function install(){
    stop();refresh();message('✓ Φορτώθηκε '+file.name+(existing?' για αντικατάσταση στο ίδιο asset.':' ως νέο asset.')+' · '+img.naturalWidth+'×'+img.naturalHeight+' px');
   }catch(e){ui.file.value='';message('⚠ '+e.message,true)}
  });
+ const placementHint=document.createElement('p');
+ placementHint.textContent='Πάτησε ανάμεσα στα πόδια για να τα ευθυγραμμίσεις με τον ρόμβο. Το πρώτο σημείο ισχύει για όλα τα καρέ. Μετά διορθώνεις κάθε καρέ χωριστά.';
+ const resetPlacement=document.createElement('button');
+ resetPlacement.type='button';resetPlacement.textContent='Επαναφορά στοίχισης';
+ ui.canvas.parentElement.after(placementHint,resetPlacement);
+ let placementFrame=null;
+ function placementTarget(){
+  const match=/^Animal ([a-z0-9-]+) (idle|walk|eat|produce) (front|back|left|right)$/.exec(ui.name.value.trim());
+  if(ui.category.value==='animals'&&match&&engine.isAnimal?.(match[1]))
+   return {id:match[1],clip:match[2]+'/'+match[3]};
+  return null;
+ }
+ function commitPlacement(pt){
+  if(!placementFrame)return;
+  const {id,clip,frame}=placementFrame;
+  stop();const saved=engine.setManualAnchor(id,clip,frame,pt);
+  draw();message(saved?'Η στοίχιση αποθηκεύτηκε.':'Η στοίχιση ισχύει για αυτή τη συνεδρία.',!saved);
+ }
+ ui.canvas.addEventListener('click',event=>{
+  if(!placementFrame)return;
+  const point=window.OnlyCropsPlacement.pointAt(ui.canvas,placementFrame.box,event);
+  if(point)commitPlacement(point);
+ });
+ resetPlacement.onclick=()=>commitPlacement(null);
+ ui.name.addEventListener('input',()=>draw());ui.category.addEventListener('change',()=>draw());
  const ctx=ui.canvas.getContext('2d');
  function draw(){
+  placementFrame=null;
+  const target=placementTarget();
+  placementHint.hidden=resetPlacement.hidden=!(target&&state.image&&window.OnlyCropsPlacement);
   ctx.clearRect(0,0,ui.canvas.width,ui.canvas.height);
   ctx.fillStyle='#e9dfc6';ctx.fillRect(0,0,ui.canvas.width,ui.canvas.height);
   const block=18;for(let y=0;y<ui.canvas.height;y+=block)for(let x=0;x<ui.canvas.width;x+=block){if(((x+y)/block)%2===0){ctx.fillStyle='#dfd4b8';ctx.fillRect(x,y,block,block)}}
@@ -169,7 +197,10 @@ function install(){
    const factor=Math.min((ui.canvas.width-24)/g.w,(ui.canvas.height-24)/g.h,4);
    const w=g.w*factor,h=g.h*factor;
    ctx.imageSmoothingEnabled=false;
-   ctx.drawImage(state.image,m.margin+col*(g.w+m.spacing),m.margin+row*(g.h+m.spacing),g.w,g.h,(ui.canvas.width-w)/2,(ui.canvas.height-h)/2,w,h);
+   if(target&&window.OnlyCropsPlacement){
+    const box=window.OnlyCropsPlacement.draw(ui.canvas,target.id,target.clip,state.frame,state.image,...extractFrame(m,g,state.frame));
+    placementFrame={...target,frame:state.frame,box};
+   }else ctx.drawImage(state.image,m.margin+col*(g.w+m.spacing),m.margin+row*(g.h+m.spacing),g.w,g.h,(ui.canvas.width-w)/2,(ui.canvas.height-h)/2,w,h);
    ui.frame.max=String(m.count-1);ui.frame.value=String(state.frame);ui.frameLabel.textContent='Καρέ '+(state.frame+1)+' / '+m.count;
   }catch(e){ui.frameLabel.textContent='Μη έγκυρη διάταξη';}
  }
