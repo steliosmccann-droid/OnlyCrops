@@ -74,6 +74,24 @@ function attachAnimalCenter(picker,after){
  function add(tag,label){const n=document.createElement(tag);n.textContent=label;wrap.append(n);return n}
  const hint=add('p','');
  const canvas=add('canvas','');canvas.width=320;canvas.height=220;canvas.style.cssText='width:100%;height:auto;display:block;touch-action:manipulation';
+ const controls=add('div','');controls.className='placement-arrows';controls.setAttribute('role','group');controls.setAttribute('aria-label','Μετακίνηση καρέ');
+ for(const [icon,label,dx,dy] of [['←','Αριστερά',-1,0],['↑','Πάνω',0,-1],['↓','Κάτω',0,1],['→','Δεξιά',1,0]]){
+  const button=document.createElement('button');button.type='button';button.textContent=icon;
+  button.setAttribute('aria-label',label);controls.append(button);
+  button.onclick=()=>{
+   if(!box)return;
+   const x=(canvas.width/2-box.x-2*dx)/box.w,y=(canvas.height/2-box.y-2*dy)/box.h;
+   const limit=n=>Math.max(-1,Math.min(2,n));
+   save({x:limit(box.flip?1-x:x),y:limit(y)},true);
+  };
+ }
+ const auto=add('button','Αυτόματο κεντράρισμα');auto.type='button';auto.className='placement-auto';
+ auto.onclick=()=>{
+  if(!box)return;
+  const engine=window.FV83Assets,a=engine.get(picker.value);
+  const cols=a.conf.cols,w=a.img.naturalWidth/cols,h=a.img.naturalHeight/a.conf.rows;
+  save(engine.measureGround(a.img,(frame%cols)*w,Math.floor(frame/cols)*h,w,h),true);
+ };
  const next=add('button',''),reset=add('button','Επαναφορά στοίχισης');next.type=reset.type='button';
  const status=add('p','');status.setAttribute('role','status');
  let frame=0,last='',box=null,draft=null;
@@ -83,6 +101,7 @@ function attachAnimalCenter(picker,after){
   if(last!==id){frame=0;last=id;draft=null;status.textContent=''}
   box=null;if(wrap.hidden)return;
   const ready=!!a?.img?.naturalWidth;
+  controls.hidden=auto.hidden=!ready;
   canvas.hidden=!ready;canvas.style.display=ready?'block':'none';reset.hidden=!ready||!engine.manualAnchor(id,'sprite',frame);
   if(!ready){next.hidden=true;hint.textContent='Διάλεξε εικόνα ζώου για να εμφανιστεί ο ρόμβος.';if(a?.img&&!a.img.complete)a.img.addEventListener('load',refresh,{once:true});return}
   hint.textContent='Σύρε πάνω στον ρόμβο.';
@@ -91,7 +110,7 @@ function attachAnimalCenter(picker,after){
   const w=a.img.naturalWidth/cols,h=a.img.naturalHeight/rows;
   box=drawPlacement(canvas,id,'sprite',frame,a.img,(frame%cols)*w,Math.floor(frame/cols)*h,w,h,draft);
  }
- function save(pt){const ok=window.FV83Assets.setManualAnchor(picker.value,'sprite',frame,pt);refresh();status.textContent=ok?'Η στοίχιση αποθηκεύτηκε.':'Η στοίχιση ισχύει για αυτή τη συνεδρία.'}
+ function save(pt,frameOnly=false){const ok=window.FV83Assets.setManualAnchor(picker.value,'sprite',frame,pt,frameOnly);refresh();status.textContent=ok?'Η στοίχιση αποθηκεύτηκε.':'Η στοίχιση ισχύει για αυτή τη συνεδρία.'}
  next.onclick=()=>{frame++;refresh()};reset.onclick=()=>save(null);
  bindPlacementDrag(canvas,()=>box,pt=>{draft=pt;refresh()},pt=>{draft=null;save(pt)});
  picker.addEventListener('change',refresh);refresh();return refresh;
