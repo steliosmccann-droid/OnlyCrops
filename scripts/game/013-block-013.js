@@ -1433,6 +1433,49 @@ const FarmImages=(()=>{
   for(const row of saved){if(!allowed.includes(row.name)||!row.blob)continue;try{const img=await decode(row.blob);assets.set(row.name,{img,blob:row.blob,conf:settings(row.conf)})}catch(e){}}
   dirty=true;return true
  }catch(e){storageOK=false;return false}}
+ const animalKinds=new Set((ROWS.find(([group])=>group==='Ζώα')?.[1]||[]).map(row=>row[0]));
+ const centerKey=id=>'onlycrops.center-animal.'+id;
+ const centered=new Set();
+ for(const id of animalKinds){
+  try{if(localStorage.getItem(centerKey(id))==='1')centered.add(id)}catch{}
+ }
+ function setCentered(id,on){
+  if(!animalKinds.has(id))return false;
+  if(on)centered.add(id);else centered.delete(id);
+  dirty=true;
+  try{if(on)localStorage.setItem(centerKey(id),'1');else localStorage.removeItem(centerKey(id));return true}catch{return false}
+ }
+ const frameAnchors=new WeakMap();
+ function groundAnchor(id,img,sx,sy,w,h){
+  if(!centered.has(id))return null;
+  let cache=frameAnchors.get(img);
+  if(!cache){cache=new Map();frameAnchors.set(img,cache)}
+  const key=[sx,sy,w,h].join(',');
+  if(cache.has(key))return cache.get(key);
+  // Sample just this frame. Use its lowest visible band so tails and horns
+  // above the feet do not pull the animal sideways.
+  let anchor={x:.5,y:1};
+  const ratio=Math.min(1,192/Math.max(w,h));
+  const width=Math.max(1,Math.round(w*ratio)),height=Math.max(1,Math.round(h*ratio));
+  try{
+   const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
+   const brush=canvas.getContext('2d',{willReadFrequently:true});
+   brush.drawImage(img,sx,sy,w,h,0,0,width,height);
+   const rgba=brush.getImageData(0,0,width,height).data;
+   let bottom=-1,top=height,left=width,right=-1;
+   for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+    if(rgba[(y*width+x)*4+3]>=96){bottom=y;top=Math.min(top,y);break}
+   }
+   if(bottom>=0){
+    const band=Math.max(1,Math.ceil((bottom-top+1)*.15));
+    for(let y=bottom-band+1;y<=bottom;y++)for(let x=0;x<width;x++){
+     if(rgba[(y*width+x)*4+3]>=96){left=Math.min(left,x);right=Math.max(right,x)}
+    }
+    anchor={x:(left+right+1)/(2*width),y:(bottom+1)/height};
+   }
+  }catch{/* Unreadable images use their frame's bottom center. */}
+  cache.set(key,anchor);return anchor;
+ }
  function draw(name,cx,groundY,baseWidth,stage='idle'){
   const a=get(name);if(!a||!a.img.complete||!a.img.naturalWidth)return false;
   const {img,conf}=a,fw=img.naturalWidth/conf.cols,fh=img.naturalHeight/conf.rows;
@@ -1441,7 +1484,12 @@ const FarmImages=(()=>{
   else if((name==='farmer'||name==='farmer_blonde')&&conf.rows>=3){row=stage==='walking'?1:stage==='working'||stage==='harvesting'?2:0;}
   let col=0;if(conf.cols>1)col=Math.floor(performance.now()/1000*conf.fps)%conf.cols;
   const ww=baseWidth*conf.scale,hh=ww*(fh/fw);
-  ctx.save();if(conf.flipX){ctx.translate(cx+conf.offsetX*zoom,0);ctx.scale(-1,1);ctx.drawImage(img,col*fw,row*fh,fw,fh,-ww/2,groundY+conf.offsetY*zoom-hh,ww,hh)}else{ctx.drawImage(img,col*fw,row*fh,fw,fh,cx+conf.offsetX*zoom-ww/2,groundY+conf.offsetY*zoom-hh,ww,hh)}ctx.restore();
+  const anchor=groundAnchor(name,img,col*fw,row*fh,fw,fh);
+  ctx.save();
+  ctx.translate(cx+(anchor?0:conf.offsetX*zoom),groundY+(anchor?0:conf.offsetY*zoom));
+  if(conf.flipX)ctx.scale(-1,1);
+  ctx.drawImage(img,col*fw,row*fh,fw,fh,-ww*(anchor?.x??.5),-hh*(anchor?.y??1),ww,hh);
+  ctx.restore();
   return true;
  }
  function loadBundled(pack){
@@ -1455,7 +1503,7 @@ const FarmImages=(()=>{
   }
   dirty=true;return count;
  }
- return {get,set,remove,init,draw,loadBundled,settings,allowed,storageOK:()=>storageOK,entries:()=>Array.from(assets.entries()),hasAnimated:()=>Array.from(assets.values()).some(a=>a.conf.cols>1)};
+ return {groundAnchor,setCentered,isAnimal:id=>animalKinds.has(id),isCentered:id=>centered.has(id),get,set,remove,init,draw,loadBundled,settings,allowed,storageOK:()=>storageOK,entries:()=>Array.from(assets.entries()),hasAnimated:()=>Array.from(assets.values()).some(a=>a.conf.cols>1)};
 })();
 // V83: Editor bridge — same sprite engine, no change to placements or footprints.
 window.FV83Assets=FarmImages;
