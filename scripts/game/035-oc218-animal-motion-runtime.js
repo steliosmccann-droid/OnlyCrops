@@ -99,7 +99,7 @@
  }
  function resetTransient(){recent.clear();recentMoves.clear()}
 
- function draw({animal,objectId,moving=false,ready=false,direction='front',ctx,cx,groundY,baseWidth,zoom=1,scale=1,offsetX=0,offsetY=0,flipX=false}){
+ function draw({animal,objectId,moving=false,ready=false,direction='front',mirrored=false,ctx,cx,groundY,baseWidth,zoom=1,scale=1,offsetX=0,offsetY=0,flipX=false}){
   if(!ANIMALS.has(animal)||!ctx)return false;
   const facing=directionFor(objectId,DIRECTIONS.has(direction)?direction:'front');
   const state=stateFor({animal,objectId,moving,ready,direction:facing});
@@ -113,7 +113,10 @@
   if(!Number.isFinite(dw)||!Number.isFinite(dh)||dw<=0||dh<=0)return false;
   ctx.save();
   ctx.translate(cx+offsetX*zoom,groundY+offsetY*zoom);
-  if(flipX)ctx.scale(-1,1);
+  // The object renderer already mirrors the canvas for Rotate. Keep authored
+  // side views facing their intended direction; mirror a front fallback once.
+  const undoObjectMirror=mirrored&&selected.direction!=='front';
+  if(Boolean(flipX)!==undoObjectMirror)ctx.scale(-1,1);
   ctx.drawImage(img,sx,sy,w,h,-dw/2,-dh,dw,dh);
   ctx.restore();
   return true;
