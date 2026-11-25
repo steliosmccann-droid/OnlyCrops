@@ -34,3 +34,11 @@
  #gm106-panel.oc214-ready #oc214-choices button{min-height:87px}
  #gm106-panel.oc214-ready #oc214-shell button{font-size:12px;padding:7px}
 }
+
+#gm106-panel.oc214-ready:not(.oc214-full-mode) #gm18-navigation.gm20-compact-nav{display:none!important}
+#gm106-panel.oc214-ready #oc214-shell{position:sticky;top:0;background:#fff5df;padding:4px 0;z-index:35}
+#gm106-panel.oc214-ready .oc235-tools{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0}
+#gm106-panel.oc214-ready .oc235-tools[hidden]{display:none!important}
+#gm106-panel.oc214-ready .oc235-tools button[aria-pressed="true"]{background:#dcebc6!important;border-color:#63843a!important}
+#gm106-panel.oc214-ready #oc214-choices{grid-template-columns:1fr}
+#gm106-panel.oc214-ready #oc214-choices button{flex-direction:row;align-items:center;min-height:68px;padding:10px 12px}
