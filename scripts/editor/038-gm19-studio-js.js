@@ -158,11 +158,11 @@ function install(){
   }catch(e){ui.file.value='';message('⚠ '+e.message,true)}
  });
  const placementHint=document.createElement('p');
- placementHint.textContent='Πάτησε ανάμεσα στα πόδια για να τα ευθυγραμμίσεις με τον ρόμβο. Το πρώτο σημείο ισχύει για όλα τα καρέ. Μετά διορθώνεις κάθε καρέ χωριστά.';
+ placementHint.textContent='Σύρε το ζώο πάνω στον ρόμβο και άφησέ το για αποθήκευση. Το πρώτο σημείο ισχύει για όλα τα καρέ. Μετά διορθώνεις κάθε καρέ χωριστά.';
  const resetPlacement=document.createElement('button');
  resetPlacement.type='button';resetPlacement.textContent='Επαναφορά στοίχισης';
  ui.canvas.parentElement.after(placementHint,resetPlacement);
- let placementFrame=null;
+ let placementFrame=null,placementDraft=null,dragBound=false;
  function placementTarget(){
   const match=/^Animal ([a-z0-9-]+) (idle|walk|eat|produce) (front|back|left|right)$/.exec(ui.name.value.trim());
   if(ui.category.value==='animals'&&match&&engine.isAnimal?.(match[1]))
@@ -175,11 +175,7 @@ function install(){
   stop();const saved=engine.setManualAnchor(id,clip,frame,pt);
   draw();message(saved?'Η στοίχιση αποθηκεύτηκε.':'Η στοίχιση ισχύει για αυτή τη συνεδρία.',!saved);
  }
- ui.canvas.addEventListener('click',event=>{
-  if(!placementFrame)return;
-  const point=window.OnlyCropsPlacement.pointAt(ui.canvas,placementFrame.box,event);
-  if(point)commitPlacement(point);
- });
+
  resetPlacement.onclick=()=>commitPlacement(null);
  ui.name.addEventListener('input',()=>draw());ui.category.addEventListener('change',()=>draw());
  const ctx=ui.canvas.getContext('2d');
@@ -198,7 +194,12 @@ function install(){
    const w=g.w*factor,h=g.h*factor;
    ctx.imageSmoothingEnabled=false;
    if(target&&window.OnlyCropsPlacement){
-    const box=window.OnlyCropsPlacement.draw(ui.canvas,target.id,target.clip,state.frame,state.image,...extractFrame(m,g,state.frame));
+    if(!dragBound){
+     window.OnlyCropsPlacement.bindDrag(ui.canvas,()=>placementFrame?.box,
+      pt=>{placementDraft=pt;draw()},pt=>{placementDraft=null;commitPlacement(pt)},stop);
+     dragBound=true;
+    }
+    const box=window.OnlyCropsPlacement.draw(ui.canvas,target.id,target.clip,state.frame,state.image,...extractFrame(m,g,state.frame),placementDraft);
     placementFrame={...target,frame:state.frame,box};
    }else ctx.drawImage(state.image,m.margin+col*(g.w+m.spacing),m.margin+row*(g.h+m.spacing),g.w,g.h,(ui.canvas.width-w)/2,(ui.canvas.height-h)/2,w,h);
    ui.frame.max=String(m.count-1);ui.frame.value=String(state.frame);ui.frameLabel.textContent='Καρέ '+(state.frame+1)+' / '+m.count;
