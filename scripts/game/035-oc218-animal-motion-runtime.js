@@ -99,7 +99,7 @@
  }
  function resetTransient(){recent.clear();recentMoves.clear()}
 
- function draw({animal,objectId,moving=false,ready=false,direction='front',mirrored=false,ctx,cx,groundY,baseWidth,zoom=1,scale=1,offsetX=0,offsetY=0,flipX=false}){
+ function draw({recordAnimalSprite,animal,objectId,moving=false,ready=false,direction='front',mirrored=false,ctx,cx,groundY,baseWidth,zoom=1,scale=1,offsetX=0,offsetY=0,flipX=false}){
   if(!ANIMALS.has(animal)||!ctx)return false;
   const facing=directionFor(objectId,DIRECTIONS.has(direction)?direction:'front');
   const state=stateFor({animal,objectId,moving,ready,direction:facing});
@@ -118,6 +118,7 @@
   // side views facing their intended direction; mirror a front fallback once.
   const undoObjectMirror=mirrored&&selected.direction!=='front';
   if(Boolean(flipX)!==undoObjectMirror)ctx.scale(-1,1);
+  recordAnimalSprite?.(img,sx,sy,w,h,-dw*(anchor?.x??.5),-dh*(anchor?.y??1),dw,dh);
   ctx.drawImage(img,sx,sy,w,h,-dw*(anchor?.x??.5),-dh*(anchor?.y??1),dw,dh);
   ctx.restore();
   return true;
