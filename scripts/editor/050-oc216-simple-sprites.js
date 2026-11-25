@@ -1,13 +1,13 @@
 /* Only Crops CP20.16 — simple Sprite entry point; uses the original CP12 image input
  and Sprite Engine; does not create a second editor or touch farm data. */
 (()=>{'use strict';
-function drawPlacement(canvas,id,clip,frame,img,sx,sy,fw,fh){
+function drawPlacement(canvas,id,clip,frame,img,sx,sy,fw,fh,draft=null){
  const engine=window.FV83Assets,ctx=canvas.getContext('2d');
  const def=window.FV83Defs.get(id),conf=engine.get(id)?.conf||{};
- const anchor=engine.manualAnchor(id,clip,frame)||engine.groundAnchor(id,img,sx,sy,fw,fh)||{x:.5,y:1};
+ const anchor=draft||engine.manualAnchor(id,clip,frame)||engine.groundAnchor(id,img,sx,sy,fw,fh)||{x:.5,y:1};
  const W=canvas.width,H=canvas.height;
  const base=Math.max(15,(def.w+def.h)*15.5*.65),scale=conf.scale||1;
- const automatic=!!engine.manualAnchor(id,clip,frame)||engine.isCentered(id);
+ const automatic=!!draft||!!engine.manualAnchor(id,clip,frame)||engine.isCentered(id);
  const dx=automatic?0:conf.offsetX||0,dy=automatic?0:conf.offsetY||0;
  const width=base*scale,height=width*fh/fw,flip=!!conf.flipX;
  const ax=flip?1-anchor.x:anchor.x;
@@ -34,16 +34,50 @@ function pointAt(canvas,box,event){
  const y=((event.clientY-r.top)*canvas.height/r.height-box.y)/box.h;
  return x>=0&&x<=1&&y>=0&&y<=1?{x:box.flip?1-x:x,y}:null;
 }
-window.OnlyCropsPlacement={draw:drawPlacement,pointAt};
+function bindPlacementDrag(canvas,getBox,preview,commit,stop){
+ let drag=null;
+ canvas.style.touchAction='none';
+ canvas.addEventListener('pointerdown',ev=>{
+  if(drag||ev.button!==0)return;
+  const box=getBox();if(!box||!pointAt(canvas,box,ev))return;
+  stop?.();
+  const rect=canvas.getBoundingClientRect();
+  const ax=(canvas.width/2-box.x)/box.w,ay=(canvas.height/2-box.y)/box.h;
+  drag={id:ev.pointerId,x:ev.clientX,y:ev.clientY,box,rect,ax,ay,moved:false};
+  canvas.setPointerCapture(ev.pointerId);
+ });
+ function update(ev){
+  const d=drag,dx=ev.clientX-d.x,dy=ev.clientY-d.y;
+  if(!d.moved&&Math.hypot(dx,dy)<3)return null;
+  d.moved=true;
+  const ax=d.ax-dx*canvas.width/(d.rect.width*d.box.w);
+  const ay=d.ay-dy*canvas.height/(d.rect.height*d.box.h);
+  const limit=n=>Math.max(-1,Math.min(2,n));
+  return {x:limit(d.box.flip?1-ax:ax),y:limit(ay)};
+ }
+ canvas.addEventListener('pointermove',ev=>{
+  if(ev.pointerId!==drag?.id)return;
+  const point=update(ev);if(point)preview(point);
+ });
+ canvas.addEventListener('pointerup',ev=>{
+  if(ev.pointerId!==drag?.id)return;
+  const point=update(ev)||pointAt(canvas,drag.box,ev);
+  drag=null;if(point)commit(point);else preview(null);
+ });
+ function cancel(ev){if(ev.pointerId===drag?.id){drag=null;preview(null)}}
+ canvas.addEventListener('pointercancel',cancel);
+ canvas.addEventListener('lostpointercapture',cancel);
+}
+window.OnlyCropsPlacement={draw:drawPlacement,pointAt,bindDrag:bindPlacementDrag};
 function attachAnimalCenter(picker,after){
  const wrap=document.createElement('section');after.after(wrap);
  function add(tag,label){const n=document.createElement(tag);n.textContent=label;wrap.append(n);return n}
  add('strong','Στοίχιση στο πλέγμα');
- const hint=add('p','Πάτησε ανάμεσα στα πόδια. Το πρώτο σημείο ισχύει για όλα τα καρέ. Μετά διορθώνεις κάθε καρέ χωριστά.');
+ const hint=add('p','Σύρε το ζώο πάνω στον ρόμβο. Άφησέ το για αποθήκευση.');
  const canvas=add('canvas','');canvas.width=320;canvas.height=220;canvas.style.cssText='width:100%;height:auto;display:block;touch-action:manipulation';
  const next=add('button',''),reset=add('button','Επαναφορά στοίχισης');next.type=reset.type='button';
  const status=add('p','');status.setAttribute('role','status');
- let frame=0,last='',box=null;
+ let frame=0,last='',box=null,draft=null;
  function refresh(){
   const id=picker.value,engine=window.FV83Assets,a=engine?.get(id);
   wrap.hidden=!engine?.isAnimal?.(id);wrap.style.display=wrap.hidden?'none':'';
@@ -52,15 +86,15 @@ function attachAnimalCenter(picker,after){
   const ready=!!a?.img?.naturalWidth;
   canvas.hidden=!ready;canvas.style.display=ready?'block':'none';reset.disabled=!ready;
   if(!ready){next.hidden=true;hint.textContent='Διάλεξε εικόνα ζώου για να εμφανιστεί ο ρόμβος.';if(a?.img&&!a.img.complete)a.img.addEventListener('load',refresh,{once:true});return}
-  hint.textContent='Πάτησε ανάμεσα στα πόδια. Το πρώτο σημείο ισχύει για όλα τα καρέ. Μετά διορθώνεις κάθε καρέ χωριστά.';
+  hint.textContent='Σύρε το ζώο πάνω στον ρόμβο. Άφησέ το για αποθήκευση.';
   const cols=a.conf.cols,rows=a.conf.rows,count=cols*rows;
   frame%=count;next.hidden=count===1;next.textContent='Καρέ '+(frame+1)+' / '+count+' · Επόμενο';
   const w=a.img.naturalWidth/cols,h=a.img.naturalHeight/rows;
-  box=drawPlacement(canvas,id,'sprite',frame,a.img,(frame%cols)*w,Math.floor(frame/cols)*h,w,h);
+  box=drawPlacement(canvas,id,'sprite',frame,a.img,(frame%cols)*w,Math.floor(frame/cols)*h,w,h,draft);
  }
  function save(pt){const ok=window.FV83Assets.setManualAnchor(picker.value,'sprite',frame,pt);refresh();status.textContent=ok?'Η στοίχιση αποθηκεύτηκε.':'Η στοίχιση ισχύει για αυτή τη συνεδρία.'}
  next.onclick=()=>{frame++;refresh()};reset.onclick=()=>save(null);
- canvas.onclick=ev=>{if(box){const pt=pointAt(canvas,box,ev);if(pt)save(pt)}};
+ bindPlacementDrag(canvas,()=>box,pt=>{draft=pt;refresh()},pt=>{draft=null;save(pt)});
  picker.addEventListener('change',refresh);refresh();return refresh;
 }
 window.OnlyCropsAttachAnimalCenter=attachAnimalCenter;
