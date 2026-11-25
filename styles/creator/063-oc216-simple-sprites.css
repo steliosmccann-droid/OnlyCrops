@@ -18,3 +18,11 @@
 #gm106-panel.oc216-assets-active:not(.oc216-assets-advanced) #gm18-support,
 #gm106-panel.oc216-assets-active:not(.oc216-assets-advanced) #gm18-status,
 #gm106-panel.oc216-assets-active:not(.oc216-assets-advanced) #gm20-note{display:none!important}
+
+#gm106-panel #oc216-simple-sprites [hidden]{display:none!important}
+#gm106-panel #oc216-simple-sprites p:empty{display:none}
+#gm106-panel #oc216-simple-sprites summary{padding:8px 0;cursor:pointer;color:#38521b}
+#gm106-panel #oc216-simple-sprites .animal-placement{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#gm106-panel #oc216-simple-sprites .animal-placement canvas,
+#gm106-panel #oc216-simple-sprites .animal-placement p{grid-column:1/-1}
+#gm106-panel #oc216-simple-sprites .animal-placement canvas{border-radius:10px}
