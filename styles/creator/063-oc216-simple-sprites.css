@@ -31,3 +31,7 @@
 #gm106-panel #oc216-simple-sprites details{border-top:1px solid #dbc49d}
 #gm106-panel #oc216-simple-sprites details summary{min-height:44px;box-sizing:border-box;padding:12px 0}
 #gm106-panel #oc216-simple-sprites details[open]>button{width:100%;margin-top:8px}
+
+#gm106-panel .animal-placement .placement-arrows{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+#gm106-panel #oc216-simple-sprites .placement-arrows button{font-size:21px;min-height:46px;touch-action:manipulation}
+#gm106-panel .animal-placement .placement-auto{grid-column:1/-1}
