@@ -40,13 +40,13 @@ function mount(){
  for(const [id,name] of directions){const o=make('option',direction,name);o.value=id}
  const opts=make('div',page);opts.className='oc217-grid';
  const colsLabel=make('label',opts,'Στήλες sprite sheet');
- const cols=make('input',colsLabel);cols.type='number';cols.min='1';cols.max='32';cols.value='4';cols.inputMode='numeric';
+ const cols=make('input',colsLabel);cols.type='number';cols.min='1';cols.max='32';cols.value='2';cols.inputMode='numeric';
  const rowsLabel=make('label',opts,'Σειρές');
- const rows=make('input',rowsLabel);rows.type='number';rows.min='1';rows.max='16';rows.value='1';rows.inputMode='numeric';
+ const rows=make('input',rowsLabel);rows.type='number';rows.min='1';rows.max='16';rows.value='2';rows.inputMode='numeric';
  const framesLabel=make('label',opts,'Καρέ animation');
  const frames=make('input',framesLabel);frames.type='number';frames.min='1';frames.max='128';frames.value='4';frames.inputMode='numeric';
  const fpsLabel=make('label',opts,'Ταχύτητα FPS');
- const fps=make('input',fpsLabel);fps.type='number';fps.min='1';fps.max='30';fps.value='6';fps.inputMode='numeric';
+ const fps=make('input',fpsLabel);fps.type='number';fps.min='1';fps.max='30';fps.value='4';fps.inputMode='numeric';
  const summary=make('p',page);summary.className='oc217-summary';summary.id='oc217-summary';
  const libraryTitle=make('strong',page,'Αποθηκευμένες κινήσεις του ζώου');
  const library=make('div',page);library.id='oc219-clip-status';library.setAttribute('aria-live','polite');
@@ -128,6 +128,10 @@ function mount(){
    const target=studio.querySelector('#'+id);if(target){target.value=String(values[key]);target.dispatchEvent(new Event('input',{bubbles:true}));}
   }
   const loop=studio.querySelector('#gm19-loop');if(loop){loop.checked=true;loop.dispatchEvent(new Event('change',{bubbles:true}))}
+  const geometry=studio.querySelector('#gm19-geometry');
+  if(geometry?.classList.contains('gm19-error')){
+   result.textContent=geometry.textContent;return;
+  }
   result.textContent='✓ Προετοιμάστηκε: '+name(preset)+'. Δοκίμασε ▶ Αναπαραγωγή και πάτησε 💾 Αποθήκευση στο Studio.';
  }
  start.onclick=()=>{
