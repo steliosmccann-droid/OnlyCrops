@@ -31,6 +31,7 @@ function mount(){
  const speciesLabel=make('label',page,'1. Ζώο');
  const species=make('select',speciesLabel);species.id='oc217-species';
  for(const a of animals){const o=make('option',species,a.name);o.value=a.id}
+ const refreshCenter=window.OnlyCropsAttachAnimalCenter(species,speciesLabel);
  const actionLabel=make('label',page,'2. Κίνηση');
  const action=make('select',actionLabel);action.id='oc217-action';
  for(const [id,name] of actions){const o=make('option',action,name);o.value=id}
@@ -117,7 +118,7 @@ function mount(){
   }
   const launch=document.getElementById('gm19-nav');
   if(!panel.classList.contains('gm19-studio-open'))launch?.click();
-  studio.hidden=false;setPage('animals');refreshSummary();
+  studio.hidden=false;setPage('animals');refreshCenter();refreshSummary();
  }
  function fillStudio(){
   if(!preset)return;
