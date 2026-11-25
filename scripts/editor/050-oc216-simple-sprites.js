@@ -1,6 +1,34 @@
 /* Only Crops CP20.16 — simple Sprite entry point; uses the original CP12 image input
  and Sprite Engine; does not create a second editor or touch farm data. */
 (()=>{'use strict';
+function attachAnimalCenter(picker,after){
+ const button=document.createElement('button');
+ button.type='button';
+ after.after(button);
+ const notice=document.createElement('p');
+ notice.setAttribute('role','status');button.after(notice);
+ function refresh(){
+  const engine=window.FV83Assets,id=picker.value;
+  const enabled=!!engine?.isAnimal?.(id);
+  button.disabled=!enabled;
+  const on=enabled&&engine.isCentered(id);
+  button.setAttribute('aria-pressed',String(on));
+  button.textContent=on?'✓ Κεντράρισμα στο πλέγμα · Αναίρεση':'Κεντράρισμα στο πλέγμα';
+  notice.textContent=enabled?'':'Διάλεξε ζώο για κεντράρισμα.';
+  notice.hidden=!notice.textContent;
+ }
+ button.onclick=()=>{
+  const engine=window.FV83Assets,id=picker.value;
+  if(!engine?.isAnimal?.(id))return;
+  const on=!engine.isCentered(id),saved=engine.setCentered(id,on);
+  refresh();
+  notice.hidden=false;
+  notice.textContent=(on?'Το ζώο κεντραρίστηκε στο κελί του.':'Επανήλθε η προηγούμενη στοίχιση.')+(saved?'':' Η αλλαγή ισχύει μόνο για αυτή τη συνεδρία.');
+ };
+ picker.addEventListener('change',refresh);
+ refresh();return refresh;
+}
+window.OnlyCropsAttachAnimalCenter=attachAnimalCenter;
 let attempts=0;
 function install(){
  const panel=document.getElementById('gm106-panel'),nav=document.getElementById('gm20-section');
@@ -26,21 +54,7 @@ function install(){
  const noImg=create('p',preview,'Δεν υπάρχει ακόμη δική σου εικόνα γι’ αυτό το αντικείμενο.');
  const fileLabel=create('label',card,'📁 Επιλογή PNG, JPG ή WebP από iPhone');
  const choose=create('button',fileLabel,'＋ Διάλεξε εικόνα');choose.type='button';
- const center=create('button',card,'Κεντράρισμα στο πλέγμα');center.type='button';
- function showCenter(){
-  const engine=window.FV83Assets,id=picker.value;
-  center.hidden=!engine?.isAnimal?.(id);
-  center.style.display=center.hidden?'none':'';
-  center.setAttribute('aria-pressed',String(!!engine?.isCentered?.(id)));
-  center.textContent=engine?.isCentered?.(id)?'✓ Κεντραρισμένο · Αναίρεση':'Κεντράρισμα στο πλέγμα';
- }
- center.onclick=()=>{
-  const engine=window.FV83Assets,id=picker.value;
-  if(!engine?.isAnimal?.(id))return;
-  const on=!engine.isCentered(id),saved=engine.setCentered(id,on);
-  showCenter();
-  message.textContent=(on?'Τα πόδια ευθυγραμμίστηκαν με το κέντρο του κελιού.':'Επανήλθε η προηγούμενη στοίχιση.')+(saved?'':' Η αλλαγή ισχύει μόνο για αυτή τη συνεδρία.');
- };
+ const showCenter=attachAnimalCenter(picker,pickerLabel);
  const explanation=create('p',card,'Χρησιμοποιεί την ίδια εισαγωγή εικόνας που υπάρχει ήδη στο παιχνίδι. Μέχρι 8 MB. Το grid δεν αλλάζει.');
  const message=create('p',card);message.id='oc216-message';message.setAttribute('role','status');
  const advanced=create('button',card,'⚙ Περισσότερα: μέγεθος, animation, backup');advanced.id='oc216-advanced';advanced.type='button';advanced.setAttribute('aria-expanded','false');
@@ -75,7 +89,6 @@ function install(){
   draw();
  }
  function draw(){
-  showCenter();
   const id=picker.value,engine=window.FV83Assets,asset=engine?.get?.(id),def=window.FV83Defs?.get?.(id);
   if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}
   img.removeAttribute('src');img.hidden=true;noImg.hidden=false;
@@ -102,7 +115,7 @@ function install(){
   if(!active){panel.classList.remove('oc216-assets-advanced');return}
   if(advancedOpen)panel.classList.add('oc216-assets-advanced');
   if(!picker.options.length)fill();
-  else draw();
+  else {showCenter();draw()}
  }
  picker.addEventListener('change',selectOriginal);
  search.addEventListener('input',fill);
