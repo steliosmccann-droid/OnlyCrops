@@ -70,9 +70,8 @@ function bindPlacementDrag(canvas,getBox,preview,commit,stop){
 }
 window.OnlyCropsPlacement={draw:drawPlacement,pointAt,bindDrag:bindPlacementDrag};
 function attachAnimalCenter(picker,after){
- const wrap=document.createElement('section');after.after(wrap);
+ const wrap=document.createElement('section');wrap.className='animal-placement';after.after(wrap);
  function add(tag,label){const n=document.createElement(tag);n.textContent=label;wrap.append(n);return n}
- add('strong','Στοίχιση στο πλέγμα');
  const hint=add('p','Σύρε το ζώο πάνω στον ρόμβο. Άφησέ το για αποθήκευση.');
  const canvas=add('canvas','');canvas.width=320;canvas.height=220;canvas.style.cssText='width:100%;height:auto;display:block;touch-action:manipulation';
  const next=add('button',''),reset=add('button','Επαναφορά στοίχισης');next.type=reset.type='button';
@@ -81,10 +80,10 @@ function attachAnimalCenter(picker,after){
  function refresh(){
   const id=picker.value,engine=window.FV83Assets,a=engine?.get(id);
   wrap.hidden=!engine?.isAnimal?.(id);wrap.style.display=wrap.hidden?'none':'';
-  if(last!==id){frame=0;last=id;status.textContent=''}
+  if(last!==id){frame=0;last=id;draft=null;status.textContent=''}
   box=null;if(wrap.hidden)return;
   const ready=!!a?.img?.naturalWidth;
-  canvas.hidden=!ready;canvas.style.display=ready?'block':'none';reset.disabled=!ready;
+  canvas.hidden=!ready;canvas.style.display=ready?'block':'none';reset.hidden=!ready||!engine.manualAnchor(id,'sprite',frame);
   if(!ready){next.hidden=true;hint.textContent='Διάλεξε εικόνα ζώου για να εμφανιστεί ο ρόμβος.';if(a?.img&&!a.img.complete)a.img.addEventListener('load',refresh,{once:true});return}
   hint.textContent='Σύρε το ζώο πάνω στον ρόμβο. Άφησέ το για αποθήκευση.';
   const cols=a.conf.cols,rows=a.conf.rows,count=cols*rows;
@@ -111,22 +110,20 @@ function install(){
  if(document.getElementById('oc216-simple-sprites'))return;
  const create=(tag,parent,value)=>{const e=document.createElement(tag);if(value!==undefined)e.textContent=value;parent.append(e);return e};
  const card=create('section',bridge);card.id='oc216-simple-sprites';bridge.prepend(card);
- create('h2',card,'🌳 Εικόνες — Εύκολη επεξεργασία');
- create('p',card,'1. Βρες αντικείμενο. 2. Επίλεξε PNG από το iPhone. 3. Η εικόνα εφαρμόζεται στη φάρμα.');
- const searchLabel=create('label',card,'Αναζήτηση αντικειμένου');
- const search=create('input',searchLabel);search.type='search';search.placeholder='π.χ. cow, chicken, apple…';search.id='oc216-search';search.autocomplete='off';
- const pickerLabel=create('label',card,'Ποιο αντικείμενο;');
+ const searchBox=create('details',card);
+ create('summary',searchBox,'Αναζήτηση');
+ const searchLabel=create('label',searchBox);
+ const search=create('input',searchLabel);search.type='search';search.setAttribute('aria-label','Αναζήτηση αντικειμένου');search.placeholder='π.χ. cow, chicken, apple…';search.id='oc216-search';search.autocomplete='off';
+ const pickerLabel=create('label',card,'Αντικείμενο');
  const picker=create('select',pickerLabel);picker.id='oc216-picker';
  const info=create('p',card);info.id='oc216-info';info.setAttribute('aria-live','polite');
  const preview=create('div',card);preview.id='oc216-preview';
  const img=create('img',preview);img.alt='Προεπισκόπηση επιλεγμένου sprite';img.hidden=true;
  const noImg=create('p',preview,'Δεν υπάρχει ακόμη δική σου εικόνα γι’ αυτό το αντικείμενο.');
- const fileLabel=create('label',card,'📁 Επιλογή PNG, JPG ή WebP από iPhone');
- const choose=create('button',fileLabel,'＋ Διάλεξε εικόνα');choose.type='button';
+ const choose=create('button',card,'Διάλεξε εικόνα');choose.type='button';
  const showCenter=attachAnimalCenter(picker,pickerLabel);
- const explanation=create('p',card,'Χρησιμοποιεί την ίδια εισαγωγή εικόνας που υπάρχει ήδη στο παιχνίδι. Μέχρι 8 MB. Το grid δεν αλλάζει.');
  const message=create('p',card);message.id='oc216-message';message.setAttribute('role','status');
- const advanced=create('button',card,'⚙ Περισσότερα: μέγεθος, animation, backup');advanced.id='oc216-advanced';advanced.type='button';advanced.setAttribute('aria-expanded','false');
+ const advanced=create('button',card,'Περισσότερες ρυθμίσεις');advanced.id='oc216-advanced';advanced.type='button';advanced.setAttribute('aria-expanded','false');
  let objectUrl=null,advancedOpen=false,all=[];
  function fold(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('el-GR')}
  function data(){
@@ -139,12 +136,12 @@ function install(){
   const current=picker.value||original.value||'cow',q=fold(search.value.trim());
   all=data().filter(x=>!q||fold(x.name+' '+x.id).includes(q));
   picker.replaceChildren();
-  for(const row of all){const opt=create('option',picker,row.name+' · '+row.id);opt.value=row.id}
+  for(const row of all){const opt=create('option',picker,row.name);opt.value=row.id}
   if(all.some(o=>o.id===current))picker.value=current;
   else if(all.length)picker.value=all[0].id;
   picker.disabled=!all.length;choose.disabled=!all.length;
   showCenter();
-  if(!all.length){info.textContent='Δεν βρέθηκε αντικείμενο. Δοκίμασε άλλη αναζήτηση.';img.hidden=true;noImg.hidden=false;return}
+  if(!all.length){preview.hidden=true;info.hidden=false;info.textContent='Δεν βρέθηκε αντικείμενο. Δοκίμασε άλλη αναζήτηση.';img.hidden=true;noImg.hidden=false;return}
   selectOriginal();
  }
  function selectOriginal(){
@@ -159,10 +156,13 @@ function install(){
  }
  function draw(){
   showCenter();
-  const id=picker.value,engine=window.FV83Assets,asset=engine?.get?.(id),def=window.FV83Defs?.get?.(id);
+  const id=picker.value,engine=window.FV83Assets,asset=engine?.get?.(id);
   if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}
   img.removeAttribute('src');img.hidden=true;noImg.hidden=false;
-  info.textContent=(def?.name||id)+(def?' · Grid '+def.w+'×'+def.h:'')+' · '+(asset?.blob?'Δικό σου sprite':asset?.inlineSrc?'Ενσωματωμένη εικόνα':'Χωρίς εικόνα PNG');
+  preview.hidden=!id||!!engine?.isAnimal?.(id);
+  info.hidden=true;
+  choose.textContent=asset?'Αλλαγή εικόνας':'Διάλεξε εικόνα';
+  if(preview.hidden)return;
   let src='';
   if(asset?.blob){objectUrl=URL.createObjectURL(asset.blob);src=objectUrl}
   else if(typeof asset?.inlineSrc==='string')src=asset.inlineSrc;
@@ -171,7 +171,7 @@ function install(){
  function changeAdvanced(next){
   advancedOpen=next;
   panel.classList.toggle('oc216-assets-advanced',next);
-  advanced.textContent=next?'✕ Κλείσιμο προηγμένων':'⚙ Περισσότερα: μέγεθος, animation, backup';
+  advanced.textContent=next?'Κλείσιμο ρυθμίσεων':'Περισσότερες ρυθμίσεις';
   advanced.setAttribute('aria-expanded',String(next));
   const submenu=document.getElementById('gm20-subsection');
   if(next&&submenu&&[...submenu.options].some(o=>o.value==='single')){
@@ -185,8 +185,9 @@ function install(){
   if(!active){panel.classList.remove('oc216-assets-advanced');return}
   if(advancedOpen)panel.classList.add('oc216-assets-advanced');
   if(!picker.options.length)fill();
-  else {showCenter();draw()}
+  else draw();
  }
+ searchBox.addEventListener('toggle',()=>{if(!searchBox.open&&search.value){search.value='';fill()}});
  picker.addEventListener('change',selectOriginal);
  search.addEventListener('input',fill);
  choose.addEventListener('click',()=>{
