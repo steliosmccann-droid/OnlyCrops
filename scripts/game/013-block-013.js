@@ -42,7 +42,32 @@ const validatePlacement=(a,kind,except=null,inventory=objects)=>gridEngine.valid
 const anchor=(p,id,offset={x:0,y:0})=>gridEngine.anchor(p,id,offset);
 function hit(p){if(!p)return null;return [...objects].reverse().find(o=>p.x>=o.x&&p.y>=o.y&&p.x<o.x+footprint(o).w&&p.y<o.y+footprint(o).h)||null}
 function iso(x,y){return{x:cx+(x-y)*UNITW*.5*zoom,y:cy+(x+y)*UNITH*.5*zoom}}
-function pick(px,py){const u=(px-cx)/(UNITW*.5*zoom),v=(py-cy)/(UNITH*.5*zoom),x=Math.floor((u+v)/2),y=Math.floor((v-u)/2);return x>=0&&y>=0&&x<N&&y<N?{x,y}:null}
+function gridCell(px,py){
+ const u=(px-cx)/(UNITW*.5*zoom),v=(py-cy)/(UNITH*.5*zoom);
+ return {x:Math.floor((u+v)/2),y:Math.floor((v-u)/2)};
+}
+function pick(px,py){const p=gridCell(px,py);return p.x>=0&&p.y>=0&&p.x<N&&p.y<N?p:null}
+const animalSprites=[];
+let drawingAnimal=null,hitBrush=null;
+function recordAnimalSprite(img,sx,sy,sw,sh,x,y,w,h){
+ if(!drawingAnimal)return;
+ const t=ctx.getTransform(),ratio=Math.min(devicePixelRatio||1,2);
+ animalSprites.push({object:drawingAnimal,img,sx,sy,sw,sh,x:(t.a*x+t.e)/ratio,y:(t.d*y+t.f)/ratio,w:t.a*w/ratio,h:t.d*h/ratio});
+}
+function animalAt(px,py){
+ for(let i=animalSprites.length-1;i>=0;i--){
+  const s=animalSprites[i],u=(px-s.x)/s.w,v=(py-s.y)/s.h;
+  if(u<0||v<0||u>=1||v>=1||!objects.includes(s.object))continue;
+  try{
+   if(!hitBrush){const probe=document.createElement('canvas');probe.width=probe.height=1;hitBrush=probe.getContext('2d',{willReadFrequently:true})}
+   hitBrush.clearRect(0,0,1,1);
+   hitBrush.drawImage(s.img,Math.floor(s.sx+u*s.sw),Math.floor(s.sy+v*s.sh),1,1,0,0,1,1);
+   if(hitBrush.getImageData(0,0,1,1).data[3]<32)continue;
+  }catch{/* Use the rendered bounds when pixels cannot be sampled. */}
+  return s.object;
+ }
+ return null;
+}
 function polygon(x,y,w,h){return[iso(x,y),iso(x+w,y),iso(x+w,y+h),iso(x,y+h)]}
 function shape(poly,fill,stroke,width=1){ctx.beginPath();ctx.moveTo(poly[0].x,poly[0].y);for(let j=1;j<poly.length;j++)ctx.lineTo(poly[j].x,poly[j].y);ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.stroke()}}
 function line(x,y,X,Y,color,width){const p=iso(x,y),q=iso(X,Y);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()}
@@ -238,11 +263,12 @@ function drawItem(o){
 function currentCandidate(){if(tool==='multi'||tool==='recycle')return null;if(!hover)return null;if(tool==='move'&&!movingId){const o=hit(hover);return o?footprint(o):null}if(tool==='remove'){const o=hit(hover);return o?footprint(o):null}if(tool==='seed'||tool==='harvest'){const o=plotAt(hover);return o?footprint(o):null}const movingObj=tool==='move'?objects.find(o=>o.id===movingId):null;const id=tool==='plow'?'plot':tool==='move'?movingObj?.kind:sel.value;const a=id?anchor(hover,id,tool==='move'?moveOffset:{x:0,y:0}):null;if(a&&movingObj&&ROTATABLE_FENCES.has(id)){const d=dims({...movingObj,orientation:previewFenceOrientation(movingObj)});a.w=d.w;a.h=d.h}return a}
 function objectGroundDepth(o){const d=dims(o);return o.kind==='plot'?-100000:o.x+o.y+(d.w+d.h)/2;}
 function farmerGroundDepth(){return farmer.x+farmer.y;}
-function draw(){if(!dirty)return;dirty=false;ctx.clearRect(0,0,W,H);ctx.fillStyle=fv52OuterGrass();ctx.fillRect(0,0,W,H);drawGround();drawGrid();const scene=objects.map(o=>({type:'object',depth:objectGroundDepth(o),o}));scene.push({type:'farmer',depth:farmerGroundDepth()});scene.sort((a,b)=>a.depth-b.depth||(a.type==='farmer'?1:-1));for(const entry of scene){if(entry.type==='farmer')drawFarmer();else {const lifted=tool==='move'&&movingId===entry.o.id&&[...pointers.values()].some(v=>v.draggingObject);if(lifted){ctx.save();ctx.globalAlpha=.26}// Draw an unsaved, blocked Rotate choice as a visual preview. The original
+function draw(){if(!dirty)return;dirty=false;animalSprites.length=0;ctx.clearRect(0,0,W,H);ctx.fillStyle=fv52OuterGrass();ctx.fillRect(0,0,W,H);drawGround();drawGrid();const scene=objects.map(o=>({type:'object',depth:objectGroundDepth(o),o}));scene.push({type:'farmer',depth:farmerGroundDepth()});scene.sort((a,b)=>a.depth-b.depth||(a.type==='farmer'?1:-1));for(const entry of scene){if(entry.type==='farmer')drawFarmer();else {const lifted=tool==='move'&&movingId===entry.o.id&&[...pointers.values()].some(v=>v.draggingObject);if(lifted){ctx.save();ctx.globalAlpha=.26}// Draw an unsaved, blocked Rotate choice as a visual preview. The original
  // object orientation and saved data remain untouched until a valid drop.
  const display=tool==='move'&&pendingFenceRotation?.id===entry.o.id
    ?{...entry.o,orientation:previewFenceOrientation(entry.o)}:entry.o;
- drawItem(display);if(lifted)ctx.restore();if(farmMode==='farm'&&v36HarvestStatus(entry.o)?.ready){const d=dims(entry.o),pt=iso(entry.o.x+d.w/2,entry.o.y+d.h/2);ctx.save();ctx.font=`${Math.max(13,15*zoom)}px system-ui`;ctx.textAlign='center';ctx.shadowColor='#265329';ctx.shadowBlur=4*zoom;if(v75Harvestable(entry.o)){v61DrawAnimalMarker(pt,entry.o)}else{ctx.fillText('🧺',pt.x,pt.y-17*zoom)}ctx.restore()}}}const a=currentCandidate();if(a){let except=tool==='move'?movingId:null;const selecting=(tool==='move'&&!movingId)||tool==='remove';const kind=tool==='plow'?'plot':tool==='move'?objects.find(o=>o.id===movingId)?.kind:sel.value;const target=(tool==='seed'||tool==='harvest')?plotAt(hover):null;const reason=tool==='seed'?(target&&target.soil==='ready'&&!target.crop&&coins>=FarmCrops.SEEDS[seedSelect.value].cost?'':'Μη διαθέσιμο'):tool==='harvest'?(target&&target.crop&&FarmCrops.stage(target.crop)==='ripe'?'':'Δεν είναι ώριμο'):selecting?'':tool==='plow'?FarmPlowing.plan({x:hover.x,y:hover.y,items:objects,coins,grid:gridEngine}).reason:validatePlacement(a,kind,except);if(tool!=='move'||!movingId)shape(polygon(a.x,a.y,a.w,a.h),selecting?'#6ebef07e':reason?'#f35f587e':'#48f08070',selecting?'#35a5e4':reason?'#e3312c':'#1fd64a',2.6);
+ drawingAnimal=v60Animal(entry.o)?entry.o:null;
+ drawItem(display);drawingAnimal=null;if(lifted)ctx.restore();if(farmMode==='farm'&&v36HarvestStatus(entry.o)?.ready){const d=dims(entry.o),pt=iso(entry.o.x+d.w/2,entry.o.y+d.h/2);ctx.save();ctx.font=`${Math.max(13,15*zoom)}px system-ui`;ctx.textAlign='center';ctx.shadowColor='#265329';ctx.shadowBlur=4*zoom;if(v75Harvestable(entry.o)){v61DrawAnimalMarker(pt,entry.o)}else{ctx.fillText('🧺',pt.x,pt.y-17*zoom)}ctx.restore()}}}const a=currentCandidate();if(a){let except=tool==='move'?movingId:null;const selecting=(tool==='move'&&!movingId)||tool==='remove';const kind=tool==='plow'?'plot':tool==='move'?objects.find(o=>o.id===movingId)?.kind:sel.value;const target=(tool==='seed'||tool==='harvest')?plotAt(hover):null;const reason=tool==='seed'?(target&&target.soil==='ready'&&!target.crop&&coins>=FarmCrops.SEEDS[seedSelect.value].cost?'':'Μη διαθέσιμο'):tool==='harvest'?(target&&target.crop&&FarmCrops.stage(target.crop)==='ripe'?'':'Δεν είναι ώριμο'):selecting?'':tool==='plow'?FarmPlowing.plan({x:hover.x,y:hover.y,items:objects,coins,grid:gridEngine}).reason:validatePlacement(a,kind,except);if(tool!=='move'||!movingId)shape(polygon(a.x,a.y,a.w,a.h),selecting?'#6ebef07e':reason?'#f35f587e':'#48f08070',selecting?'#35a5e4':reason?'#e3312c':'#1fd64a',2.6);
 if(kind&&((tool==='place'&&(farmMode!=='farm'||marketSelected===kind))||(tool==='move'&&movingId))){
  const o=tool==='move'?objects.find(v=>v.id===movingId):null;
  const ghost={...(o||{kind,id:-1}),x:a.x,y:a.y,
@@ -395,7 +421,7 @@ window.FV3026V31={get knownCount(){return window.FV3026V30.allItems.filter(i=>i.
 
 function refreshStatus(){if(typeof updateStoreButton==='function')updateStoreButton();if(farmMode==='farm'&&typeof updateMarketUI==='function')updateMarketUI();const hint=document.getElementById('gameHint');if(hint&&tool==='plow'){hint.innerHTML=coins<15?'🚜 Όργωμα <small>⚠ Δεν φτάνουν τα Coins (χρειάζονται 15)</small>':'🚜 Όργωμα <small>15 🪙 ανά χωράφι · +1 XP</small>';}refreshPlayerHud()}
 function label(message,allowed){readout.textContent=message;readout.className='readout '+(allowed===true?'good':allowed===false?'bad':'')}
-function info(p){if(!p){label('Εκτός χάρτη',false);return}if(tool==='move'&&!movingId){const o=hit(p);label(o?`Επίλεξε μετακίνηση: ${dims(o).name}, ${dims(o).w}×${dims(o).h}`:'Άγγιξε αντικείμενο για μετακίνηση.',null);return}if(tool==='remove'){const o=hit(p);label(o?`Αφαίρεση: ${dims(o).name}`:'Δεν υπάρχει αντικείμενο στη θέση.',null);return}const a=currentCandidate();if(!a)return;const kind=tool==='plow'?'plot':tool==='move'?objects.find(o=>o.id===movingId)?.kind:sel.value;const operation=tool==='plow'?FarmPlowing.plan({x:p.x,y:p.y,items:objects,coins,grid:gridEngine}):null;const reason=operation?operation.reason:validatePlacement(a,kind,tool==='move'?movingId:null);if(operation){label(`Χωράφι (${a.x},${a.y}) · ${reason?'✕ '+reason:`✓ ${operation.type==='replow'?'Ξαναόργωμα':'Όργωμα'} · −15 🪙 / +1 XP`}`,!reason);return}label(`${tool==='test'?'ΔΟΚΙΜΗ':'ΘΕΣΗ'} (${a.x},${a.y}) · ${a.w}×${a.h}: ${reason?'✕ '+reason:'✓ Επιτρέπεται'}`,!reason)}
+function info(p){if(!p){label('Εκτός χάρτη',false);return}if(tool==='move'&&!movingId){const o=touched||hit(p);label(o?`Επίλεξε μετακίνηση: ${dims(o).name}, ${dims(o).w}×${dims(o).h}`:'Άγγιξε αντικείμενο για μετακίνηση.',null);return}if(tool==='remove'){const o=hit(p);label(o?`Αφαίρεση: ${dims(o).name}`:'Δεν υπάρχει αντικείμενο στη θέση.',null);return}const a=currentCandidate();if(!a)return;const kind=tool==='plow'?'plot':tool==='move'?objects.find(o=>o.id===movingId)?.kind:sel.value;const operation=tool==='plow'?FarmPlowing.plan({x:p.x,y:p.y,items:objects,coins,grid:gridEngine}):null;const reason=operation?operation.reason:validatePlacement(a,kind,tool==='move'?movingId:null);if(operation){label(`Χωράφι (${a.x},${a.y}) · ${reason?'✕ '+reason:`✓ ${operation.type==='replow'?'Ξαναόργωμα':'Όργωμα'} · −15 🪙 / +1 XP`}`,!reason);return}label(`${tool==='test'?'ΔΟΚΙΜΗ':'ΘΕΣΗ'} (${a.x},${a.y}) · ${a.w}×${a.h}: ${reason?'✕ '+reason:'✓ Επιτρέπεται'}`,!reason)}
 function snapshot(){history.push(JSON.stringify({objects,idCounter,coins,xp,cashSpent,storedItems,animalMastery:v64Mastery,animalRibbonCount:v64RibbonCount,animalRibbonTier:v64RibbonTier,animalNoahTier:v65NoahTier,ribbonStats:v68RibbonStats}));if(history.length>40)history.shift()}
 let lastFarmSaveAt=0,lastFarmSaveOK=null,lastFarmSaveError='';
 function farmSaveStatus(){
@@ -1147,7 +1173,7 @@ function v36CollectObject(o,now=Date.now()){
 }
 window.FV3026HarvestV36={migrate:v36MigrateTimers,get supported(){return Object.keys(V36_HARVEST)},status:id=>v36HarvestStatus(objects.find(o=>o.id===id)),collect:id=>v36CollectObject(objects.find(o=>o.id===id)),get objects(){return objects.filter(o=>v36HarvestData(o)).map(o=>({id:o.id,kind:o.kind,...v36HarvestStatus(o),count:o.harvestCount||0}))}};
 
-function executeFarmAction(px,py){if(storagePickId)return placeFromStorage(pick(px,py));const p=pick(px,py);hover=p;dirty=true;if(!p){label('Εκτός χάρτη',false);return}if(tool==='seed'||tool==='harvest'){
+function executeFarmAction(px,py){if(storagePickId)return placeFromStorage(pick(px,py));const touched=tool==='move'&&!movingId?animalAt(px,py):null;const p=touched?gridCell(px,py):pick(px,py);hover=p;dirty=true;if(!p){label('Εκτός χάρτη',false);return}if(tool==='seed'||tool==='harvest'){
  const plot=plotAt(p);if(!plot){show('Χρειάζεσαι οργωμένο χωράφι');return}
  const wallet={coins,xp};const now=Date.now();
  if(tool==='harvest'&&plot.crop&&FarmCrops.stage(plot.crop,now)==='withered'){snapshot();FarmCrops.wither(plot,now);save();dirty=true;show('🥀 Μαραμένο χωράφι · όργωσε ξανά');return}
@@ -1196,12 +1222,13 @@ cv.addEventListener('pointerdown',e=>{
  cv.setPointerCapture(e.pointerId);
  const p=coord(e),cell=pick(p.x,p.y);
  hover=cell;dirty=true;
- const obj=(tool==='move'&&cell)?hit(cell):null;
+ const obj=tool==='move'?(animalAt(p.x,p.y)||hit(cell)):null;
+ const grab=gridCell(p.x,p.y);
  // CP20.22: do NOT begin a new drag on an unselected object.
  // A tap or the original context Move action must select it first.
  const selectedForDrag=!!obj&&tool==='move'&&movingId===obj.id;
  pointers.set(e.pointerId,{...p,startX:p.x,startY:p.y,
-   dragCandidate:selectedForDrag?{id:obj.id,cell:{x:cell.x,y:cell.y}}:null,
+   dragCandidate:selectedForDrag?{id:obj.id,cell:grab}:null,
    draggingObject:false,preselectedId:movingId});
  if(pointers.size>=2)gesture=true;
 });
@@ -1215,7 +1242,7 @@ cv.addEventListener('pointermove',e=>{
    // Move selection is explicit. Never silently switch to another object.
    if(movingId!==old.dragCandidate.id){old.draggingObject=false;old.dragCandidate=null;}
   }
-  if(old.draggingObject){hover=pick(p.x,p.y);dirty=true}
+  if(old.draggingObject){const held=objects.find(o=>o.id===movingId);moveOffset={x:old.dragCandidate.cell.x-held.x,y:old.dragCandidate.cell.y-held.y};hover=gridCell(p.x,p.y);dirty=true}
   else {if(Math.hypot(p.x-old.startX,p.y-old.startY)>9)dragged=true;
    if(dragged){cx+=dx;cy+=dy;dirty=true}else{hover=pick(p.x,p.y);dirty=true}}
  }else{
@@ -1229,7 +1256,7 @@ cv.addEventListener('pointermove',e=>{
 cv.addEventListener('pointerup',e=>{
  const p=coord(e),old=pointers.get(e.pointerId);
  if(old&&pointers.size===1&&!gesture&&old.draggingObject&&old.dragCandidate&&movingId===old.dragCandidate.id){
-  classicDragFinish(old.dragCandidate.id,old.dragCandidate.cell,pick(p.x,p.y));
+  classicDragFinish(old.dragCandidate.id,old.dragCandidate.cell,gridCell(p.x,p.y));
  }else if(old&&pointers.size===1&&!dragged&&!gesture&&Math.hypot(p.x-old.startX,p.y-old.startY)<10){action(p.x,p.y)}
  pointers.delete(e.pointerId);
  if(pointers.size===0){dragged=false;gesture=false}
@@ -1459,7 +1486,7 @@ const FarmImages=(()=>{
   if(!animalKinds.has(id))return null;
   const {value}=placement(id,clip);
   const pt=value[frame]||value.base;
-  return pt&&[pt.x,pt.y].every(n=>Number.isFinite(n)&&n>=0&&n<=1)?pt:null;
+  return pt&&[pt.x,pt.y].every(n=>Number.isFinite(n)&&n>=-1&&n<=2)?pt:null;
  }
  function setManualAnchor(id,clip,frame,pt){
   if(!animalKinds.has(id))return false;
@@ -1513,6 +1540,7 @@ const FarmImages=(()=>{
   ctx.save();
   ctx.translate(cx+(anchor?0:conf.offsetX*zoom),groundY+(anchor?0:conf.offsetY*zoom));
   if(conf.flipX)ctx.scale(-1,1);
+  recordAnimalSprite(img,col*fw,row*fh,fw,fh,-ww*(anchor?.x??.5),-hh*(anchor?.y??1),ww,hh);
   ctx.drawImage(img,col*fw,row*fh,fw,fh,-ww*(anchor?.x??.5),-hh*(anchor?.y??1),ww,hh);
   ctx.restore();
   return true;
@@ -1574,7 +1602,7 @@ function drawAssetObject(kind,o){
   const motion=window.OnlyCropsAnimalMotion;
   const orientation=normalizeOrientation(o.orientation);
   const facing=window.OnlyCropsAnimalMotion?.directionFor(o.id,orientation===1?'left':'front')||'front';
-  if(motion.draw({animal:kind,objectId:o.id,moving:tool==='move'&&movingId===o.id,
+  if(motion.draw({recordAnimalSprite,animal:kind,objectId:o.id,moving:tool==='move'&&movingId===o.id,
    ready:!!v36HarvestStatus(o)?.ready,direction:facing,mirrored:orientation===1,ctx,cx:p.x,groundY:p.y,baseWidth:width,zoom,
    scale:conf.scale,offsetX:conf.offsetX,offsetY:conf.offsetY,flipX:conf.flipX}))return true;
  }
@@ -1782,7 +1810,7 @@ function classicDragFinish(objId,startCell,endCell){
 function action(px,py){
  // V72: tapping the visible diamond collects from that specific ready animal.
  // We deliberately use the existing collect function to award Coins/Mastery/Ribbons once.
- const indicatorAnimal=fv72HarvestMarkerAt(px,py);
+ const indicatorAnimal=tool==='move'?null:fv72HarvestMarkerAt(px,py);
  if(indicatorAnimal){v36CollectObject(indicatorAnimal);return}
  if(storagePickId){placeFromStorage(pick(px,py));return}
  if(tool==='store'){const p=pick(px,py),o=p?hit(p):null;if(o)storeObject(o.id);else show('Επίλεξε αντικείμενο για αποθήκευση');return}
@@ -1790,7 +1818,7 @@ function action(px,py){
  // Normal Farm: the same object interaction menu and Barn → Look Inside as Creative.
  if(farmMode==='farm'&&window.FarmClassicTools?.handleTap(px,py))return;
  if(farmMode==='creative'&&(tool==='test'||tool==='multi')){
-  const cp=pick(px,py),co=cp?hit(cp):null;
+  const cp=pick(px,py),co=animalAt(px,py)||(cp?hit(cp):null);
   if(isStorageBarn(co)){openBarnMenu(co);return}
   if(co&&window.FarmClassicTools?.openContext){window.FarmClassicTools.openContext(co,px,py);return}
  }
@@ -2870,6 +2898,8 @@ window.__farmGridTest={gridDiagnostics,get items(){return objects.map(o=>({...o}
  function handleTap(px,py){
   if(farmMode!=='farm')return false;
   if(!['multi','recycle'].includes(tool))return false;
+  const animal=tool==='multi'?animalAt(px,py):null;
+  if(animal){v60InspectAnimal(animal);return true}
   const cell=pick(px,py);if(!cell){show('Εκτός χάρτη');return true}
   const plot=plotAt(cell),obj=pickObject(cell);
   if(tool==='recycle'){
