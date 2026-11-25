@@ -112,12 +112,13 @@
   const dw=baseWidth*scale,dh=dw*h/w;
   if(!Number.isFinite(dw)||!Number.isFinite(dh)||dw<=0||dh<=0)return false;
   ctx.save();
-  ctx.translate(cx+offsetX*zoom,groundY+offsetY*zoom);
+  const anchor=window.FV83Assets?.groundAnchor?.(animal,img,sx,sy,w,h);
+  ctx.translate(cx+(anchor?0:offsetX*zoom),groundY+(anchor?0:offsetY*zoom));
   // The object renderer already mirrors the canvas for Rotate. Keep authored
   // side views facing their intended direction; mirror a front fallback once.
   const undoObjectMirror=mirrored&&selected.direction!=='front';
   if(Boolean(flipX)!==undoObjectMirror)ctx.scale(-1,1);
-  ctx.drawImage(img,sx,sy,w,h,-dw/2,-dh,dw,dh);
+  ctx.drawImage(img,sx,sy,w,h,-dw*(anchor?.x??.5),-dh*(anchor?.y??1),dw,dh);
   ctx.restore();
   return true;
  }
