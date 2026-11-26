@@ -85,7 +85,7 @@ function attachAnimalCenter(picker,after){
   if(!asset||layoutBusy)return;
   const [cols,rows]=layout.value.split('x').map(Number);
   if(!cols||!rows)return;
-  layoutBusy=true;layout.disabled=true;
+  stopPlayback();layoutBusy=true;layout.disabled=true;
   try{
    const blob=asset.blob||await (await fetch(asset.inlineSrc)).blob();
    if(engine.get(id)!==asset)throw Error('Η εικόνα άλλαξε. Δοκίμασε ξανά.');
@@ -116,13 +116,29 @@ function attachAnimalCenter(picker,after){
   const cols=a.conf.cols,w=a.img.naturalWidth/cols,h=a.img.naturalHeight/a.conf.rows;
   save(engine.measureGround(a.img,(frame%cols)*w,Math.floor(frame/cols)*h,w,h),true);
  };
+ const play=add('button','▶ Αναπαραγωγή');play.type='button';
  const next=add('button',''),reset=add('button','Επαναφορά στοίχισης');next.type=reset.type='button';
  const status=add('p','');status.setAttribute('role','status');
- let frame=0,last='',box=null,draft=null;
+ let frame=0,last='',box=null,draft=null,timer=null;
+ function stopPlayback(){
+  clearInterval(timer);timer=null;play.textContent='▶ Αναπαραγωγή';
+ }
+ play.onclick=()=>{
+  if(timer!==null){stopPlayback();return}
+  const asset=window.FV83Assets.get(picker.value);
+  if(!asset||layoutBusy||!box||asset.conf.cols*asset.conf.rows<2)return;
+  play.textContent='Ⅱ Παύση';
+  timer=setInterval(()=>{
+   if(document.hidden||!wrap.getClientRects().length||window.FV83Assets.get(picker.value)!==asset){stopPlayback();return}
+   frame++;refresh();
+  },1000/asset.conf.fps);
+ };
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPlayback()});
+
  function refresh(){
   const id=picker.value,engine=window.FV83Assets,a=engine?.get(id);
   wrap.hidden=!engine?.isAnimal?.(id);wrap.style.display=wrap.hidden?'none':'';
-  if(last!==id){frame=0;last=id;draft=null;status.textContent=''}
+  if(last!==id){stopPlayback();frame=0;last=id;draft=null;status.textContent=''}
   box=null;if(wrap.hidden)return;
   const ready=!!a?.img?.naturalWidth;
   layout.disabled=layoutBusy||!ready;
@@ -130,16 +146,16 @@ function attachAnimalCenter(picker,after){
   layout.value=['1x1','2x2','4x1'].includes(arrangement)?arrangement:'custom';
   controls.hidden=auto.hidden=!ready;
   canvas.hidden=!ready;canvas.style.display=ready?'block':'none';reset.hidden=!ready||!engine.manualAnchor(id,'sprite',frame);
-  if(!ready){next.hidden=true;hint.textContent='Διάλεξε εικόνα ζώου για να εμφανιστεί ο ρόμβος.';if(a?.img&&!a.img.complete)a.img.addEventListener('load',refresh,{once:true});return}
+  if(!ready){play.hidden=next.hidden=true;hint.textContent='Διάλεξε εικόνα ζώου για να εμφανιστεί ο ρόμβος.';if(a?.img&&!a.img.complete)a.img.addEventListener('load',refresh,{once:true});return}
   hint.textContent='Σύρε πάνω στον ρόμβο.';
   const cols=a.conf.cols,rows=a.conf.rows,count=cols*rows;
-  frame%=count;next.hidden=count===1;next.textContent='Καρέ '+(frame+1)+' / '+count+' · Επόμενο';
+  frame%=count;play.hidden=next.hidden=count===1;next.textContent='Καρέ '+(frame+1)+' / '+count+' · Επόμενο';
   const w=a.img.naturalWidth/cols,h=a.img.naturalHeight/rows;
   box=drawPlacement(canvas,id,'sprite',frame,a.img,(frame%cols)*w,Math.floor(frame/cols)*h,w,h,draft);
  }
- function save(pt,frameOnly=false){const ok=window.FV83Assets.setManualAnchor(picker.value,'sprite',frame,pt,frameOnly);refresh();status.textContent=ok?'Η στοίχιση αποθηκεύτηκε.':'Η στοίχιση ισχύει για αυτή τη συνεδρία.'}
- next.onclick=()=>{frame++;refresh()};reset.onclick=()=>save(null);
- bindPlacementDrag(canvas,()=>box,pt=>{draft=pt;refresh()},pt=>{draft=null;save(pt)});
+ function save(pt,frameOnly=false){stopPlayback();const ok=window.FV83Assets.setManualAnchor(picker.value,'sprite',frame,pt,frameOnly);refresh();status.textContent=ok?'Η στοίχιση αποθηκεύτηκε.':'Η στοίχιση ισχύει για αυτή τη συνεδρία.'}
+ next.onclick=()=>{stopPlayback();frame++;refresh()};reset.onclick=()=>save(null);
+ bindPlacementDrag(canvas,()=>box,pt=>{draft=pt;refresh()},pt=>{draft=null;save(pt)},stopPlayback);
  picker.addEventListener('change',refresh);refresh();return refresh;
 }
 window.OnlyCropsAttachAnimalCenter=attachAnimalCenter;
